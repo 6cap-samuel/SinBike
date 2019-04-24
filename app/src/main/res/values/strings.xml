@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">SinBike</string>
+    <!-- Strings related to login -->
+    <string name="error_invalid_password">This password is too short</string>
+
+    <string name="add_payment_method">Add Payment Method</string>
+    <string name="tv_exp_date">Expiry Date</string>
+    <string name="tv_cc_no">Card Number</string>
+    <string name="cc_no">Card Number</string>
+    <string name="cvv_no">CVV Number/ CCV Number</string>
+    <string name="saveBtn">Save</string>
+    <string name="cancelBttn">Cancel</string>
+    <string name="spinner_mm">MM</string>
+    <string name="spinner_yyyy">YYYY</string>
+    <string name="slash"> / </string>
+    <string name="tv_card_type">Card Type</string>
+    <string name="desc">images</string>
+    <string name="auth_failed">Authentication failed, check your email and password or sign up</string>
+    <string name="topupBtn">Top Up</string>
+    <string name="topup_amt">Top Up Amount</string>
+    <string name="min_amt">* Minimum 5 SGD</string>
+
+
+
+    -
+    <string-array name="months">
+        <item>Month</item>
+        <item>01</item>
+        <item>02</item>
+        <item>03</item>
+        <item>04</item>
+        <item>05</item>
+        <item>06</item>
+        <item>07</item>
+        <item>08</item>
+        <item>09</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+
+    </string-array>
+    -
+    <string-array name="years">
+        <item>Year</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+        <item>2027</item>
+        <item>2028</item>
+        <item>2029</item>
+        <item>2030</item>
+    </string-array>
+
+</resources>
