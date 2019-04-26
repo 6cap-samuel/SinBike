@@ -39,8 +39,8 @@ public class AccountRepository extends FirestoreRepository<Account> {
         return super.collectionReference;
     }
 
-    public QueryLiveData<Account> login(String username, String password) {
-        return new QueryLiveData<>(query().whereEqualTo("username", username)
+    public QueryLiveData<Account> login(String email, String password) {
+        return new QueryLiveData<>(query().whereEqualTo("email", email)
                 .whereEqualTo("password", password),
                 Account.class);
     }

@@ -8,13 +8,15 @@ import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.example.sinbike.Services.FaultService;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-public class FaultViewModel {
+public class FaultViewModel extends AndroidViewModel {
 
     private FaultService faultService;
 
     public FaultViewModel(Application application){
+        super(application);
         this.faultService = new FaultService(application);
     }
     public QueryLiveData<Fault> get(String accountId){

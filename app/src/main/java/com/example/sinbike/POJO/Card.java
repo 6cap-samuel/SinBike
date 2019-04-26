@@ -1,10 +1,13 @@
 package com.example.sinbike.POJO;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+
+@Entity
 public class Card {
 
-    private final int CARD_VISA = 1;
-    private final int CARD_MASTER = 2;
-    private final int CARD_AMEX = 3;
+    @PrimaryKey
+    private int cardId;
 
     private String cardType;
     private String cardNumber;
@@ -16,6 +19,14 @@ public class Card {
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
         this.expiryYear = expiryYear;
+    }
+
+    public int getCardId() {
+        return cardId;
+    }
+
+    public void setCardId(int cardId) {
+        this.cardId = cardId;
     }
 
     public String getCardType() {

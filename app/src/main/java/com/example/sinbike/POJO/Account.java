@@ -6,11 +6,8 @@ import com.google.firebase.firestore.ServerTimestamp;
 
 public class Account extends Model {
 
-    private static final int ACCOUNT_CLOSED = 0;
-    private static final int ACCOUNT_OPEN = 1;
-    private static final int ACCOUNT_SUSPENDED = 2;
-
     private String name;
+    private String password;
     private String email;
     private String telephoneNumber;
     private String address;
@@ -23,7 +20,7 @@ public class Account extends Model {
     public Account() {
     }
 
-    public Account(String name, String email, String telephoneNumber, String address, String gender, Timestamp dateOfBirth, String billingAddress, int status, double accountBalance) {
+    public Account(String name, String email, String telephoneNumber, String address, String gender, Timestamp dateOfBirth, String billingAddress, int status, double accountBalance, String password) {
         this.name = name;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
@@ -33,18 +30,15 @@ public class Account extends Model {
         this.billingAddress = billingAddress;
         this.status = status;
         this.accountBalance = accountBalance;
+        this.password = password;
     }
 
-    public static int getAccountClosed() {
-        return ACCOUNT_CLOSED;
+    public String getPassword() {
+        return password;
     }
 
-    public static int getAccountOpen() {
-        return ACCOUNT_OPEN;
-    }
-
-    public static int getAccountSuspended() {
-        return ACCOUNT_SUSPENDED;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {

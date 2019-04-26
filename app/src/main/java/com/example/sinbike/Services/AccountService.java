@@ -1,6 +1,7 @@
 package com.example.sinbike.Services;
 
 import android.app.Application;
+import android.util.Log;
 
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.AccountRepository;
@@ -8,18 +9,25 @@ import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 
+import java.util.List;
+
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MediatorLiveData;
 
 public class AccountService {
     private static final String TAG = "AccountService";
     private AccountRepository accountRepository;
 
+    public AccountService(Application application){
+        this.accountRepository = new AccountRepository(application);
+    }
+
     public AccountService(Application application, String userId){
         this.accountRepository = new AccountRepository(application, userId);
     }
 
-    public QueryLiveData<Account> login(String username, String password){
-        return this.accountRepository.login(username, password);
+    public QueryLiveData<Account> login(String email, String password){
+        return this.accountRepository.login(email, password);
     }
 
     public CompletionLiveData create(Account account){
