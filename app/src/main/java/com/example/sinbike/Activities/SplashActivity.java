@@ -73,7 +73,6 @@ public class SplashActivity extends AppCompatActivity implements AccountViewMode
 
     public void paymentTest(){
         Payment p = new FinePayment();
-
         p.setTransactionid("06OJfmAODevkKth3mDP4");
         ((FinePayment) p).setFineid("CzVH1GmvqKupYxWWLe7g");
 
