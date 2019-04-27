@@ -15,12 +15,17 @@ public class Constants {
     public static final String COLLECTION_RESERVATION = "Reservation";
     public static final String COLLECTION_TRANSACTION = "Transaction";
 
+    /*-------------------------- Card Type --------------------------*/
     public static final int CARD_VISA = 1;
     public static final int CARD_MASTER = 2;
     public static final int CARD_AMEX = 3;
 
+    /*-------------------------- Account Status --------------------------*/
     public static final int ACCOUNT_CLOSED = 0;
     public static final int ACCOUNT_OPEN = 1;
     public static final int ACCOUNT_SUSPENDED = 2;
 
+    /*-------------------------- Transaction Type --------------------------*/
+    public static final int TRANSACTION_TYPE_TOPUP = 0;
+    public static final int TRANSACTION_TYPE_USE = 1;
 }

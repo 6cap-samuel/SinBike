@@ -9,7 +9,10 @@ import com.example.sinbike.Observers.ParkingLotViewModelObserver;
 import com.example.sinbike.Observers.TransactionViewModelObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.POJO.Bicycle;
+import com.example.sinbike.POJO.Fine;
+import com.example.sinbike.POJO.FinePayment;
 import com.example.sinbike.POJO.ParkingLot;
+import com.example.sinbike.POJO.Payment;
 import com.example.sinbike.POJO.Transaction;
 import com.example.sinbike.R;
 import com.example.sinbike.Services.BicycleService;
@@ -18,8 +21,11 @@ import com.example.sinbike.Services.TransactionService;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.example.sinbike.ViewModels.BicycleViewModel;
 import com.example.sinbike.ViewModels.FaultViewModel;
+import com.example.sinbike.ViewModels.FineViewModel;
 import com.example.sinbike.ViewModels.ParkingLotViewModel;
 import com.example.sinbike.ViewModels.TransactionViewModel;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.gson.FieldNamingPolicy;
 
 import java.util.List;
 
@@ -36,6 +42,7 @@ public class SplashActivity extends AppCompatActivity implements AccountViewMode
     BicycleViewModel bicycleViewModel;
     ParkingLotViewModel parkingLotviewModel;
     TransactionViewModel transactionViewModel;
+    FineViewModel fineViewModel;
 
     Account account;
 
@@ -52,8 +59,27 @@ public class SplashActivity extends AppCompatActivity implements AccountViewMode
 //        this.accountTest();
 //        this.bicycleTest();
 //        this.parkingLotTest();
+        this.fineTest();
+
 //        this.transactionTest();
     }
+
+    public void fineTest(){
+        this.fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
+        Fine fine = new Fine();
+        fine.setAccountId("v7XY8cNZQxlii3geNg52");
+        this.fineViewModel.createFine(fine);
+    }
+
+    public void paymentTest(){
+        Payment p = new FinePayment();
+
+        p.setTransactionid("06OJfmAODevkKth3mDP4");
+        ((FinePayment) p).setFineid("CzVH1GmvqKupYxWWLe7g");
+
+
+    }
+
 
     public void transactionTest(){
 
@@ -112,6 +138,8 @@ public class SplashActivity extends AppCompatActivity implements AccountViewMode
         // TODO: implement function when account creation passed.
         // TODO: Encourage user to login once account has been created.
         Log.d(TAG,"Account Creation Pass");
+
+
     }
 
     public void createAccountFail(){

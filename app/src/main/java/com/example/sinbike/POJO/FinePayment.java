@@ -1,20 +1,20 @@
 package com.example.sinbike.POJO;
 
 public class FinePayment extends Payment {
-    private String fineid;
+    private String fineId;
 
     public FinePayment() {
     }
 
     public FinePayment(String fineid) {
-        this.fineid = fineid;
+        this.fineId = fineid;
     }
 
     public String getFineid() {
-        return fineid;
+        return fineId;
     }
 
     public void setFineid(String fineid) {
-        this.fineid = fineid;
+        this.fineId = fineid;
     }
 }

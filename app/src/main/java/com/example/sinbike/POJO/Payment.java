@@ -7,13 +7,23 @@ import com.google.firebase.firestore.ServerTimestamp;
 public class Payment extends Model {
     private @ServerTimestamp Timestamp paymentDate;
     private double totalAmount;
+    private String transactionId;
 
     public Payment() {
     }
 
-    public Payment(Timestamp paymentDate, double totalAmount) {
+    public Payment(Timestamp paymentDate, double totalAmount, String transactionId) {
         this.paymentDate = paymentDate;
         this.totalAmount = totalAmount;
+        this.transactionId = transactionId;
+    }
+
+    public String getTransactionid() {
+        return transactionId;
+    }
+
+    public void setTransactionid(String transactionId) {
+        this.transactionId = transactionId;
     }
 
     public Timestamp getPaymentDate() {
