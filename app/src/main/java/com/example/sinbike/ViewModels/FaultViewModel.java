@@ -13,6 +13,8 @@ import androidx.lifecycle.LiveData;
 
 public class FaultViewModel extends AndroidViewModel {
 
+    private static final String TAG = "FaultViewModel";
+
     private FaultService faultService;
 
     public FaultViewModel(Application application){

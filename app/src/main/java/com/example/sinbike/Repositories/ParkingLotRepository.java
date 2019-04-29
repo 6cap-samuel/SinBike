@@ -18,6 +18,8 @@ import static com.example.sinbike.Constants.COLLECTION_PARKING_LOT;
 
 public class ParkingLotRepository extends FirestoreRepository<ParkingLot> {
 
+    private static final String TAG = "ParkingLotRepository";
+
     private static final Class<ParkingLot> CLASS_TYPE = ParkingLot.class;
     private MutableLiveData<ParkingLot> parkinglot;
 

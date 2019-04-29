@@ -16,8 +16,9 @@ import androidx.lifecycle.LiveData;
 import static com.example.sinbike.Constants.COLLECTION_FAULT;
 
 public class FaultRepository extends FirestoreRepository<Fault> {
-    private static final Class<Fault> CLASS_TYPE = Fault.class;
+
     private static final String TAG = "FaultRepository";
+    private static final Class<Fault> CLASS_TYPE = Fault.class;
 
     public FaultRepository(Application application) {
         super(application, CLASS_TYPE);

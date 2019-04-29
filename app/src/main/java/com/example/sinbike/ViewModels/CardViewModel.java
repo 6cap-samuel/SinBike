@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData;
 
 public class CardViewModel {
 
+    private static final String TAG = "CardViewModel";
     private CardService cardService;
 
     public CardViewModel(Application application){

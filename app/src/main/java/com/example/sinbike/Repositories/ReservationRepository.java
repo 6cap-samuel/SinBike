@@ -18,6 +18,8 @@ import static com.example.sinbike.Constants.COLLECTION_RESERVATION;
 
 public class ReservationRepository extends FirestoreRepository<Reservation> {
 
+    private static final String TAG = "ReservationRepository";
+
     private static final Class<Reservation> CLASS_TYPE = Reservation.class;
     private MutableLiveData<Reservation> reservation;
 

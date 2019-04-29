@@ -12,9 +12,12 @@ import com.google.firebase.firestore.Query;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import static com.example.sinbike.Constants.COLLECTION_ACCOUNT;
 
 public class AccountRepository extends FirestoreRepository<Account> {
+
+    private static final String TAG = "AccountRepository";
 
     private static final Class<Account> CLASS_TYPE = Account.class;
     private MutableLiveData<Account> account;

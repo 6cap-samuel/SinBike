@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 
 public class CardRepository {
 
+    private static final String TAG = "CardRepository";
+
     private CardDao cardDao;
     private LiveData<List<Card>> cardList;
 

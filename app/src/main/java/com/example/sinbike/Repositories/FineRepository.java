@@ -21,6 +21,8 @@ import static com.example.sinbike.Constants.COLLECTION_FINE;
 
 public class FineRepository extends FirestoreRepository<Fine> {
 
+    private static final String TAG = "FineRepository";
+
     private static final Class<Fine> CLASS_TYPE = Fine.class;
     private MutableLiveData<Fine> fine;
     private String userId;

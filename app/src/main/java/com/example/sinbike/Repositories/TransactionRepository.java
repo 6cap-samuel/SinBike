@@ -17,6 +17,7 @@ import static com.example.sinbike.Constants.COLLECTION_TRANSACTION;
 
 public class TransactionRepository extends FirestoreRepository<Transaction> {
 
+    private static final String TAG = "TransactionRepository";
     private static final Class<Transaction> CLASS_TYPE = Transaction.class;
     private MutableLiveData<Transaction> transaction;
 

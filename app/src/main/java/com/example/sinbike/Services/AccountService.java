@@ -1,7 +1,6 @@
 package com.example.sinbike.Services;
 
 import android.app.Application;
-import android.util.Log;
 
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.AccountRepository;
@@ -9,10 +8,7 @@ import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 
-import java.util.List;
-
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MediatorLiveData;
 
 public class AccountService {
     private static final String TAG = "AccountService";

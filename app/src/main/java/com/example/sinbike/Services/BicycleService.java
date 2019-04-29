@@ -13,7 +13,7 @@ import com.example.sinbike.Repositories.common.QueryLiveData;
 import androidx.lifecycle.LiveData;
 
 public class BicycleService {
-    private static final String TAG = "FaultService";
+    private static final String TAG = "BicycleService";
     private BicycleRepository bicycleRepository;
 
     public BicycleService(Application application){

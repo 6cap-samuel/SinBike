@@ -18,9 +18,10 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import static com.example.sinbike.Constants.COLLECTION_FINE_PAYMENT;
-import static com.example.sinbike.Constants.COLLECTION_PAYMENT;
 
 public class FinePaymentRepository extends FirestoreRepository<FinePayment> {
+
+    private static final String TAG = "FinePaymentRepository";
 
     private static final Class<FinePayment> CLASS_TYPE = FinePayment.class;
     private MutableLiveData<FinePayment> finePayment;
