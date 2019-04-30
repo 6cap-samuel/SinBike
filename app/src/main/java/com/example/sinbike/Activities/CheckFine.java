@@ -43,7 +43,7 @@ public class CheckFine extends AppCompatActivity implements View.OnClickListener
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CheckFine.this , ManageDashboard.class);
+                Intent intent = new Intent(CheckFine.this , ManageDashboardActivity.class);
                 startActivity(intent);
                 finish();
             }

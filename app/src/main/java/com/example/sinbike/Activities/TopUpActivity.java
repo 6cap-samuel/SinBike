@@ -29,7 +29,7 @@ public class TopUpActivity extends AppCompatActivity {
 
         topupBack.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                startActivity(new Intent(TopUpActivity.this, ManageDashboard.class));
+                startActivity(new Intent(TopUpActivity.this, ManageDashboardActivity.class));
             }
         });
 

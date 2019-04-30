@@ -147,7 +147,7 @@ public class ReportFaults extends AppCompatActivity implements OnClickListener {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ReportFaults.this , ManageDashboard.class);
+                Intent intent = new Intent(ReportFaults.this , ManageDashboardActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -179,7 +179,7 @@ public class ReportFaults extends AppCompatActivity implements OnClickListener {
                 .setPositiveButton("Close", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent i = new Intent(ReportFaults.this, ManageDashboard.class);
+                        Intent i = new Intent(ReportFaults.this, ManageDashboardActivity.class);
                         startActivity(i);
                         finish();
                     }

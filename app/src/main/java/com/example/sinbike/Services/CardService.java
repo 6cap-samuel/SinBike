@@ -24,6 +24,5 @@ public class CardService {
 
     public void insertCard(Card card){
         this.cardRepository.insert(card);
-
     }
 }

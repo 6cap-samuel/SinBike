@@ -59,7 +59,7 @@ public class AddPaymentActivity extends AppCompatActivity {
         cancelBttn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View args0) {
-                Intent intent = new Intent(AddPaymentActivity.this , ManageDashboard.class);
+                Intent intent = new Intent(AddPaymentActivity.this , ManageDashboardActivity.class);
                 startActivity(intent);
                 finish();
             }

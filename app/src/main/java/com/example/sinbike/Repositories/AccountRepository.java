@@ -48,6 +48,11 @@ public class AccountRepository extends FirestoreRepository<Account> {
                 Account.class);
     }
 
+    public QueryLiveData<Account> checkEmail(String email) {
+        return new QueryLiveData<>(query().whereEqualTo("email", email),
+                Account.class);
+    }
+
     public CompletionLiveData createAccount(Account account){
         final CompletionLiveData completion = new CompletionLiveData();
         this.create(account).addOnCompleteListener(completion);

@@ -28,4 +28,8 @@ public class Constants {
     /*-------------------------- Transaction Type --------------------------*/
     public static final int TRANSACTION_TYPE_TOPUP = 0;
     public static final int TRANSACTION_TYPE_USE = 1;
+
+    /*-------------------------- Font Type --------------------------*/
+    public static final String HEROLIGHT = "fonts/hero_lightt.otf";
+    public static final String HERO = "fonts/Hero.otf";
 }

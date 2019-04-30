@@ -12,7 +12,7 @@ public class Account extends Model {
     private String telephoneNumber;
     private String address;
     private String gender;
-    private @ServerTimestamp Timestamp dateOfBirth;
+    private String dateOfBirth;
     private String billingAddress;
     private int status;
     private double accountBalance;
@@ -20,7 +20,7 @@ public class Account extends Model {
     public Account() {
     }
 
-    public Account(String name, String email, String telephoneNumber, String address, String gender, Timestamp dateOfBirth, String billingAddress, int status, double accountBalance, String password) {
+    public Account(String name, String email, String telephoneNumber, String address, String gender, String dateOfBirth, String billingAddress, int status, double accountBalance, String password) {
         this.name = name;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
@@ -81,11 +81,11 @@ public class Account extends Model {
         this.gender = gender;
     }
 
-    public Timestamp getDateOfBirth() {
+    public String getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Timestamp dateOfBirth) {
+    public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

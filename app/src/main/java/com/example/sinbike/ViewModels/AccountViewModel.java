@@ -3,7 +3,8 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.sinbike.Observers.AccountViewModelObserver;
+import com.example.sinbike.Observers.LoginObserver;
+import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Services.AccountService;
@@ -20,7 +21,10 @@ public class AccountViewModel extends AndroidViewModel {
 
     private LifecycleOwner lifecycleOwner;
     private AccountService accountService;
-    private AccountViewModelObserver observer;
+    private LoginObserver loginObserver;
+    private SignUpObserver signUpObserver;
+
+    private static Account account;
 
     public AccountViewModel(Application application){
         super(application);
@@ -32,12 +36,20 @@ public class AccountViewModel extends AndroidViewModel {
         this.accountService = new AccountService(application, userId);
     }
 
-    public void setObserver(AccountViewModelObserver observer) {
-        this.observer = observer;
+    public void setLoginObserver(LoginObserver observer){
+        this.loginObserver = observer;
+    }
+
+    public void setSignUpObserver(SignUpObserver observer){
+        this.signUpObserver = observer;
     }
 
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;
+    }
+
+    public Account getAccount(){
+        return this.account;
     }
 
     public void loginAccount(String email, String password){
@@ -50,9 +62,10 @@ public class AccountViewModel extends AndroidViewModel {
                 Log.d(TAG, accounts.toString());
 
                 if (accounts.size() != 0){
-                    observer.loginSuccess(accounts.get(0));
+                    account = accounts.get(0);
+                    loginObserver.loginSuccess(accounts.get(0));
                 } else {
-                    observer.loginFailed();
+                    loginObserver.loginFailed();
                 }
 
                 liveobs.removeObserver(this);
@@ -63,23 +76,37 @@ public class AccountViewModel extends AndroidViewModel {
 
     public void createAccount(Account account){
         if (createAccountValidation()){
-            final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.login(account.getEmail(), account.getPassword());
-            Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>(){
+            final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> emailExist = this.accountService.checkEmail(account.getEmail());
+
+            Observer checkObs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>() {
                 @Override
                 public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Account>> listResource) {
-
-                    List<Account> accounts = listResource.data();
-                    Log.d(TAG, accounts.toString());
-
                     if (listResource.data().size() == 0){
-                        observer.createAccountPass();
+                        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = accountService.login(account.getEmail(), account.getPassword());
+                        Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>(){
+                            @Override
+                            public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Account>> listResource) {
+
+                                List<Account> accounts = listResource.data();
+                                Log.d(TAG, accounts.toString());
+
+                                if (listResource.data().size() == 0){
+                                    accountService.create(account);
+                                    signUpObserver.createAccountPass();
+                                } else {
+                                    signUpObserver.createAccountFail();
+                                }
+                                liveobs.removeObserver(this);
+                            }
+                        };
+                        liveobs.observe(lifecycleOwner, obs);
                     } else {
-                        observer.createAccountFail();
+                        signUpObserver.createAccountFail();
                     }
-                    liveobs.removeObserver(this);
+                    emailExist.removeObserver(this);
                 }
             };
-            liveobs.observe(this.lifecycleOwner, obs);
+            emailExist.observe(this.lifecycleOwner, checkObs);
         }
     }
 

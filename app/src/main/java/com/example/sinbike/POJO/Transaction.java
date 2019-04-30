@@ -2,13 +2,7 @@ package com.example.sinbike.POJO;
 
 import com.example.sinbike.Repositories.common.Model;
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.ServerTimestamp;
-
-import org.w3c.dom.Document;
-
-import static com.example.sinbike.Constants.COLLECTION_ACCOUNT;
 
 public class Transaction extends Model {
     private String description;

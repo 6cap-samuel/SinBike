@@ -4,6 +4,5 @@
     <color name="black">#000000</color>
     <color name="signupColour">#9cbd43</color>
     <color name="white">#ffffff</color>
-
-
+    <color name="grey">#EEE</color>
 </resources>

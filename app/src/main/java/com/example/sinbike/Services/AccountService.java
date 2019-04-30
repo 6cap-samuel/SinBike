@@ -30,6 +30,10 @@ public class AccountService {
         return this.accountRepository.createAccount(account);
     }
 
+    public QueryLiveData<Account> checkEmail(String email) {
+        return this.checkEmail(email);
+    }
+
     public LiveData<Resource<Boolean>> update(String docId, Account account){
         return this.accountRepository.update(docId, account);
     }

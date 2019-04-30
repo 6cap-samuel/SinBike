@@ -31,7 +31,6 @@ public class ForgetPassword extends AppCompatActivity {
         etEmail = findViewById(R.id.etEmail);
         firebaseAuth = FirebaseAuth.getInstance();
 
-
         resetPassword.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -46,7 +45,7 @@ public class ForgetPassword extends AppCompatActivity {
                             if (task.isSuccessful()){
                                 Toast.makeText(ForgetPassword.this, "Password reset email sent!" , Toast.LENGTH_LONG).show();
                                 finish();
-                                startActivity(new Intent(ForgetPassword.this, MainActivity.class));
+                                startActivity(new Intent(ForgetPassword.this, LoginActivity.class));
 
                             } else {
                                 Toast.makeText(ForgetPassword.this, "Error in sending email!" , Toast.LENGTH_LONG).show();
@@ -62,7 +61,7 @@ public class ForgetPassword extends AppCompatActivity {
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ForgetPassword.this, MainActivity.class);
+                Intent intent = new Intent(ForgetPassword.this, LoginActivity.class);
                 startActivity(intent);
             }
         });

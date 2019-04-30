@@ -64,7 +64,7 @@ public class Rental extends AppCompatActivity implements
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Rental.this , ManageDashboard.class);
+                Intent intent = new Intent(Rental.this , ManageDashboardActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -97,10 +97,10 @@ public class Rental extends AppCompatActivity implements
             map.getUiSettings().setMapToolbarEnabled(false);
 
             if (!success) {
-                Log.e("MainActivity", "Style parsing failed.");
+                Log.e("LoginActivity", "Style parsing failed.");
             }
         } catch (Resources.NotFoundException e) {
-            Log.e("MainActivity", "Can't find style. Error: ", e);
+            Log.e("LoginActivity", "Can't find style. Error: ", e);
         }
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)

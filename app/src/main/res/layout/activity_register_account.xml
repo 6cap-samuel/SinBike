@@ -152,7 +152,37 @@
 
     <Space
         android:layout_width="1dp"
-        android:layout_height="5dp"/>
+        android:layout_height="1dp"/>
+
+
+
+    <LinearLayout
+        android:layout_width="374dp"
+        android:layout_height="60dp"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/etShowPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:buttonTint="@color/black"
+            android:textColor="#000000" />
+
+        <TextView
+            android:id="@+id/tvTermsandCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Terms and Conditions"
+            android:textColor="@color/black"
+            android:clickable="true"
+            android:onClick="onClick"/>
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="30dp"/>
 
 
     <LinearLayout
