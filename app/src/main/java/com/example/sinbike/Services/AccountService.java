@@ -31,7 +31,7 @@ public class AccountService {
     }
 
     public QueryLiveData<Account> checkEmail(String email) {
-        return this.checkEmail(email);
+        return this.accountRepository.checkEmail(email);
     }
 
     public LiveData<Resource<Boolean>> update(String docId, Account account){

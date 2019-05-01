@@ -99,7 +99,7 @@ public class ScannedBarcodeActivity extends AppCompatActivity {
                     toneNotification.startTone(ToneGenerator.TONE_PROP_BEEP, 150);
 
                     intentData = barcodes.valueAt(0).displayValue; // Retrieving text from QR Code
-                    Intent data = new Intent (ScannedBarcodeActivity.this, ReportFaults.class);
+                    Intent data = new Intent (ScannedBarcodeActivity.this, ReportFaultsActivity.class);
                     data.putExtra("barcode",intentData);
                     startActivity(data);
                     finish();

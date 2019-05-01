@@ -7,14 +7,16 @@ import com.example.sinbike.Services.CardService;
 
 import java.util.List;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-public class CardViewModel {
+public class CardViewModel extends AndroidViewModel {
 
     private static final String TAG = "CardViewModel";
     private CardService cardService;
 
     public CardViewModel(Application application){
+        super(application);
         this.cardService = new CardService(application);
     }
 

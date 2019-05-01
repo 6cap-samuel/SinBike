@@ -2,7 +2,6 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -10,10 +9,7 @@ import android.widget.TextView;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
@@ -21,31 +17,26 @@ import androidx.lifecycle.ViewModelProviders;
 public class ManageDashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String TAG = "ManageDashboardActivity";
-    public CardView rentabikeid, walletid, reportafaultid, transactionid, manageprofileid, payfinesid;
+
+    public CardView rentalbikeid, walletid, reportafaultid, transactionid, manageprofileid, payfinesid;
+
     Button logout;
     TextView idUserName;
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
 
     AccountViewModel accountViewModel;
+    Account account;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
-
-        Account account = accountViewModel.getAccount();
-        Log.d(TAG, account.id);
-        Log.d(TAG, account.toString());
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage_dashboard);
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
 
+        this.initViewModel();
+        this.init();
+    }
 
-        rentabikeid = findViewById(R.id.rentalbike_id);
-        rentabikeid = findViewById(R.id.rentalbike_id);
+    public void init(){
+        rentalbikeid = findViewById(R.id.rentalbike_id);
         walletid = findViewById(R.id.wallet_id);
         reportafaultid = findViewById(R.id.reportafault_id);
         transactionid = findViewById(R.id.transaction_id);
@@ -54,76 +45,67 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
         logout = findViewById(R.id.btnLogout);
         idUserName = findViewById(R.id.idUserName);
 
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
-                if (firebaseUser != null) {
-                    String name = firebaseUser.getDisplayName();
-                    idUserName.setText(name);
-                }
-            }
-        };
-
-
-        rentabikeid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(ManageDashboardActivity.this, Rental.class);
-                startActivity(i);
-                finish();
-            }
-        });
-
-
-        walletid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View args0) {
-                Intent intent = new Intent(ManageDashboardActivity.this , TopUpActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        reportafaultid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                    Intent intent = new Intent(ManageDashboardActivity.this, ReportFaults.class);
-                    startActivity(intent);
-                    finish();
-            }
-        });
-
-        payfinesid.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ManageDashboardActivity.this, CheckFine.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         transactionid.setOnClickListener(this);
         manageprofileid.setOnClickListener(this);
+        rentalbikeid.setOnClickListener(this);
+        walletid.setOnClickListener(this);
+        reportafaultid.setOnClickListener(this);
+        logout.setOnClickListener(this);
+        payfinesid.setOnClickListener(this);
+        manageprofileid.setOnClickListener(this);
 
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (mAuth.getCurrentUser() !=null)
-                mAuth.signOut();
-                Intent intent = new Intent (ManageDashboardActivity.this, LoginActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
-
-
+        this.idUserName.setText(this.account.getName());
     }
 
-
+    public void initViewModel(){
+        accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        account = accountViewModel.getAccount();
+    }
     @Override
     public void onClick(View v) {
+        if (v.getId() == R.id.rentalbike_id){
+            this.launchRentalActivity();
+        } else if (v.getId() == R.id.wallet_id){
+            this.launchTopUpActivity();
+        } else if (v.getId() == R.id.reportafault_id){
+            this.launchReportFault();
+        } else if (v.getId() == R.id.checkfine_id){
+            this.launchPayFine();
+        } else if (v.getId() == R.id.btnLogout){
+            this.logout();
+        } else if (v.getId() == R.id.manageprofile_id){
+            this.launchManageProfile();
+        }
+    }
 
+    public void launchRentalActivity(){
+        Intent i = new Intent(this, RentalActivity.class);
+        startActivity(i);
+    }
+
+    public void launchTopUpActivity(){
+        Intent intent = new Intent(this , TopUpActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchReportFault(){
+        Intent intent = new Intent(this, ReportFaultsActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchPayFine(){
+        Intent intent = new Intent(this, CheckFineActivity.class);
+        startActivity(intent);
+    }
+
+    public void logout(){
+        this.accountViewModel.logout();
+        Intent intent = new Intent (this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void launchManageProfile(){
+        Intent intent = new Intent (this, ManageProfileActivity.class);
+        startActivity(intent);
     }
 }

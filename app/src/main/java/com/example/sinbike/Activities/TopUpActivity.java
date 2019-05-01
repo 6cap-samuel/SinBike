@@ -9,33 +9,28 @@ import com.example.sinbike.R;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-public class TopUpActivity extends AppCompatActivity {
+public class TopUpActivity extends AppCompatActivity implements View.OnClickListener{
 
-    private Button topUpBttn, topupBack;
+    private Button btnTopup, btnBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_top_up);
 
-        topUpBttn = findViewById(R.id.topupBtn);
-        topupBack = findViewById(R.id.topupBack);
+        btnTopup = findViewById(R.id.topupBtn);
+        btnBack = findViewById(R.id.topupBack);
 
-        topUpBttn.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(TopUpActivity.this, AddPaymentActivity.class));
-            }
-        });
+        btnTopup.setOnClickListener(this);
+        btnBack.setOnClickListener(this);
+    }
 
-        topupBack.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                startActivity(new Intent(TopUpActivity.this, ManageDashboardActivity.class));
-            }
-        });
-
-
-
-
-
+    @Override
+    public void onClick(View v) {
+        if(v.getId() == R.id.topupBack){
+            finish();
+        } else {
+            startActivity(new Intent(TopUpActivity.this, ManageCardActivity.class));
+        }
     }
 }

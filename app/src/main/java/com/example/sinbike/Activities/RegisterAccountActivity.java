@@ -71,6 +71,8 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.setLifecycleOwner(this);
     }
 
+
+
     public void setListener(){
 
         btnClear.setOnClickListener(this);

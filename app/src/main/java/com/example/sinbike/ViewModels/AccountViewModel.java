@@ -8,6 +8,7 @@ import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Services.AccountService;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 import androidx.lifecycle.AndroidViewModel;
@@ -115,11 +116,22 @@ public class AccountViewModel extends AndroidViewModel {
         return true;
     }
 
-    public LiveData<Resource<Boolean>> updateAccountStatus(String docId, Account account, int accountStatus){
-        return this.accountService.updateAccountStatus(docId, account, accountStatus);
+    public LiveData<Resource<Boolean>> updateAccountStatus(int accountStatus){
+        return this.accountService.updateAccountStatus(account.id, account, accountStatus);
     }
 
-    public LiveData<Resource<Boolean>> updateBillingAddress(String docId, Account account, String address){
-        return this.accountService.updateBillingAddress(docId, account, address);
+    public LiveData<Resource<Boolean>> updateBillingAddress(String address){
+        return this.accountService.updateBillingAddress(account.id, account, address);
+    }
+
+    public LiveData<Resource<Boolean>> update(Account tempAccount){
+        account = tempAccount;
+        return this.accountService.update(account.id, account);
+    }
+
+    public void logout(){
+        if (FirebaseAuth.getInstance().getCurrentUser() != null)
+            FirebaseAuth.getInstance().signOut();
+        this.account = null;
     }
 }

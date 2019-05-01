@@ -1,6 +1,9 @@
 package com.example.sinbike.POJO;
 
+import com.example.sinbike.Constants;
+
 import androidx.room.Entity;
+import androidx.room.Ignore;
 import androidx.room.PrimaryKey;
 
 @Entity
@@ -8,13 +11,20 @@ public class Card {
 
     @PrimaryKey
     private int cardId;
-
-    private String cardType;
+    private int cardType;
     private String cardNumber;
     private String expiryMonth;
     private String expiryYear;
 
-    public Card(String cardType, String cardNumber, String expiryMonth, String expiryYear) {
+    public Card(){
+        this.cardType = Constants.CARD_VISA;
+        this.cardNumber = "";
+        this.expiryMonth = "";
+        this.expiryYear = "";
+    }
+
+    @Ignore
+    public Card(int cardType, String cardNumber, String expiryMonth, String expiryYear) {
         this.cardType = cardType;
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
@@ -29,11 +39,11 @@ public class Card {
         this.cardId = cardId;
     }
 
-    public String getCardType() {
+    public int getCardType() {
         return cardType;
     }
 
-    public void setCardType(String cardType) {
+    public void setCardType(int cardType) {
         this.cardType = cardType;
     }
 

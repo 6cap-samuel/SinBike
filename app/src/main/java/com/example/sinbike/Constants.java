@@ -10,7 +10,7 @@ public class Constants {
     public static final String COLLECTION_FINE_PAYMENT = "FinePayment";
     public static final String COLLECTION_PARKING_LOT = "ParkingLot";
     public static final String COLLECTION_PAYMENT = "Payment";
-    public static final String COLLECTION_RENTAL = "Rental";
+    public static final String COLLECTION_RENTAL = "RentalActivity";
     public static final String COLLECTION_RENTAL_PAYMENT = "RentalPayment";
     public static final String COLLECTION_RESERVATION = "Reservation";
     public static final String COLLECTION_TRANSACTION = "Transaction";
@@ -32,4 +32,13 @@ public class Constants {
     /*-------------------------- Font Type --------------------------*/
     public static final String HEROLIGHT = "fonts/hero_lightt.otf";
     public static final String HERO = "fonts/Hero.otf";
+
+    /*-------------------------- Fault Type --------------------------*/
+    private static final String FAULT_CATEGORY_GEAR = "Gear";
+    private static final String FAULT_CATEGORY_WHEEL = "Wheel";
+    private static final String FAULT_CATEGORY_SADDLE = "Saddle";
+    private static final String FAULT_CATEGORY_PEDAL = "Pedal";
+    private static final String FAULT_CATEGORY_BRAKE = "brake";
+    private static final String FAULT_CATEGORY_OTHERS = "Others";
+
 }

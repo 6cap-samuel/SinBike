@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/registerpage"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <EditText
+        android:id="@+id/signupName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/email"
+        android:drawableLeft="@drawable/ic_account_box_black_24dp"
+        android:drawablePadding="10dp"
+        android:hint="Name"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000" />
+
+    <EditText
+        android:id="@+id/signupPhone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/email"
+        android:drawableLeft="@drawable/ic_phone_black_24dp"
+        android:drawablePadding="10dp"
+        android:hint="Telephone Number"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000"
+        android:inputType="date"/>
+
+    <EditText
+        android:id="@+id/signupDOB"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/email"
+        android:drawableLeft="@drawable/ic_date_range_black_24dp"
+        android:drawablePadding="10dp"
+        android:hint="DD/MM/YYYY"
+        android:padding="12dp"
+        android:textColor="#000000"
+        android:textColorHighlight="#000000"
+        android:textColorHint="#000000" />
+
+    <RadioGroup
+        android:id="@+id/rdGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="11dp"
+        android:background="@drawable/email"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginVertical="10dp"
+            android:drawableLeft="@drawable/ic_wc_black_24dp"
+            android:drawablePadding="7dp"
+            android:padding="10dp"
+            android:editable="false"
+            android:hint="Gender"
+            android:paddingRight="20dp"
+            android:textAlignment="gravity"
+            android:textColor="#000000"
+            android:textColorHighlight="#000000"
+            android:textColorHint="#000000" />
+
+
+        <RadioButton
+            android:id="@+id/rbMale"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="Male"
+            android:textColor="@color/black"
+            android:buttonTint="@color/black"
+            android:checked="true"/>
+
+        <RadioButton
+            android:id="@+id/rbFemale"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_weight="1"
+            android:text="Female"
+            android:textColor="@color/black"
+            android:buttonTint="@color/black"/>
+    </RadioGroup>
+
+    <Space
+        android:layout_width="1dp"
+        android:layout_height="1dp"/>
+
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <Button
+            android:id="@+id/btnSubmit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/signup"
+            android:padding="5dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="Submit"
+            android:textColor="#000000" />
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/email"
+            android:padding="5dp"
+            android:shadowColor="@android:color/transparent"
+            android:text="Clear"
+            android:textColor="#000000"/>
+    </LinearLayout>
+</LinearLayout>
+

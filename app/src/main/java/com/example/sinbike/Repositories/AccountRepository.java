@@ -7,6 +7,7 @@ import com.example.sinbike.Repositories.Firestore.FirestoreRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 
@@ -54,6 +55,7 @@ public class AccountRepository extends FirestoreRepository<Account> {
     }
 
     public CompletionLiveData createAccount(Account account){
+        FirebaseAuth.getInstance().createUserWithEmailAndPassword(account.getEmail(), account.getPassword());
         final CompletionLiveData completion = new CompletionLiveData();
         this.create(account).addOnCompleteListener(completion);
 

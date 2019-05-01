@@ -19,6 +19,7 @@ import androidx.lifecycle.ViewModelProviders;
 
 public class LoginActivity extends AppCompatActivity implements LoginObserver, View.OnClickListener{
 
+    // TAG for debug purpose.
     private static final String TAG = "LoginActivity";
 
     /**
@@ -39,6 +40,11 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        this.initViewModel();
+        if (this.accountViewModel.getAccount() != null){
+            this.loginSuccess(this.accountViewModel.getAccount());
+        }
+
         this.init();
     }
 
@@ -54,15 +60,17 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         etForgetPassword.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
+    }
+
+    public void initViewModel(){
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.accountViewModel.setLifecycleOwner(this);
         this.accountViewModel.setLoginObserver(this);
     }
 
+
     @Override
     public void loginSuccess(Account account) {
-        Toast.makeText(this, account.toString(), Toast.LENGTH_SHORT).show();
-
         Intent intent = new Intent(this, ManageDashboardActivity.class);
         startActivity(intent);
         finish();
@@ -79,7 +87,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
             Intent intent = new Intent(this, RegisterAccountActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.etForgetPassword){
-            Intent intent = new Intent(this, ForgetPassword.class);
+            Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.btnLogin){
             this.login();
