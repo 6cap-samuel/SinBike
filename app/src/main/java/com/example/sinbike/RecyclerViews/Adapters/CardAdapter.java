@@ -1,12 +1,16 @@
 package com.example.sinbike.RecyclerViews.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sinbike.Activities.AddPaymentActivity;
+import com.example.sinbike.Activities.ManageCardActivity;
 import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Card;
 import com.example.sinbike.R;
@@ -62,7 +66,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
     /**
      * View Holder for the Card Recycler View.
      */
-    class CardViewHolder extends RecyclerView.ViewHolder{
+    class CardViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private Card card;
 
@@ -86,6 +90,12 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.CardViewHolder
             } else if (this.card.getCardType() == Constants.CARD_AMEX) {
                 imgCardType.setBackground(ContextCompat.getDrawable(itemView.getContext(), R.drawable.amex));
             }
+        }
+
+        @Override
+        public void onClick(View v) {
+
+
         }
     }
 }

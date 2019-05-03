@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -63,7 +62,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
     public ImageView imageview;
     private ImageButton gearImageButton, wheelImageButton, saddleImageButton, pedalImageButton, brakeImageButton, otherImageButton;
     private EditText inputDescription;
-    String tempDescription, tempImage, tempFaultCategory, image, description, faultCategory, tag, scanResult;
+    String tempDescription, tempFaultCategory, image, description, faultCategory, tag, scanResult, path;
     Long faultId;
     DatabaseReference rootRef, bicycleRef;
     private static final String IMAGE_DIRECTORY = "/SinBike Images";
@@ -71,6 +70,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
 
     public TextView qrCodeResult;
     private ArrayList<String> lst = new ArrayList<>();
+    ArrayList<String> tempImage = new ArrayList<>();
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -87,30 +87,13 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
 
         bicycleRef = FirebaseDatabase.getInstance().getReference("bicycle");
 
-
-       bicycleRef.addValueEventListener(new ValueEventListener() {
+        bicycleRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot result) {
-                for(DataSnapshot dsp : result.getChildren()){
+                for (DataSnapshot dsp : result.getChildren()) {
                     Item listItem = dsp.getValue(Item.class); //add result into array list
                     if (listItem != null) {
                         lst.add(listItem.getBicycleID());
-                    }
-
-                    Bundle qrcodes = getIntent().getExtras();
-                    if(qrcodes!=null) {
-                        for (int i = 0; i < lst.size(); i++) {
-                            scanResult = qrcodes.getString("barcode");
-                            if (scanResult != null) {
-                                if (!scanResult.trim().equals(lst.get(i).trim())) {
-                                    Toast.makeText(ReportFaultsActivity.this, "Invalid Qrcode. Please scan again!",
-                                            Toast.LENGTH_SHORT).show();
-                                } else //if (!scanResult.equalsIgnoreCase(lst.get(i)))
-                                    {
-                                        qrCodeResult.setText(scanResult);
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -130,6 +113,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists())
                     faultId = (dataSnapshot.getChildrenCount());
+                getQrResult();
             }
 
             @Override
@@ -142,6 +126,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Report Faulty Bicycle");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
 
@@ -157,18 +142,38 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
             @Override
             public void onClick(View v) {
                 if(checkValidation()) {
-                    image = getImage();
+                    // getImage();
+
+                    for(int i = 0; i<tempImage.size(); i++){
+                        rootRef.child(String.valueOf(faultId)).child("imageName"+i).setValue(tempImage.get(i));
+                    }
+
                     description = getDescription();
                     faultCategory = tempFaultCategory;
 
                     rootRef.child(String.valueOf(faultId)).child("bicycleID").setValue(qrCodeResult.getText());
-                    rootRef.child(String.valueOf(faultId)).child("imageName").setValue(image);
                     rootRef.child(String.valueOf(faultId)).child("inputDescription").setValue(description);
                     rootRef.child(String.valueOf(faultId)).child("faultsCategory").setValue(faultCategory);
                     showAddItemDialog(ReportFaultsActivity.this);
                 }
-             }
+            }
         });
+    }
+
+    public boolean getQrResult (){
+        Bundle qrcodes = getIntent().getExtras();
+        if(qrcodes!=null) {
+            for (int i = 0; i < lst.size(); i++) {
+                scanResult = qrcodes.getString("barcode");
+                if (scanResult != null) {
+                    if (scanResult.trim().equals(lst.get(i).trim())) {
+                        qrCodeResult.setText(scanResult);
+                        return true;
+                    }
+                }
+            }
+        }Toast.makeText(ReportFaultsActivity.this, "Invalid Qrcode. Please scan again!",
+                Toast.LENGTH_SHORT).show(); return false;
     }
 
     private void showAddItemDialog(Context c) {
@@ -184,7 +189,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                         finish();
                     }
                 })
-        .create();
+                .create();
         dialog.show();
     }
 
@@ -194,18 +199,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                     Toast.LENGTH_LONG).show();
             return false;
         }
-            return true;
-    }
-
-    public String getImage() {
-        if(bitmap == null) {
-            return null;
-        } else {
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            byte[] imageBytes = baos.toByteArray();
-            tempImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        }return tempImage;
+        return true;
     }
 
     public String getDescription() {
@@ -244,8 +238,6 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         uploadImageBtn.setOnClickListener(this);
         scanQrBtn.setOnClickListener(this);
     }
-
-
 
     @Override
     public void onClick(View v) {
@@ -366,7 +358,8 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 Uri contentURI = data.getData();
                 try {
                     bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
-                    final String path = saveImage(bitmap);
+                    path = saveImage(bitmap);
+                    tempImage.add(path);
                     Toast.makeText(ReportFaultsActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
 
                     final LinearLayout myGallery;
@@ -408,7 +401,8 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
 
         } else if (requestCode == CAMERA) {
             bitmap = (Bitmap) data.getExtras().get("data");
-            final String path = saveImage(bitmap);
+            path = saveImage(bitmap);
+            tempImage.add(path);
             Toast.makeText(ReportFaultsActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
 
             final LinearLayout myGallery;
@@ -506,4 +500,3 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 .check();
     }
 }
-

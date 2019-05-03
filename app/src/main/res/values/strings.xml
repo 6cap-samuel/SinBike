@@ -3,7 +3,7 @@
     <!-- Strings related to login -->
     <string name="error_invalid_password">This password is too short</string>
 
-    <string name="add_payment_method">Add Payment Method</string>
+    <string name="add_payment_method">Payment Method</string>
     <string name="tv_exp_date">Expiry Date</string>
     <string name="tv_cc_no">Card Number</string>
     <string name="cc_no">Card Number</string>

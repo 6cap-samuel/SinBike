@@ -9,16 +9,25 @@ public class Fine extends Model {
     private String accountId;
     private @ServerTimestamp Timestamp fineDate;
     private double amount;
+    private String location;
 
     public Fine() {
     }
 
-    public Fine(String accountId, Timestamp fineDate, double amount) {
+    public Fine(String accountId, Timestamp fineDate, double amount, String location) {
         this.accountId = accountId;
         this.fineDate = fineDate;
         this.amount = amount;
+        this.location = location;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
 
     public String getAccountId() {
         return accountId;

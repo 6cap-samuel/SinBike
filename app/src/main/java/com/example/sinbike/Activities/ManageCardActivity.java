@@ -6,24 +6,26 @@ import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.View;
 
 import com.example.sinbike.POJO.Card;
 import com.example.sinbike.R;
 import com.example.sinbike.RecyclerViews.Adapters.CardAdapter;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.example.sinbike.ViewModels.CardViewModel;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class ManageCardActivity extends AppCompatActivity {
+public class ManageCardActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "ManageCardActivity";
 
     RecyclerView cardRecyclerView;
     CardAdapter cardAdapter;
+    FloatingActionButton fabAdd;
 
     AccountViewModel accountViewModel;
     CardViewModel cardViewModel;
@@ -39,35 +41,37 @@ public class ManageCardActivity extends AppCompatActivity {
 
     public void init(){
         this.cardRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_card);
+        this.fabAdd = findViewById(R.id.floatingActionButton);
         this.cardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        List<Card> cards = new ArrayList<Card>();
-        for (int i = 0 ; i < 20; i++){
-            Card card = new Card();
-            card.setCardNumber("testing");
-
-            cards.add(card);
-        }
-
         this.cardAdapter = new CardAdapter(this);
-        this.cardAdapter.setCards(cards);
         this.cardRecyclerView.setAdapter(this.cardAdapter);
 
-        Log.d(TAG, String.valueOf(this.cardAdapter.getItemCount()));
+        this.cardViewModel.getCards().observe(this, new Observer<List<Card>>() {
+            @Override
+            public void onChanged(List<Card> cards) {
+                cardAdapter.setCards(cards);
+                cardRecyclerView.setAdapter(cardAdapter);
+            }
+        });
 
-//        this.cardViewModel.getCards().observe(this, new Observer<List<Card>>() {
-//            @Override
-//            public void onChanged(List<Card> cards) {
-//                Log.d(TAG, String.valueOf(cards.size()));
-//
-//                cardAdapter.setCards(cards);
-//                cardRecyclerView.setAdapter(cardAdapter);
-//            }
-//        });
+        this.fabAdd.setOnClickListener(this);
     }
 
     public void initViewModel(){
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.cardViewModel = ViewModelProviders.of(this).get(CardViewModel.class);
+    }
+
+    public void add(){
+        Intent intent = new Intent(this, AddPaymentActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.floatingActionButton){
+            this.add();
+        }
     }
 }

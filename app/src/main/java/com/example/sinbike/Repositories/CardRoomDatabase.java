@@ -8,7 +8,7 @@ import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Card.class}, version = 1, exportSchema = false)
+@Database(entities = {Card.class}, version = 2, exportSchema = false)
 public abstract class CardRoomDatabase extends RoomDatabase {
 
     public abstract CardDao cardDao();

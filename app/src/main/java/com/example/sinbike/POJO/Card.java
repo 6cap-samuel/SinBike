@@ -15,20 +15,23 @@ public class Card {
     private String cardNumber;
     private String expiryMonth;
     private String expiryYear;
+    private String cvvNumber;
 
     public Card(){
         this.cardType = Constants.CARD_VISA;
         this.cardNumber = "";
         this.expiryMonth = "";
         this.expiryYear = "";
+        this.cvvNumber = "";
     }
 
     @Ignore
-    public Card(int cardType, String cardNumber, String expiryMonth, String expiryYear) {
+    public Card(int cardType, String cardNumber, String expiryMonth, String expiryYear, String cvvNumber) {
         this.cardType = cardType;
         this.cardNumber = cardNumber;
         this.expiryMonth = expiryMonth;
         this.expiryYear = expiryYear;
+        this.cvvNumber = cvvNumber;
     }
 
     public int getCardId() {
@@ -69,5 +72,13 @@ public class Card {
 
     public void setExpiryYear(String expiryYear) {
         this.expiryYear = expiryYear;
+    }
+
+    public String getCvvNumber() {
+        return cvvNumber;
+    }
+
+    public void setCvvNumber(String cvvNumber) {
+        this.cvvNumber = cvvNumber;
     }
 }

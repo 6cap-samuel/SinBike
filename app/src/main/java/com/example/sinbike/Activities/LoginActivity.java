@@ -41,6 +41,10 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         setContentView(R.layout.activity_main);
 
         this.initViewModel();
+
+//      auto log in
+        this.accountViewModel.loginAccount("samueltoh93@gmail.com", "chicken");
+
         if (this.accountViewModel.getAccount() != null){
             this.loginSuccess(this.accountViewModel.getAccount());
         }
