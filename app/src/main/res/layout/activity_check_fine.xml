@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".CheckFine">
+    tools:context=".Activities.CheckFineActivity">
 
     <include
         android:id='@+id/toolbar1'

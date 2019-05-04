@@ -16,14 +16,10 @@ public class FineViewModel extends AndroidViewModel {
     private static final String TAG = "FineViewModel";
 
     private FineService fineService;
-    private AccountService accountService;
-    private TransactionService transactionService;
 
     public FineViewModel(Application application){
         super(application);
         this.fineService = new FineService(application);
-        this.accountService = new AccountService(application);
-        this.transactionService = new TransactionService(application);
     }
 
     public QueryLiveData<Fine> getAllFine(String accountId) {

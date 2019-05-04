@@ -90,15 +90,10 @@ public class CardViewDataAdapter extends
             super(itemLayoutView);
 
             textTitle = (TextView) itemLayoutView.findViewById(R.id.textTitle);
-
             textFineDate = (TextView) itemLayoutView.findViewById(R.id.textFineDate);
-
             textFineTime = (TextView) itemLayoutView.findViewById(R.id.textFineTime);
-
             textFineLocation = (TextView) itemLayoutView.findViewById(R.id.textFineLocation);
-
             textFineAmount = (TextView) itemLayoutView.findViewById(R.id.textFineAmount);
-
             chkSelected = (CheckBox) itemLayoutView.findViewById(R.id.chkSelected);
         }
     }
@@ -109,4 +104,3 @@ public class CardViewDataAdapter extends
     }
 
 }
-

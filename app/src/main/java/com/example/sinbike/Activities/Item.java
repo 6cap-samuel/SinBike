@@ -13,6 +13,7 @@ public class Item implements Serializable {
     private String bicycleID;
     private String accountID;
     private String accountBalance;
+    private String email;
     private String fineDate;
     private String fineLocation;
     private String fineTime;
@@ -33,6 +34,10 @@ public class Item implements Serializable {
         this.fineAmount = fineAmount;
         this.isSelected = isSelected;
 
+    }
+
+    public String getEmail(){
+        return email;
     }
 
     public String getFineTitle(){
@@ -67,6 +72,15 @@ public class Item implements Serializable {
         return fineAmount;
     }
 
+
+    public void setAccountBalance(String accountBalance) {
+        this.accountBalance = accountBalance;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
     public void setFineTitle(String fineTitle) {
         this.fineTitle = fineTitle;
     }
@@ -86,6 +100,7 @@ public class Item implements Serializable {
     public void setFineAmount(String fineAmount) {
         this.fineAmount = fineAmount;
     }
+
 
     public boolean isSelected() {
         return isSelected;

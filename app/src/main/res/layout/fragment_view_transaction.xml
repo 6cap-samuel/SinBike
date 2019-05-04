@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TableLayout
+            android:id="@+id/transaction"
+            android:layout_width="match_parent"
+            android:layout_height="25dp"
+            android:stretchColumns="0,1,2"
+            android:background="@color/grey">
+
+        <TableRow>
+            <TextView
+                android:id="@+id/transaction_type"
+                android:text="Type"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/transaction_date"
+                android:text="Date"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+            <TextView
+                android:id="@+id/transaction_amount"
+                android:text="Amount"
+                android:textSize="15sp"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:layout_weight="1"/>
+        </TableRow>
+    </TableLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+    </LinearLayout>
+
+</ScrollView>
+</FrameLayout>
