@@ -27,6 +27,7 @@ public class FineViewModel extends AndroidViewModel {
     }
 
     public CompletionLiveData createFine(Fine fine){
+
         return this.fineService.createFine(fine);
     }
 
