@@ -3,7 +3,11 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.sinbike.Constants;
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Observer;
+
 import com.example.sinbike.Observers.LoginObserver;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
@@ -12,10 +16,6 @@ import com.example.sinbike.Services.AccountService;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Observer;
 
 public class AccountViewModel extends AndroidViewModel {
 
@@ -120,10 +120,6 @@ public class AccountViewModel extends AndroidViewModel {
 
     public LiveData<Resource<Boolean>> updateAccountStatus(int accountStatus){
         return this.accountService.updateAccountStatus(account.id, account, accountStatus);
-    }
-
-    public LiveData<Resource<Boolean>> updateBillingAddress(String address){
-        return this.accountService.updateBillingAddress(account.id, account, address);
     }
 
     public LiveData<Resource<Boolean>> update(Account tempAccount){

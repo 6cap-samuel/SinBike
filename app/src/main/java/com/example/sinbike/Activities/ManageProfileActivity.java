@@ -24,7 +24,11 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     EditText etName, etTelephoneNumber, etDob;
     RadioGroup rdGender;
     RadioButton rbMale, rbFemale;
+    RadioButton radioButtonOptions;
     Button btnSubmit, btnClear;
+
+    // variable to hold the gender value
+    private String genderOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +37,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
 
         this.initViewModel();
         this.init();
+        setListener();
         this.back();
     }
 
@@ -89,6 +94,8 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
             this.account.setDateOfBirth(etDob.getText().toString());
         }
 
+        this.account.setGender(genderOptions);
+
         this.accountViewModel.update(this.account);
         Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
         startActivity(intent);
@@ -114,6 +121,27 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
                 Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    public void setListener(){
+
+        // to get the gender from the radio button
+        rdGender.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                radioButtonOptions = rdGender.findViewById(checkedId);
+
+                switch (checkedId){
+                    case R.id.rbMale:
+                        genderOptions = radioButtonOptions.getText().toString();
+                        break;
+
+                    case R.id.rbFemale:
+                        genderOptions = radioButtonOptions.getText().toString();
+                        break;
+                }
             }
         });
     }

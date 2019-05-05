@@ -2,13 +2,13 @@ package com.example.sinbike.Services;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.AccountRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
-
-import androidx.lifecycle.LiveData;
 
 public class AccountService {
     private static final String TAG = "AccountService";
@@ -44,11 +44,6 @@ public class AccountService {
 
     public LiveData<Resource<Boolean>> updateAccountStatus(String docId, Account account, int accountStatus){
         account.setStatus(accountStatus);
-        return this.accountRepository.update(docId, account);
-    }
-
-    public LiveData<Resource<Boolean>> updateBillingAddress(String docId, Account account, String address){
-        account.setAddress(address);
         return this.accountRepository.update(docId, account);
     }
 }

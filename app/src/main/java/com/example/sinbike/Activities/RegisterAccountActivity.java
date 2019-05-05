@@ -113,6 +113,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         account.setPassword(password);
         account.setTelephoneNumber(phone);
         account.setDateOfBirth(DOB);
+        account.setGender(genderOptions);
 
         this.accountViewModel.createAccount(account);
     }

@@ -2,13 +2,13 @@ package com.example.sinbike.Services;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+
 import com.example.sinbike.POJO.Fault;
 import com.example.sinbike.Repositories.FaultRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
-
-import androidx.lifecycle.LiveData;
 
 public class FaultService {
     private static final String TAG = "FaultService";
@@ -34,9 +34,10 @@ public class FaultService {
         return this.faultRepository.deleteFault(docId);
     }
 
-    public CompletionLiveData submitFault(String bicycleId, String category, String description){
+    public CompletionLiveData submitFault(String bicycleId, String image, String category, String description){
         Fault fault = new Fault();
         fault.setBicycleId(bicycleId);
+        fault.setBicycleId(image);
         fault.setCategory(category);
         fault.setDescription(description);
 

@@ -2,14 +2,14 @@ package com.example.sinbike.ViewModels;
 
 import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
+
 import com.example.sinbike.POJO.Fault;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.example.sinbike.Services.FaultService;
-
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 
 public class FaultViewModel extends AndroidViewModel {
 
@@ -37,7 +37,7 @@ public class FaultViewModel extends AndroidViewModel {
         return this.faultService.delete(docId);
     }
 
-    public CompletionLiveData submitFault(String bicycleId, String category, String description){
-        return this.faultService.submitFault(bicycleId, category, description);
+    public CompletionLiveData submitFault(String bicycleId, String image, String category, String description){
+        return this.faultService.submitFault(bicycleId, image, category, description);
     }
 }

@@ -1,8 +1,6 @@
 package com.example.sinbike.POJO;
 
 import com.example.sinbike.Repositories.common.Model;
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.ServerTimestamp;
 
 public class Account extends Model {
 
@@ -10,24 +8,20 @@ public class Account extends Model {
     private String password;
     private String email;
     private String telephoneNumber;
-    private String address;
     private String gender;
     private String dateOfBirth;
-    private String billingAddress;
     private int status;
     private double accountBalance;
 
     public Account() {
     }
 
-    public Account(String name, String email, String telephoneNumber, String address, String gender, String dateOfBirth, String billingAddress, int status, double accountBalance, String password) {
+    public Account(String name, String email, String telephoneNumber, String gender, String dateOfBirth, int status, double accountBalance, String password) {
         this.name = name;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
-        this.address = address;
         this.gender = gender;
         this.dateOfBirth = dateOfBirth;
-        this.billingAddress = billingAddress;
         this.status = status;
         this.accountBalance = accountBalance;
         this.password = password;
@@ -65,14 +59,6 @@ public class Account extends Model {
         this.telephoneNumber = telephoneNumber;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
     public String getGender() {
         return gender;
     }
@@ -87,14 +73,6 @@ public class Account extends Model {
 
     public void setDateOfBirth(String dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getBillingAddress() {
-        return billingAddress;
-    }
-
-    public void setBillingAddress(String billingAddress) {
-        this.billingAddress = billingAddress;
     }
 
     public int getStatus() {
@@ -119,10 +97,8 @@ public class Account extends Model {
                 "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", telephoneNumber='" + telephoneNumber + '\'' +
-                ", address='" + address + '\'' +
                 ", gender='" + gender + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", billingAddress='" + billingAddress + '\'' +
+                ", dateOfBirth=" + dateOfBirth + '\'' +
                 ", status=" + status +
                 ", accountBalance=" + accountBalance +
                 '}';
