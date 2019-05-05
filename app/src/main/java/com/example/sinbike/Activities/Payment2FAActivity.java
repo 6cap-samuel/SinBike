@@ -63,7 +63,7 @@ public class Payment2FAActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View args0) {
-                Intent intent = new Intent(Payment2FAActivity.this , PaymentMethodActivity.class);
+                Intent intent = new Intent(Payment2FAActivity.this , ManageCardActivity.class);
                 startActivity(intent);
                 finish();
             }

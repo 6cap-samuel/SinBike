@@ -18,7 +18,8 @@
         android:allowBackup="true"
         android:icon="@drawable/sinbike"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Design.NoActionBar">
+        android:theme="@style/Theme.Design.NoActionBar"
+        android:hardwareAccelerated="false">
 
         <activity android:name=".Activities.Payment2FAActivity" />
         <activity android:name=".Activities.SuccessfulTopUpMessage" />
@@ -46,7 +47,8 @@
         <activity android:name=".Activities.WalletPage" />
         <activity
             android:name=".Activities.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
