@@ -10,12 +10,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.sinbike.Observers.LoginObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 
 public class LoginActivity extends AppCompatActivity implements LoginObserver, View.OnClickListener{
 
@@ -43,7 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         this.initViewModel();
 
 //      auto log in
-        this.accountViewModel.loginAccount("samueltoh93@gmail.com", "chicken");
+      //  this.accountViewModel.loginAccount("samueltoh93@gmail.com", "chicken");
 
         if (this.accountViewModel.getAccount() != null){
             this.loginSuccess(this.accountViewModel.getAccount());

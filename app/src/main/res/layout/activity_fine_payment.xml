@@ -21,10 +21,9 @@
 
         <ImageButton
             android:id="@+id/fine_close"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="264dp"
-            android:layout_marginTop="4dp"
+            android:layout_width="57dp"
+            android:layout_height="49dp"
+            android:layout_marginStart="280dp"
             android:background="@null"
             android:src="@drawable/close1"
             app:layout_constraintStart_toStartOf="parent"
@@ -34,8 +33,8 @@
 
         <TextView
             android:id="@+id/textAccountBalance"
-            android:layout_width="225dp"
-            android:layout_height="46dp"
+            android:layout_width="117dp"
+            android:layout_height="26dp"
             android:layout_marginStart="27dp"
             android:textColor="@color/white"
             android:textSize="18sp"
@@ -43,8 +42,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintHorizontal_bias="0.0"
-            card_view:layout_constraintVertical_bias="0.369"
+            card_view:layout_constraintHorizontal_bias="0.753"
+            card_view:layout_constraintVertical_bias="0.328"
             tools:layout_conversion_wrapHeight="184"
             tools:layout_conversion_wrapWidth="900" />
 
@@ -52,10 +51,10 @@
             android:id="@+id/finePayment_Title"
             android:layout_width="225dp"
             android:layout_height="44dp"
-            android:layout_marginStart="27dp"
-            android:layout_marginTop="104dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="488dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="94dp"
+            android:layout_marginBottom="229dp"
             android:text="Payment"
             android:textColor="@color/white"
             android:textSize="24sp"
@@ -64,22 +63,22 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             card_view:layout_constraintHorizontal_bias="0.0"
-            card_view:layout_constraintVertical_bias="0.264"
+            card_view:layout_constraintVertical_bias="0.0"
             tools:layout_conversion_wrapHeight="176"
             tools:layout_conversion_wrapWidth="900" />
 
         <TextView
             android:id="@+id/textAmount"
-            android:layout_width="225dp"
-            android:layout_height="44dp"
+            android:layout_width="117dp"
+            android:layout_height="26dp"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintHorizontal_bias="0.176"
-            card_view:layout_constraintVertical_bias="0.613"
+            card_view:layout_constraintHorizontal_bias="0.665"
+            card_view:layout_constraintVertical_bias="0.498"
             tools:layout_conversion_wrapHeight="176"
             tools:layout_conversion_wrapWidth="900" />
 
@@ -100,6 +99,36 @@
             card_view:layout_constraintVertical_bias="0.0"
             tools:layout_conversion_wrapHeight="192"
             tools:layout_conversion_wrapWidth="424" />
+
+        <TextView
+            android:id="@+id/accountBalanceTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="91dp"
+            android:layout_marginEnd="164dp"
+            android:layout_marginBottom="188dp"
+            android:text="Account Balance: $"
+            android:textSize="18sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/totalAmountTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="140dp"
+            android:layout_marginEnd="190dp"
+            android:layout_marginBottom="139dp"
+            android:text="Total Amount: $"
+            android:textSize="18sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

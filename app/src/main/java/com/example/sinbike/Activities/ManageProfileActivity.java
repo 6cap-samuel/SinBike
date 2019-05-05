@@ -1,14 +1,16 @@
 package com.example.sinbike.Activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
@@ -31,6 +33,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
 
         this.initViewModel();
         this.init();
+        this.back();
     }
 
     public void init(){
@@ -87,6 +90,8 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         }
 
         this.accountViewModel.update(this.account);
+        Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
+        startActivity(intent);
         finish();
     }
 
@@ -97,6 +102,19 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     }
 
     public void back(){
-        finish();
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("ManageProfile");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
