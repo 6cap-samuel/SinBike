@@ -37,6 +37,7 @@ public class BicycleRepository extends FirestoreRepository<Bicycle> {
                 Bicycle.class);
     }
 
+
     public CompletionLiveData createBicycle(Bicycle bicycle){
         final CompletionLiveData completion = new CompletionLiveData();
         this.create(bicycle).addOnCompleteListener(completion);
