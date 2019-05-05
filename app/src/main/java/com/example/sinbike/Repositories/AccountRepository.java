@@ -55,7 +55,9 @@ public class AccountRepository extends FirestoreRepository<Account> {
     }
 
     public CompletionLiveData createAccount(Account account){
+        // Creates an instance to the authentication service in firebase.
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(account.getEmail(), account.getPassword());
+
         final CompletionLiveData completion = new CompletionLiveData();
         this.create(account).addOnCompleteListener(completion);
 

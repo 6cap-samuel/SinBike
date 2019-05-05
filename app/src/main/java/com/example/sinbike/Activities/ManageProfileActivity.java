@@ -106,7 +106,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("ManageProfile");
+        getSupportActionBar().setTitle("Manage Profile");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
             @Override

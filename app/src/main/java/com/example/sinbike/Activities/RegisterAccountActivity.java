@@ -1,22 +1,28 @@
 package com.example.sinbike.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.sinbike.Activities.Dialogs.CustomDialog;
+import com.example.sinbike.Constants;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
+import com.example.sinbike.ViewModels.FineViewModel;
 
 public class RegisterAccountActivity extends AppCompatActivity implements SignUpObserver, View.OnClickListener {
 
@@ -27,6 +33,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     RadioButton radioButtonOptions;
     Button btnSubmit, btnClear, btnBack;
     CustomDialog customDialog;
+    CheckBox checkBox;
 
     String name;
     String gender;
@@ -48,6 +55,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
 
         this.init();
         this.setListener();
+        this.initToolbar();
     }
 
     public void init(){
@@ -64,6 +72,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         btnClear = findViewById(R.id.btnClear);
         btnBack = findViewById(R.id.btnBack);
         tvTermsandCondition = findViewById(R.id.tvTermsandCondition);
+        checkBox = findViewById(R.id.cbTermsAndCondition);
 
 
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
@@ -76,7 +85,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     public void setListener(){
 
         btnClear.setOnClickListener(this);
-        btnBack.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
 
         // to get the gender from the radio button
@@ -109,6 +117,31 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.createAccount(account);
     }
 
+    public void sampleFunction(){
+        // get current account that is being logged in.
+        Account currentAccount = this.accountViewModel.getAccount();
+
+        //updateds variables of the curreent account.
+        currentAccount.setGender("Female");
+        currentAccount.setName(name);
+        currentAccount.setStatus(Constants.ACCOUNT_OPEN);
+
+        // updates account to the database
+        this.accountViewModel.update(currentAccount);
+
+    }
+
+    public void foreignKeySample(){
+        FineViewModel fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
+        Fine fine = new Fine();
+        fine.setAmount(20);
+        fine.setFineDate("20/10-/2019");
+        fine.setAccountId(this.accountViewModel.getAccount().id);
+
+        fineViewModel.createFine(fine);
+
+    }
+
     /**
      * Form validation.
      * @return
@@ -120,6 +153,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         password = signupPassword.getText().toString().trim();
         phone = signupPhone.getText().toString().trim();
         DOB = signupDOB.getText().toString().trim();
+
 
         if (name.length() <= 0){
             Toast.makeText(RegisterAccountActivity.this, "Name is Required!", Toast.LENGTH_LONG).show();
@@ -142,7 +176,12 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         } else if (DOB.length()<=0){
             Toast.makeText(RegisterAccountActivity.this, "DOB is Required!", Toast.LENGTH_LONG).show();
             return false;
+        } else if (!checkBox.isChecked()){
+            Toast.makeText(RegisterAccountActivity.this, "Please accept Terms & Conditions!", Toast.LENGTH_LONG).show();
+            return false;
         }
+
+
         return true;
     }
 
@@ -181,6 +220,23 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     @Override
     protected void onStart() {
         super.onStart();
+    }
+
+    public void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Register Account");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RegisterAccountActivity.this , LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
 

@@ -3,6 +3,7 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
+import com.example.sinbike.Constants;
 import com.example.sinbike.Observers.LoginObserver;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
@@ -61,6 +62,7 @@ public class AccountViewModel extends AndroidViewModel {
 
                 List<Account> accounts = listResource.data();
                 Log.d(TAG, accounts.toString());
+
 
                 if (accounts.size() != 0){
                     account = accounts.get(0);
@@ -127,6 +129,10 @@ public class AccountViewModel extends AndroidViewModel {
     public LiveData<Resource<Boolean>> update(Account tempAccount){
         account = tempAccount;
         return this.accountService.update(account.id, account);
+    }
+
+    public LiveData<Resource<Boolean>> delete(Account account){
+        return this.accountService.delete(account.id);
     }
 
     public void logout(){

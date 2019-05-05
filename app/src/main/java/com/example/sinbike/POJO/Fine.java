@@ -7,14 +7,14 @@ import com.google.firebase.firestore.ServerTimestamp;
 public class Fine extends Model {
 
     private String accountId;
-    private @ServerTimestamp Timestamp fineDate;
+    private String fineDate;
     private double amount;
     private String location;
 
     public Fine() {
     }
 
-    public Fine(String accountId, Timestamp fineDate, double amount, String location) {
+    public Fine(String accountId, String fineDate, double amount, String location) {
         this.accountId = accountId;
         this.fineDate = fineDate;
         this.amount = amount;
@@ -37,11 +37,11 @@ public class Fine extends Model {
         this.accountId = accountId;
     }
 
-    public Timestamp getFineDate() {
+    public String getFineDate() {
         return fineDate;
     }
 
-    public void setFineDate(Timestamp fineDate) {
+    public void setFineDate(String fineDate) {
         this.fineDate = fineDate;
     }
 
