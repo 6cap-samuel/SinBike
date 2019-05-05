@@ -22,22 +22,12 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 public class BalanceFragment extends Fragment {
 
-    FirebaseAuth mAuth;
-    FirebaseUser mUser;
 
-    DatabaseReference dbref;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view =inflater.inflate(R.layout.fragment_balance, container, false);
-
-        mAuth = FirebaseAuth.getInstance();
-        mUser = mAuth.getCurrentUser();
-        TextView accBalTxt = (TextView)view.findViewById(R.id.accBalance);
-
-        dbref = FirebaseDatabase.getInstance().getReference();
-
 
         // Inflate the layout for this fragment
         return view;
