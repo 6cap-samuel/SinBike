@@ -9,69 +9,76 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sinbike.Constants;
+import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.R;
 import com.example.sinbike.RecyclerViews.Adapters.CardViewDataAdapter;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.sinbike.Repositories.common.Resource;
+import com.example.sinbike.ViewModels.AccountViewModel;
+import com.example.sinbike.ViewModels.FineViewModel;
+import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class CheckFineActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
-//    private RecyclerView.LayoutManager mLayoutManager;
 
-    private List<Item> parkingFineList, data, stList;
-
-    ArrayList<String> accountId = new ArrayList<>();
-    ArrayList<String> accountId1 = new ArrayList<>();
-    List<String> fineDate = new ArrayList<>();
+    List<Fine> data = new ArrayList<>();
+    List<Fine> parkingFineList = new ArrayList<>();
+    List<Fine> stList = new ArrayList<>();
+    List<Fine> fineList = new ArrayList<>();
+    List<String> accountIdList = new ArrayList<>();
+    List<Timestamp> fineDate = new ArrayList<>();
     List<String> fineLocation = new ArrayList<>();
-    List<String> fineTime = new ArrayList<>();
-    List<String> fineAmount = new ArrayList<>();
+    List<Double> fineAmount = new ArrayList<>();
     List<String> fineId = new ArrayList<>();
-    List<String> email = new ArrayList<>();
-    List<String> accountBalanceList = new ArrayList<>();
+    List<Double> totalAmount = new ArrayList<>();
+    List<Integer> status = new ArrayList<>();
 
-    Item listItem = null;
-    Item singleParkingFine;
+    Fine singleParkingFine;
 
     Button btnSelection, btnPay;
 
     CardView cardView;
     Activity mActivity;
 
-    CheckBox check;
-
     TextView accountBalance, textAmount;
 
     PopupWindow mPopupWindow;
-    int totalAmount;
-    String amount, fineStatus;
+    double accountBalance1, totalAmount1;
+
+
+    AccountViewModel accountViewModel;
+    FineViewModel fineViewModel;
+    Account account;
+
+    View customView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_fine);
+
+        initViewModel();
 
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -79,21 +86,15 @@ public class CheckFineActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Check & Pay Parking Fine");
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(CheckFineActivity.this, ManageDashboardActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(CheckFineActivity.this, ManageDashboardActivity.class);
+            startActivity(intent);
+            finish();
         });
 
-        btnSelection = (Button) findViewById(R.id.pay_btn);
-
-        parkingFineList = new ArrayList<>();
-
         getData();
+
+        btnSelection = (Button) findViewById(R.id.pay_btn);
 
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
@@ -104,18 +105,15 @@ public class CheckFineActivity extends AppCompatActivity {
         // use a linear layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        if(!checkParkingFineList()) {
-            // create an Object for Adapter
-            mAdapter = new CardViewDataAdapter(parkingFineList);
-        }
+
+        // create an Object for Adapter
+        mAdapter = new CardViewDataAdapter(parkingFineList);
 
         // set the adapter object to the Recyclerview
         mRecyclerView.setAdapter(mAdapter);
 
         // mContext = getApplicationContext();
         mActivity = CheckFineActivity.this;
-
-        data = new ArrayList<>();
 
         stList = ((CardViewDataAdapter) mAdapter).getParkingList();
 
@@ -130,122 +128,59 @@ public class CheckFineActivity extends AppCompatActivity {
                     singleParkingFine = stList.get(i);
                     if (singleParkingFine.isSelected()) {
                         data.add(singleParkingFine);
+                        totalAmount.add(stList.get(i).getAmount());
                     }
+                }
+                for (int u = 0; u < totalAmount.size(); u++) {
+                    totalAmount1 += totalAmount.get(u);
+
                 }
                 displayFinePaymentPopup();
             }
         });
     }
 
-                        /*String b = String.valueOf(accountBalance.getText());
-                        String c = b.replace("Account Balance: $", "");
+    public void initViewModel() {
+        this.fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
+        this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        this.account = accountViewModel.getAccount();
+    }
 
-                        String d = String.valueOf(textAmount.getText());
-                        String e = d.replace("Total Amount: $", "");
-
-
-                        final int difference = Integer.parseInt(c) - Integer.parseInt(e);
-
-                        final DatabaseReference accountRef1 = FirebaseDatabase.getInstance().getReference("account");
-
-                        accountRef1.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot result) {
-                                for (DataSnapshot dsp : result.getChildren()) {
-                                    Item accountItem = dsp.getValue(Item.class);
-                                    Map<String, Object> updates = new HashMap<String,Object>();
-
-                                    for (int u = 0; u < email.size(); u++) {
-                                        assert accountEmail != null;
-                                        if (accountEmail.equalsIgnoreCase(email.get(u))) {
-                                            updates.put(Integer.toString(difference), accountBalance);
-                                           // accountItem.setAccountBalance(Integer.toString(difference));
-                                            accountRef1.updateChildren(updates);
-                                        }
-                                    }
-                                }
-                            }
-                            @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });*/
-
-                /*for (int h =0; h<data.size(); h++ ){
-                    String fineDate = data.get(h).getFineDate();
-                    String fineLocation = data.get(h).getFineLocation();
-                    String fineTime = data.get(h).getFineTime();
-                    String fineAmount = data.get(h).getFineAmount();
-                    Toast.makeText(CheckFine.this, fineDate + "\n" + fineLocation + "\n" + fineTime + "\n" + fineAmount, Toast.LENGTH_LONG).show();
-                }*/
-
-    public void getData() {
-        DatabaseReference accountRef1 = FirebaseDatabase.getInstance().getReference("account");
-        accountRef1.addListenerForSingleValueEvent(new ValueEventListener() {
+    public List<Fine> getData() {
+        fineViewModel.getAllFine(this.account.id).observe(this, new Observer<Resource<List<Fine>>>() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot result) {
-                for (DataSnapshot dsp : result.getChildren()) {
-                    Item listItem = dsp.getValue(Item.class); //add result into array list
-                    if (listItem != null) {
-                        accountId.add(listItem.getAccountID());
-                    }
+            public void onChanged(Resource<List<Fine>> listResource) {
+                fineList = listResource.data();
+                for (int y = 0; y < fineList.size(); y++) {
+                    fineId.add(fineList.get(y).id);
+                    fineLocation.add(fineList.get(y).getLocation());
+                    fineDate.add(fineList.get(y).getFineDate());
+                    fineAmount.add(fineList.get(y).getAmount());
+                    status.add(fineList.get(y).getStatus());
+                    accountIdList.add(fineList.get(y).getAccountId());
+
+                    Fine fine = new Fine(accountIdList.get(y), fineDate.get(y), fineAmount.get(y), fineLocation.get(y), status.get(y));
+                    parkingFineList.add(fine);
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                mAdapter.notifyDataSetChanged();
+                checkFineList();
             }
         });
-
-        DatabaseReference fineRef = FirebaseDatabase.getInstance().getReference("parkingFine");
-        fineRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot result) {
-                for (DataSnapshot dsp : result.getChildren()) {
-                    listItem = dsp.getValue(Item.class); //add result into array list
-                    if (listItem != null) {
-                        accountId1.add(listItem.getAccountID());
-                        fineDate.add(listItem.getFineDate());
-                        fineLocation.add(listItem.getFineLocation());
-                        fineTime.add(listItem.getFineTime());
-                        fineAmount.add(listItem.getFineAmount());
-                        fineId.add(dsp.getKey());
-                    }
-                }
-
-                for (int y = 0; y < accountId1.size(); y++) {
-                    if (accountId.contains(accountId1.get(y))) {
-
-                        Item st = new Item("Parking Fine " + fineId.get(y), "Date: " + fineDate.get(y), "Location: " + fineLocation.get(y),
-                                "Time: " + fineTime.get(y), "Amount: $" + fineAmount.get(y), false);
-
-                        parkingFineList.add(st);
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        return parkingFineList;
     }
 
     @SuppressLint("SetTextI18n")
     public void displayFinePaymentPopup() {
-        for (int i = 0; i < stList.size(); i++) {
-            singleParkingFine = stList.get(i);
+        for (int m = 0; m < stList.size(); m++) {
+            singleParkingFine = stList.get(m);
             if (singleParkingFine.isSelected()) {
                 LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                View customView = inflater.inflate(R.layout.activity_fine_payment, null);
+                customView = inflater.inflate(R.layout.activity_fine_payment, null);
                 mPopupWindow = new PopupWindow(
                         customView,
                         ConstraintLayout.LayoutParams.WRAP_CONTENT,
                         ConstraintLayout.LayoutParams.WRAP_CONTENT
                 );
-
                 mPopupWindow.showAtLocation(btnSelection, Gravity.CENTER, 0, 0);
 
                 btnPay = customView.findViewById(R.id.confirmBtn);
@@ -256,96 +191,45 @@ public class CheckFineActivity extends AppCompatActivity {
                         for (int i = 0; i < stList.size(); i++) {
                             singleParkingFine = stList.get(i);
                             if (singleParkingFine.isSelected()) {
-                                final DatabaseReference fineRef = FirebaseDatabase.getInstance().getReference("parkingFine");
-                                fineRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot result) {
-                                        for (DataSnapshot dsp : result.getChildren()) {
-                                            String fineTitle = singleParkingFine.getFineTitle();
-                                            String fineId = fineTitle.replace("Parking Fine ", "");
-                                            if (fineId.equals(dsp.getKey())) {
-                                                fineRef.child(fineId).removeValue();
-                                            }
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                    }
-                                });
+                                if (account.getAccountBalance() > 0) {
+                                    singleParkingFine.setStatus(1);
+                                    fineViewModel.updateFine(fineId.get(i), singleParkingFine);
+                                    double difference = accountBalance1 - totalAmount1;
+                                    account.setAccountBalance(difference);
+                                    accountViewModel.update(account);
+                                } else
+                                    Toast.makeText(CheckFineActivity.this, "Insufficient account balance! Please top up!", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        fineStatus = "Paid";
-                        data.clear();
-                        totalAmount = 0;
-                        checkFinePaid();
                         mPopupWindow.dismiss();
+                        recreate();
                     }
                 });
 
                 accountBalance = customView.findViewById(R.id.textAccountBalance);
+                accountBalance1 = account.getAccountBalance();
+                accountBalance.setText("Account Balance: $" + String.format("%.2f", accountBalance1));
 
-                DatabaseReference accountRef = FirebaseDatabase.getInstance().getReference("account");
-
-                accountRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot result) {
-                        for (DataSnapshot dsp : result.getChildren()) {
-                            Item accountItem = dsp.getValue(Item.class);
-                            email.add(accountItem.getEmail());
-                            accountBalanceList.add(accountItem.getAccountBalance());
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-                final String accountEmail = FirebaseAuth.getInstance().getCurrentUser().getEmail();
-
-                for (int u = 0; u < email.size(); u++) {
-                    assert accountEmail != null;
-                    if (accountEmail.equalsIgnoreCase(email.get(u))) {
-                        accountBalance.setText("Account Balance: $" + accountBalanceList.get(u));
-                    }
-                }
+               /* for(int u =0; u<stList.size(); u++) {
+                    totalAmount1 += stList.get(u).getAmount();
+                }*/
 
                 textAmount = customView.findViewById(R.id.textAmount);
 
-                for (int b = 0; b < data.size(); b++) {
-                    String amount2 = data.get(b).getFineAmount();
-                    String newAmount = amount2.replace("Amount: $", "");
-                    totalAmount += Integer.parseInt(newAmount);
-                    amount = String.valueOf(totalAmount);
-                }
-                textAmount.setText("Total Amount: $" + amount);
+                textAmount.setText("Total Amount: $" + String.format("%.2f", totalAmount1));
 
                 ImageButton closeButton = customView.findViewById(R.id.fine_close);
 
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        data.clear();
-                        totalAmount = 0;
-
-                                /*LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-                                final View fineView = inflater.inflate(R.layout.cardview_row, null);
-
-                                fineView.setOnClickListener(new OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
-                                        for(int r=0; r<parkingFineList.size(); r++) {
-                                            check = fineView.findViewById(R.id.chkSelected);
-                                            parkingFineList.get(r).setSelected(false);
-                                            //check.setChecked(false);
-                                        }
-                                        mAdapter.notifyDataSetChanged();
-                                    }
-                                });*/
-
+                        //data.clear();
+                        LayoutInflater inflater = (LayoutInflater) getBaseContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+                        View itemLayoutView = inflater.inflate(R.layout.cardview_row, null);
+                        CardViewDataAdapter.ViewHolder viewHolder = new CardViewDataAdapter.ViewHolder(itemLayoutView);
+                        viewHolder.chkSelected.setChecked(false);
+                        totalAmount.clear();
+                        recreate();
                         // Dismiss the popup window
                         mPopupWindow.dismiss();
                     }
@@ -356,25 +240,43 @@ public class CheckFineActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkFinePaid(){
-        for (int i = 0; i < stList.size(); i++) {
-            singleParkingFine = stList.get(i);
-            if(singleParkingFine.isSelected()) {
-                if (fineStatus.equals("Paid")) {
-                    stList.remove(i);
-                    i--;
-                }
-            }
-        }mAdapter.notifyDataSetChanged();
-        return false;
-    }
-
-    public boolean checkParkingFineList(){
-        for(int q=0; q<parkingFineList.size();q++){
-            if(parkingFineList.size()<0){
+    public boolean checkParkingFineList() {
+        for (int q = 0; q < stList.size(); q++) {
+            if (stList.size() < 0) {
                 Toast.makeText(CheckFineActivity.this, "You have no parking fine!", Toast.LENGTH_SHORT).show();
                 return true;
             }
-        } return false;
+        }
+        return false;
+    }
+
+    public boolean checkFineList() {
+        if (parkingFineList.size() > 3) {
+            account.setStatus(Constants.ACCOUNT_SUSPENDED);
+            accountViewModel.update(account);
+            this.accountViewModel.logout();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
+        for (int r = 0; r < parkingFineList.size(); r++) {
+
+            Date fineDate = parkingFineList.get(r).getFineDate().toDate();
+
+            int oldDate = fineDate.getDate();
+
+            Date currentDate = (Calendar.getInstance().getTime());
+            int diffDays = currentDate.getDate() - oldDate;
+
+                if(diffDays > 7){
+                account.setStatus(Constants.ACCOUNT_SUSPENDED);
+                accountViewModel.update(account);
+                this.accountViewModel.logout();
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            }
+        }
+        return false;
     }
 }

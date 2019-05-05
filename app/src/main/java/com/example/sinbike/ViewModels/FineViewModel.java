@@ -1,16 +1,16 @@
 package com.example.sinbike.ViewModels;
 
 import android.app.Application;
-import com.example.sinbike.POJO.Fine;
-import com.example.sinbike.Repositories.Firestore.Resource;
-import com.example.sinbike.Repositories.common.CompletionLiveData;
-import com.example.sinbike.Repositories.common.QueryLiveData;
-import com.example.sinbike.Services.AccountService;
-import com.example.sinbike.Services.FineService;
-import com.example.sinbike.Services.TransactionService;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
+
+import com.example.sinbike.POJO.Fine;
+import com.example.sinbike.Repositories.Firestore.Resource;
+import com.example.sinbike.Repositories.common.CompletionLiveData;
+import com.example.sinbike.Services.FineService;
+
+import java.util.List;
 
 public class FineViewModel extends AndroidViewModel {
     private static final String TAG = "FineViewModel";
@@ -22,8 +22,9 @@ public class FineViewModel extends AndroidViewModel {
         this.fineService = new FineService(application);
     }
 
-    public QueryLiveData<Fine> getAllFine(String accountId) {
-        return this.fineService.getAllFine(accountId);
+    public LiveData<com.example.sinbike.Repositories.common.Resource<List<Fine>>> getAllFine(String accountId) {
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Fine>>> liveobs = this.fineService.getAllFine(accountId);
+        return liveobs;
     }
 
     public CompletionLiveData createFine(Fine fine){

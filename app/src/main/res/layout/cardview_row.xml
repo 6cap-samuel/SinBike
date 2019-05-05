@@ -31,18 +31,10 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/textFineTime"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textFineDate"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
-
-        <TextView
             android:id="@+id/textFineLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/textFineTime"
+            android:layout_below="@id/textFineDate"
             android:textColor="@android:color/black"
             android:textSize="18sp" />
 

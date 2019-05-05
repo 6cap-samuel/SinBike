@@ -2,6 +2,9 @@ package com.example.sinbike.Repositories;
 
 import android.app.Application;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.Firestore.FirestoreRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
@@ -10,9 +13,6 @@ import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import static com.example.sinbike.Constants.COLLECTION_ACCOUNT;
 
@@ -41,6 +41,11 @@ public class AccountRepository extends FirestoreRepository<Account> {
 
     private Query query() {
         return super.collectionReference;
+    }
+
+    public QueryLiveData<Account> getAllAccount() {
+        return new QueryLiveData<>(query(),
+                Account.class);
     }
 
     public QueryLiveData<Account> login(String email, String password) {

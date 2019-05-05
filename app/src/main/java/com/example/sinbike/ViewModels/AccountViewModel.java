@@ -50,6 +50,11 @@ public class AccountViewModel extends AndroidViewModel {
         this.lifecycleOwner = lifecycleOwner;
     }
 
+    public LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> getAllAccount(){
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.getAllBicycle();
+        return liveobs;
+    }
+
     public Account getAccount(){
         return this.account;
     }

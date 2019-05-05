@@ -10,6 +10,8 @@ import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 
+import java.util.List;
+
 public class FaultService {
     private static final String TAG = "FaultService";
     private FaultRepository faultRepository;
@@ -34,10 +36,10 @@ public class FaultService {
         return this.faultRepository.deleteFault(docId);
     }
 
-    public CompletionLiveData submitFault(String bicycleId, String image, String category, String description){
+    public CompletionLiveData submitFault(String bicycleId, List<String> image, String category, String description){
         Fault fault = new Fault();
         fault.setBicycleId(bicycleId);
-        fault.setBicycleId(image);
+        fault.setImage(image);
         fault.setCategory(category);
         fault.setDescription(description);
 

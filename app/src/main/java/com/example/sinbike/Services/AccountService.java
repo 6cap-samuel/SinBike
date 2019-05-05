@@ -22,6 +22,10 @@ public class AccountService {
         this.accountRepository = new AccountRepository(application, userId);
     }
 
+    public QueryLiveData<Account> getAllBicycle(){
+        return this.accountRepository.getAllAccount();
+    }
+
     public QueryLiveData<Account> login(String email, String password){
         return this.accountRepository.login(email, password);
     }

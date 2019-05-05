@@ -28,7 +28,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     Button btnSubmit, btnClear;
 
     // variable to hold the gender value
-    private String genderOptions;
+    String genderOptions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +61,12 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         etName.setHint(this.account.getName());
         etTelephoneNumber.setHint(this.account.getTelephoneNumber());
         etDob.setHint(this.account.getDateOfBirth());
+        genderOptions= this.account.getGender();
+        if(this.account.getGender().equals("Male")) {
+            rbMale.setChecked(true);
+        } else if (this.account.getGender().equals("Female")) {
+            rbFemale.setChecked(true);
+        }
     }
 
     public void initViewModel(){

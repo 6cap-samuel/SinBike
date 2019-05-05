@@ -6,19 +6,21 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-import com.example.sinbike.Activities.Item;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.R;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 public class CardViewDataAdapter extends
         RecyclerView.Adapter<CardViewDataAdapter.ViewHolder> {
 
-    private List<Item> stList;
+    private List<Fine> stList;
 
-    public CardViewDataAdapter(List<Item> parkingFine) {
+    public CardViewDataAdapter(List<Fine> parkingFine) {
         this.stList = parkingFine;
     }
 
@@ -41,15 +43,17 @@ public class CardViewDataAdapter extends
 
         final int pos = position;
 
-        viewHolder.textTitle.setText(stList.get(position).getFineTitle());
+        Date timestamp = stList.get(position).getFineDate().toDate();
+        SimpleDateFormat sfd = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+        sfd.format(timestamp);
 
-        viewHolder.textFineDate.setText(stList.get(position).getFineDate());
+        viewHolder.textTitle.setText("Parking Fine");
 
-        viewHolder.textFineTime.setText(stList.get(position).getFineTime());
+        viewHolder.textFineDate.setText("Date: " + timestamp);
 
-        viewHolder.textFineLocation.setText(stList.get(position).getFineLocation());
+        viewHolder.textFineLocation.setText("Location: " + stList.get(position).getLocation());
 
-        viewHolder.textFineAmount.setText(stList.get(position).getFineAmount());
+        viewHolder.textFineAmount.setText("Amount: $" + String.format("%.2f",stList.get(position).getAmount()));
 
         viewHolder.chkSelected.setChecked(stList.get(position).isSelected());
 
@@ -59,7 +63,7 @@ public class CardViewDataAdapter extends
         viewHolder.chkSelected.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 CheckBox cb = (CheckBox) v;
-                Item contact = (Item) cb.getTag();
+                Fine contact = (Fine) cb.getTag();
 
                 contact.setSelected(cb.isChecked());
                 stList.get(pos).setSelected(cb.isChecked());
@@ -84,7 +88,7 @@ public class CardViewDataAdapter extends
 
         public CheckBox chkSelected;
 
-        public Item singleParkingFine;
+        public Fine singleParkingFine;
 
         public ViewHolder(View itemLayoutView) {
             super(itemLayoutView);
@@ -99,7 +103,7 @@ public class CardViewDataAdapter extends
     }
 
     // method to access in activity after updating selection
-    public List<Item> getParkingList() {
+    public List<Fine> getParkingList() {
         return stList;
     }
 

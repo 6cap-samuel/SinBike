@@ -11,21 +11,24 @@ import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.example.sinbike.Services.FaultService;
 
+import java.util.List;
+
 public class FaultViewModel extends AndroidViewModel {
 
     private static final String TAG = "FaultViewModel";
 
     private FaultService faultService;
 
-    public FaultViewModel(Application application){
+    public FaultViewModel(Application application) {
         super(application);
         this.faultService = new FaultService(application);
     }
-    public QueryLiveData<Fault> get(String accountId){
+
+    public QueryLiveData<Fault> get(String accountId) {
         return this.faultService.get(accountId);
     }
 
-    public CompletionLiveData create(Fault fault){
+    public CompletionLiveData create(Fault fault) {
         return this.faultService.create(fault);
     }
 
@@ -37,7 +40,7 @@ public class FaultViewModel extends AndroidViewModel {
         return this.faultService.delete(docId);
     }
 
-    public CompletionLiveData submitFault(String bicycleId, String image, String category, String description){
+    public CompletionLiveData submitFault(String bicycleId, List<String> image, String category, String description){
         return this.faultService.submitFault(bicycleId, image, category, description);
     }
 }

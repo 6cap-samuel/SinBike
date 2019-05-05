@@ -43,13 +43,11 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
 
         this.initViewModel();
 
-//      auto log in
-      //  this.accountViewModel.loginAccount("samueltoh93@gmail.com", "chicken");
-
         if (this.accountViewModel.getAccount() != null){
-            this.loginSuccess(this.accountViewModel.getAccount());
+            //if(!checkAccountStatus(this.accountViewModel.getAccount())) {
+                this.loginSuccess(this.accountViewModel.getAccount());
+            //}
         }
-
         this.init();
     }
 
@@ -95,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
         } else if (v.getId() == R.id.btnLogin){
-            this.login();
+                this.login();
         }
     }
 
@@ -116,8 +114,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
             etPassword.setError(getString(R.string.error_invalid_password));
             return;
         }
-
-        progressBar.setVisibility(View.VISIBLE);
-        accountViewModel.loginAccount(email, password);
+            progressBar.setVisibility(View.VISIBLE);
+            accountViewModel.loginAccount(email, password);
     }
 }

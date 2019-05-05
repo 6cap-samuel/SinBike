@@ -7,18 +7,21 @@ import com.google.firebase.firestore.ServerTimestamp;
 public class Fine extends Model {
 
     private String accountId;
-    private String fineDate;
+    private @ServerTimestamp Timestamp fineDate;
     private double amount;
     private String location;
+    private boolean isSelected;
+    private int status;
 
     public Fine() {
     }
 
-    public Fine(String accountId, String fineDate, double amount, String location) {
+    public Fine(String accountId, Timestamp fineDate, double amount, String location, int status) {
         this.accountId = accountId;
         this.fineDate = fineDate;
         this.amount = amount;
         this.location = location;
+        this.status = status;
     }
 
     public String getLocation() {
@@ -37,28 +40,45 @@ public class Fine extends Model {
         this.accountId = accountId;
     }
 
-    public String getFineDate() {
+    public Timestamp getFineDate() {
         return fineDate;
     }
 
-    public void setFineDate(String fineDate) {
+    public void setFineDate(Timestamp fineDate) {
         this.fineDate = fineDate;
     }
 
-    public double getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     @Override
     public String toString() {
         return "Fine{" +
                 "accountId='" + accountId + '\'' +
-                ", fineDate=" + fineDate +
-                ", amount=" + amount +
+                ", fineDate=" + fineDate + '\'' +
+                ", location=" + location + '\'' +
+                ", amount=" + amount + '\'' +
                 ", id='" + id + '\'' +
                 '}';
     }

@@ -25,13 +25,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.example.sinbike.Constants;
+import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Bicycle;
+import com.example.sinbike.POJO.Fault;
 import com.example.sinbike.R;
+import com.example.sinbike.ViewModels.AccountViewModel;
+import com.example.sinbike.ViewModels.BicycleViewModel;
+import com.example.sinbike.ViewModels.FaultViewModel;
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.Timestamp;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
@@ -49,12 +58,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 public class ReportFaultsActivity extends AppCompatActivity implements OnClickListener {
 
     Button uploadImageBtn, scanQrBtn, submitButton;
@@ -62,15 +65,19 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
     public ImageView imageview;
     private ImageButton gearImageButton, wheelImageButton, saddleImageButton, pedalImageButton, brakeImageButton, otherImageButton;
     private EditText inputDescription;
-    String tempDescription, tempFaultCategory, image, description, faultCategory, tag, scanResult, path;
-    Long faultId;
-    DatabaseReference rootRef, bicycleRef;
+    String tempDescription, tempFaultCategory, description, tag, scanResult, path, categoryOption;
     private static final String IMAGE_DIRECTORY = "/SinBike Images";
     private int GALLERY = 1, CAMERA = 2;
 
     public TextView qrCodeResult;
     private ArrayList<String> lst = new ArrayList<>();
     ArrayList<String> tempImage = new ArrayList<>();
+
+    FaultViewModel faultViewModel;
+    BicycleViewModel bicycleViewModel;
+    AccountViewModel accountViewModel;
+    Account account;
+    private List<Bicycle> bicycleList;
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -82,44 +89,17 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         requestMultiplePermissions();
 
         initViews();
+        initViewModel();
+        setListener();
 
         FirebaseApp.initializeApp(this);
 
-        bicycleRef = FirebaseDatabase.getInstance().getReference("bicycle");
-
-        bicycleRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot result) {
-                for (DataSnapshot dsp : result.getChildren()) {
-                    Item listItem = dsp.getValue(Item.class); //add result into array list
-                    if (listItem != null) {
-                        lst.add(listItem.getBicycleID());
-                    }
-                }
+        bicycleViewModel.getAllBicycles().observe(this, listResource -> {
+            bicycleList = listResource.data();
+            for(int y=0; y < bicycleList.size();y++){
+                lst.add(bicycleList.get(y).id);
             }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        //database reference pointing to root of database
-        rootRef = FirebaseDatabase.getInstance().getReference("faults");
-
-        //database reference pointing to demo node
-        rootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists())
-                    faultId = (dataSnapshot.getChildrenCount());
-                getQrResult();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
+            getQrResult();
         });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -128,36 +108,19 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Report Faulty Bicycle");
 
-        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
-
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ReportFaultsActivity.this , ManageDashboardActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(ReportFaultsActivity.this , ManageDashboardActivity.class);
+            startActivity(intent);
+            finish();
         });
+    }
 
-        submitButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(checkValidation()) {
-                    // getImage();
-
-                    for(int i = 0; i<tempImage.size(); i++){
-                        rootRef.child(String.valueOf(faultId)).child("imageName"+i).setValue(tempImage.get(i));
-                    }
-
-                    description = getDescription();
-                    faultCategory = tempFaultCategory;
-
-                    rootRef.child(String.valueOf(faultId)).child("bicycleID").setValue(qrCodeResult.getText());
-                    rootRef.child(String.valueOf(faultId)).child("inputDescription").setValue(description);
-                    rootRef.child(String.valueOf(faultId)).child("faultsCategory").setValue(faultCategory);
-                    showAddItemDialog(ReportFaultsActivity.this);
-                }
-            }
-        });
+    public void initViewModel(){
+        this.faultViewModel = ViewModelProviders.of(this).get(FaultViewModel.class);
+        this.bicycleViewModel = ViewModelProviders.of(this).get(BicycleViewModel.class);
+        this.bicycleViewModel.setLifecycleOwner(this);
+        this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        this.account = accountViewModel.getAccount();
     }
 
     public boolean getQrResult (){
@@ -169,11 +132,13 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                     if (scanResult.trim().equals(lst.get(i).trim())) {
                         qrCodeResult.setText(scanResult);
                         return true;
-                    }
+                    } else
+                        Toast.makeText(ReportFaultsActivity.this, "Invalid Qrcode. Please scan again!",
+                                Toast.LENGTH_SHORT).show();
+                        return false;
                 }
             }
-        }Toast.makeText(ReportFaultsActivity.this, "Invalid Qrcode. Please scan again!",
-                Toast.LENGTH_SHORT).show(); return false;
+        } return false;
     }
 
     private void showAddItemDialog(Context c) {
@@ -190,7 +155,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                     }
                 })
                 .create();
-        dialog.show();
+                dialog.show();
     }
 
     public boolean checkValidation() {
@@ -227,16 +192,18 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         pedalImageButton.setTag("pedal");
         brakeImageButton.setTag("brake");
         otherImageButton.setTag("other");
+    }
 
+    public void setListener(){
         gearImageButton.setOnClickListener(this);
         wheelImageButton.setOnClickListener(this);
         saddleImageButton.setOnClickListener(this);
         pedalImageButton.setOnClickListener(this);
         brakeImageButton.setOnClickListener(this);
         otherImageButton.setOnClickListener(this);
-
         uploadImageBtn.setOnClickListener(this);
         scanQrBtn.setOnClickListener(this);
+        submitButton.setOnClickListener(this);
     }
 
     @Override
@@ -249,18 +216,25 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
             case R.id.scanQrBtn:
                 startActivity(new Intent(ReportFaultsActivity.this, ScannedBarcodeActivity.class));
                 break;
+            case R.id.submitButton:
+                if(checkValidation()) {
+                    createFault();
+                    showAddItemDialog(ReportFaultsActivity.this);
+                }
+                break;
         }
         tag = String.valueOf(v.getTag());
         switch (tag) {
             case "gear":
-                gearImageButton.setSelected(true);
-                wheelImageButton.setSelected(false);
-                saddleImageButton.setSelected(false);
-                pedalImageButton.setSelected(false);
-                brakeImageButton.setSelected(false);
-                otherImageButton.setSelected(false);
-                tempFaultCategory = gearImageButton.getTag().toString();
-                break;
+            gearImageButton.setSelected(true);
+            wheelImageButton.setSelected(false);
+            saddleImageButton.setSelected(false);
+            pedalImageButton.setSelected(false);
+            brakeImageButton.setSelected(false);
+            otherImageButton.setSelected(false);
+            categoryOption = Constants.FAULT_CATEGORY_GEAR;
+            tempFaultCategory = gearImageButton.getTag().toString();
+            break;
             case "wheel":
                 wheelImageButton.setSelected(true);
                 gearImageButton.setSelected(false);
@@ -268,6 +242,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 pedalImageButton.setSelected(false);
                 brakeImageButton.setSelected(false);
                 otherImageButton.setSelected(false);
+                categoryOption = Constants.FAULT_CATEGORY_WHEEL;
                 tempFaultCategory = wheelImageButton.getTag().toString();
                 break;
             case "saddle":
@@ -277,6 +252,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 pedalImageButton.setSelected(false);
                 brakeImageButton.setSelected(false);
                 otherImageButton.setSelected(false);
+                categoryOption = Constants.FAULT_CATEGORY_SADDLE;
                 tempFaultCategory = saddleImageButton.getTag().toString();
                 break;
             case "pedal":
@@ -286,7 +262,8 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 gearImageButton.setSelected(false);
                 brakeImageButton.setSelected(false);
                 otherImageButton.setSelected(false);
-                tempFaultCategory = pedalImageButton.getTag().toString();
+                categoryOption = Constants.FAULT_CATEGORY_PEDAL;
+                //tempFaultCategory = pedalImageButton.getTag().toString();
                 break;
             case "brake":
                 brakeImageButton.setSelected(true);
@@ -295,6 +272,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 pedalImageButton.setSelected(false);
                 gearImageButton.setSelected(false);
                 otherImageButton.setSelected(false);
+                categoryOption = Constants.FAULT_CATEGORY_BRAKE;
                 tempFaultCategory = brakeImageButton.getTag().toString();
                 break;
             case "other":
@@ -304,6 +282,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 pedalImageButton.setSelected(false);
                 brakeImageButton.setSelected(false);
                 gearImageButton.setSelected(false);
+                categoryOption = Constants.FAULT_CATEGORY_OTHERS;
                 tempFaultCategory = otherImageButton.getTag().toString();
                 break;
         }
@@ -315,8 +294,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
         String[] pictureDialogItems = {
                 "Choose photo from gallery",
                 "Capture photo from camera" };
-        pictureDialog.setItems(pictureDialogItems,
-                new DialogInterface.OnClickListener() {
+        pictureDialog.setItems(pictureDialogItems, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
@@ -361,37 +339,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                     path = saveImage(bitmap);
                     tempImage.add(path);
                     Toast.makeText(ReportFaultsActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-
-                    final LinearLayout myGallery;
-                    myGallery = findViewById(R.id.gallery);
-
-                    final ImageView imageView = new ImageView(getApplicationContext());
-                    imageView.setLayoutParams(new LayoutParams(250, 250));
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    imageView.setImageBitmap(bitmap);
-
-                    final ImageButton removeBtn = new ImageButton(getApplicationContext());
-                    removeBtn.setLayoutParams(new LayoutParams(70, 70));
-                    removeBtn.setBackgroundResource(R.drawable.close_button_background);
-                    removeBtn.setBackgroundColor(Color.TRANSPARENT);
-                    removeBtn.setScaleType(ImageButton.ScaleType.CENTER_CROP);
-                    removeBtn.setImageResource(R.drawable.close);
-
-                    myGallery.addView(imageView);
-                    myGallery.addView(removeBtn);
-
-                    removeBtn.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            myGallery.removeView(imageView);
-                            myGallery.removeView(removeBtn);
-
-                            File file = new File(path);
-                            if(file.exists())
-                                file.delete();
-                            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
-                        }
-                    });
+                    createImageView();
 
                 }catch (IOException e) {
                     e.printStackTrace();
@@ -404,38 +352,7 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
             path = saveImage(bitmap);
             tempImage.add(path);
             Toast.makeText(ReportFaultsActivity.this, "Image Saved!", Toast.LENGTH_SHORT).show();
-
-            final LinearLayout myGallery;
-            myGallery = findViewById(R.id.gallery);
-
-            final ImageView imageView = new ImageView(getApplicationContext());
-            imageView.setLayoutParams(new LayoutParams(250, 250));
-            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            imageView.setImageBitmap(bitmap);
-
-            final ImageButton removeBtn = new ImageButton(getApplicationContext());
-            removeBtn.setLayoutParams(new LayoutParams(70, 70));
-            removeBtn.setBackgroundResource(R.drawable.close_button_background);
-            removeBtn.setBackgroundColor(Color.TRANSPARENT);
-            removeBtn.setScaleType(ImageButton.ScaleType.CENTER_CROP);
-            removeBtn.setImageResource(R.drawable.close);
-
-            myGallery.addView(imageView);
-            myGallery.addView(removeBtn);
-
-            removeBtn.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    myGallery.removeView(imageView);
-                    myGallery.removeView(removeBtn);
-
-                    File file = new File(path);
-                    if(file.exists())
-                        file.delete();
-
-                    sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
-                }
-            });
+            createImageView();
         }
     }
 
@@ -498,5 +415,50 @@ public class ReportFaultsActivity extends AppCompatActivity implements OnClickLi
                 })
                 .onSameThread()
                 .check();
+    }
+
+    private void createFault(){
+        description = getDescription();
+        Timestamp ts = new Timestamp(new Date());
+
+        Fault fault = new Fault();
+        fault.setCategory(tempFaultCategory);
+        fault.setImage(tempImage);
+        fault.setBicycleId(qrCodeResult.getText().toString().trim());
+        fault.setDescription(description);
+        fault.setAccountId(accountViewModel.getAccount().id);
+        fault.setDateOfReporting(ts);
+        faultViewModel.create(fault);
+    }
+
+    private void createImageView(){
+        final LinearLayout myGallery;
+        myGallery = findViewById(R.id.gallery);
+
+        final ImageView imageView = new ImageView(getApplicationContext());
+        imageView.setLayoutParams(new LayoutParams(250, 250));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imageView.setImageBitmap(bitmap);
+
+        final ImageButton removeBtn = new ImageButton(getApplicationContext());
+        removeBtn.setLayoutParams(new LayoutParams(70, 70));
+        removeBtn.setBackgroundResource(R.drawable.close_button_background);
+        removeBtn.setBackgroundColor(Color.TRANSPARENT);
+        removeBtn.setScaleType(ImageButton.ScaleType.CENTER_CROP);
+        removeBtn.setImageResource(R.drawable.close);
+
+        myGallery.addView(imageView);
+        myGallery.addView(removeBtn);
+
+        removeBtn.setOnClickListener(v -> {
+            myGallery.removeView(imageView);
+            myGallery.removeView(removeBtn);
+
+            File file = new File(path);
+            if(file.exists())
+                file.delete();
+
+            sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(new File(path))));
+        });
     }
 }

@@ -3,20 +3,17 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.sinbike.Observers.BicycleViewModelObserver;
-import com.example.sinbike.POJO.Bicycle;
-import com.example.sinbike.Repositories.Firestore.Resource;
-import com.example.sinbike.Repositories.common.CompletionLiveData;
-import com.example.sinbike.Repositories.common.QueryLiveData;
-import com.example.sinbike.Services.BicycleService;
-import com.google.firebase.firestore.GeoPoint;
-
-import java.util.List;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
+import com.example.sinbike.Observers.BicycleViewModelObserver;
+import com.example.sinbike.POJO.Bicycle;
+import com.example.sinbike.Services.BicycleService;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.List;
 
 public class BicycleViewModel extends AndroidViewModel
 {
@@ -25,6 +22,8 @@ public class BicycleViewModel extends AndroidViewModel
     private LifecycleOwner lifecycleOwner;
     private BicycleService bicycleService;
     private BicycleViewModelObserver observer;
+    private List<Bicycle> bicycles;
+    private Bicycle bicycle;
 
     public BicycleViewModel(Application application){
         super(application);
@@ -39,12 +38,22 @@ public class BicycleViewModel extends AndroidViewModel
         this.lifecycleOwner = lifecycleOwner;
     }
 
+    public Bicycle getBicycle(){
+        return this.bicycle;
+    }
+
+    public LiveData<com.example.sinbike.Repositories.common.Resource<List<Bicycle>>> getAllBicycles(){
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Bicycle>>> liveobs = this.bicycleService.getAllBicycle();
+        return liveobs;
+    }
+
     public void getAllBicycle(){
         final LiveData<com.example.sinbike.Repositories.common.Resource<List<Bicycle>>> liveobs = this.bicycleService.getAllBicycle();
+
         Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Bicycle>>>(){
             @Override
             public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Bicycle>> listResource) {
-                List<Bicycle> bicycles = listResource.data();
+                bicycles = listResource.data();
 
                 Log.d(TAG, bicycles.toString());
 

@@ -19,10 +19,8 @@ import com.example.sinbike.Activities.Dialogs.CustomDialog;
 import com.example.sinbike.Constants;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
-import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
-import com.example.sinbike.ViewModels.FineViewModel;
 
 public class RegisterAccountActivity extends AppCompatActivity implements SignUpObserver, View.OnClickListener {
 
@@ -36,12 +34,10 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     CheckBox checkBox;
 
     String name;
-    String gender;
     String email;
     String password;
     String phone;
     String DOB;
-    String accountid;
 
     AccountViewModel accountViewModel;
 
@@ -114,11 +110,12 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         account.setTelephoneNumber(phone);
         account.setDateOfBirth(DOB);
         account.setGender(genderOptions);
+        account.setStatus(Constants.ACCOUNT_OPEN);
 
         this.accountViewModel.createAccount(account);
     }
 
-    public void sampleFunction(){
+    /*public void sampleFunction(){
         // get current account that is being logged in.
         Account currentAccount = this.accountViewModel.getAccount();
 
@@ -137,11 +134,12 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         Fine fine = new Fine();
         fine.setAmount(20);
         fine.setFineDate("20/10-/2019");
+        fine.setLocation();
         fine.setAccountId(this.accountViewModel.getAccount().id);
 
         fineViewModel.createFine(fine);
 
-    }
+    }*/
 
     /**
      * Form validation.

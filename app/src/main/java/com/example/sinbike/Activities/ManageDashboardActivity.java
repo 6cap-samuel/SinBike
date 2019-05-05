@@ -5,14 +5,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import com.example.sinbike.POJO.Account;
-import com.example.sinbike.R;
-import com.example.sinbike.ViewModels.AccountViewModel;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.lifecycle.ViewModelProviders;
+
+import com.example.sinbike.Constants;
+import com.example.sinbike.POJO.Account;
+import com.example.sinbike.R;
+import com.example.sinbike.ViewModels.AccountViewModel;
 
 public class ManageDashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -33,6 +35,7 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
 
         this.initViewModel();
         this.init();
+        checkAccountStatus(accountViewModel.getAccount());
     }
 
     public void init(){
@@ -107,5 +110,21 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
     public void launchManageProfile(){
         Intent intent = new Intent (this, ManageProfileActivity.class);
         startActivity(intent);
+    }
+
+    public boolean checkAccountStatus(Account account){
+        if(account.getStatus()== Constants.ACCOUNT_SUSPENDED){
+            this.accountViewModel.logout();
+            Intent intent = new Intent (this, LoginActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Your account has been suspended!", Toast.LENGTH_LONG).show();
+            return true;
+        } else if (account.getStatus() == Constants.ACCOUNT_CLOSED){
+            this.accountViewModel.logout();
+            Intent intent = new Intent (this, LoginActivity.class);
+            startActivity(intent);
+            Toast.makeText(getApplicationContext(), "Your account has been closed!", Toast.LENGTH_LONG).show();
+            return true;
+        }return false;
     }
 }

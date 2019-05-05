@@ -2,20 +2,17 @@ package com.example.sinbike.Repositories;
 
 import android.app.Application;
 
-import com.example.sinbike.POJO.Bicycle;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
+import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Fine;
-import com.example.sinbike.POJO.FinePayment;
-import com.example.sinbike.POJO.ParkingLot;
-import com.example.sinbike.POJO.Payment;
 import com.example.sinbike.Repositories.Firestore.FirestoreRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
-
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
 
 import static com.example.sinbike.Constants.COLLECTION_FINE;
 
@@ -48,7 +45,7 @@ public class FineRepository extends FirestoreRepository<Fine> {
     }
 
     public QueryLiveData<Fine> getAllFine(String accountId) {
-        return new QueryLiveData<>(query().whereEqualTo("accountId", accountId),
+        return new QueryLiveData<>(query().whereEqualTo("accountId", accountId).whereEqualTo("status", Constants.FINE_NOTPAID),
                 Fine.class);
     }
 

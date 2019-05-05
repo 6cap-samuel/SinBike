@@ -34,11 +34,15 @@ public class Constants {
     public static final String HERO = "fonts/Hero.otf";
 
     /*-------------------------- Fault Type --------------------------*/
-    private static final String FAULT_CATEGORY_GEAR = "Gear";
-    private static final String FAULT_CATEGORY_WHEEL = "Wheel";
-    private static final String FAULT_CATEGORY_SADDLE = "Saddle";
-    private static final String FAULT_CATEGORY_PEDAL = "Pedal";
-    private static final String FAULT_CATEGORY_BRAKE = "brake";
-    private static final String FAULT_CATEGORY_OTHERS = "Others";
+    public static final String FAULT_CATEGORY_GEAR = "Gear";
+    public static final String FAULT_CATEGORY_WHEEL = "Wheel";
+    public static final String FAULT_CATEGORY_SADDLE = "Saddle";
+    public static final String FAULT_CATEGORY_PEDAL = "Pedal";
+    public static final String FAULT_CATEGORY_BRAKE = "brake";
+    public static final String FAULT_CATEGORY_OTHERS = "Others";
+
+    /*-------------------------- Account Status --------------------------*/
+    public static final int FINE_NOTPAID = 0;
+    public static final int FINE_PAID = 1;
 
 }
