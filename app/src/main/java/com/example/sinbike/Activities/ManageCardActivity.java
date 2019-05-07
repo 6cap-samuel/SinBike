@@ -64,7 +64,7 @@ public class ManageCardActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void add(){
-        Intent intent = new Intent(this, AddPaymentActivity.class);
+        Intent intent = new Intent(this, CardFormActivity.class);
         startActivity(intent);
     }
 

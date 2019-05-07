@@ -29,13 +29,16 @@ public class TopUpFragment extends Fragment {
 
         EditText amt = view.findViewById(R.id.amt);
 
-        amt.setFilters(new InputFilter[]{ new TopUpAmountRange("10", "50")});
-
         topupBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
             public void onClick(View v) {
-                Intent i = new Intent(getActivity(),PaymentMethodActivity.class);
-                startActivity(i);
+                if (amt.length() !=2 ) {
+                    amt.setError("Minimum Top Up Value must be 10SGD");
+                    amt.requestFocus();
+                }
+                else {
+                    Intent i = new Intent(getActivity(),ManageCardActivity.class);
+                    startActivity(i);
+                }
             }
         });
         return view;

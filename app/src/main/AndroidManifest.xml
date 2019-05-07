@@ -47,7 +47,8 @@
         <activity android:name=".Activities.WalletPage" />
         <activity
             android:name=".Activities.SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
