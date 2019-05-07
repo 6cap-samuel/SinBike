@@ -21,7 +21,8 @@
         android:layout_height="match_parent"
         android:textColor="@color/black"
         android:textSize="20sp"
-        android:text="TextView"/>
+        android:text="TextView"
+        android:editable="false"/>
 </LinearLayout>
 
 </FrameLayout>
