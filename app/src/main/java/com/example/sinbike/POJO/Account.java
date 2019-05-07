@@ -11,12 +11,12 @@ public class Account extends Model {
     private String gender;
     private String dateOfBirth;
     private int status;
-    private double accountBalance;
+    private int accountBalance;
 
     public Account() {
     }
 
-    public Account(String name, String email, String telephoneNumber, String gender, String dateOfBirth, int status, double accountBalance, String password) {
+    public Account(String name, String email, String telephoneNumber, String gender, String dateOfBirth, int status, int accountBalance, String password) {
         this.name = name;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
@@ -83,11 +83,11 @@ public class Account extends Model {
         this.status = status;
     }
 
-    public double getAccountBalance() {
+    public int getAccountBalance() {
         return accountBalance;
     }
 
-    public void setAccountBalance(double accountBalance) {
+    public void setAccountBalance(int accountBalance) {
         this.accountBalance = accountBalance;
     }
 
