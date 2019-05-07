@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -61,6 +62,14 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         etName.setHint(this.account.getName());
         etTelephoneNumber.setHint(this.account.getTelephoneNumber());
         etDob.setHint(this.account.getDateOfBirth());
+        genderOptions = this.account.getGender();
+        if(this.account.getGender().equals("Male")) {
+            rbMale.setChecked(true);
+        } else if (this.account.getGender().equals("Female")) {
+            rbFemale.setChecked(true);
+        }
+
+
     }
 
     public void initViewModel(){
@@ -98,6 +107,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
 
         this.accountViewModel.update(this.account);
         Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
+        Toast.makeText(this, "Account Detailed Updated!", Toast.LENGTH_SHORT).show();
         startActivity(intent);
         finish();
     }

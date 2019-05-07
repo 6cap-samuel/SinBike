@@ -2,6 +2,7 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -23,6 +24,9 @@ import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.example.sinbike.ViewModels.FineViewModel;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RegisterAccountActivity extends AppCompatActivity implements SignUpObserver, View.OnClickListener {
 
@@ -118,36 +122,23 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.createAccount(account);
     }
 
-    public void sampleFunction(){
-        // get current account that is being logged in.
-        Account currentAccount = this.accountViewModel.getAccount();
-
-        //updateds variables of the curreent account.
-        currentAccount.setGender("Female");
-        currentAccount.setName(name);
-        currentAccount.setStatus(Constants.ACCOUNT_OPEN);
-
-        // updates account to the database
-        this.accountViewModel.update(currentAccount);
-
-    }
-
-    public void foreignKeySample(){
-        FineViewModel fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
-        Fine fine = new Fine();
-        fine.setAmount(20);
-        fine.setFineDate("20/10-/2019");
-        fine.setAccountId(this.accountViewModel.getAccount().id);
-
-        fineViewModel.createFine(fine);
-
-    }
 
     /**
      * Form validation.
      * @return
      */
+    public boolean emailValidator(String email)
+    {
+        Pattern pattern;
+        Matcher matcher;
+        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+        pattern = Pattern.compile(EMAIL_PATTERN);
+        matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
     public boolean checkValidation() {
+        //emailValidator();
 
         name = signupName.getText().toString().trim();
         email = signupEmail.getText().toString().trim();
@@ -159,7 +150,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         if (name.length() <= 0){
             Toast.makeText(RegisterAccountActivity.this, "Name is Required!", Toast.LENGTH_LONG).show();
             return false;
-        } else if (email.length() <= 0){
+        } else if (email.length() <= 0) {
             Toast.makeText(RegisterAccountActivity.this, "Email is Required!", Toast.LENGTH_LONG).show();
             return false;
         } else if (password.length() <= 0){
@@ -181,8 +172,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             Toast.makeText(RegisterAccountActivity.this, "Please accept Terms & Conditions!", Toast.LENGTH_LONG).show();
             return false;
         }
-
-
         return true;
     }
 
