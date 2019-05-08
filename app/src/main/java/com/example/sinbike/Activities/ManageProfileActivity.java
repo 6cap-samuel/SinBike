@@ -28,6 +28,10 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     RadioButton radioButtonOptions;
     Button btnSubmit, btnClear;
 
+    String name;
+    String phone;
+    String DOB;
+
     // variable to hold the gender value
     String genderOptions;
 
@@ -68,8 +72,6 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         } else if (this.account.getGender().equals("Female")) {
             rbFemale.setChecked(true);
         }
-
-
     }
 
     public void initViewModel(){
@@ -81,7 +83,9 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     @Override
     public void onClick(View v) {
         if(v.getId() == R.id.btnSubmit){
-            this.submit();
+            if(checkValidation()) {
+                this.submit();
+            }
         } else if (v.getId() == R.id.btnClear){
             this.clear();
         } else {
@@ -155,4 +159,30 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
             }
         });
     }
+
+    public boolean checkValidation() {
+        name = etName.getText().toString().trim();
+        phone = etTelephoneNumber.getText().toString().trim();
+        DOB = etDob.getText().toString().trim();
+
+        if (name.length() <= 0){
+            Toast.makeText(ManageProfileActivity.this, "Name is Required!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (phone.length() <=0){
+            Toast.makeText(ManageProfileActivity.this, "Phone Number is Required!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (phone.length() < 8){
+            Toast.makeText(ManageProfileActivity.this, "Minimum Phone Length is 8!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (!DOB.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$")) {
+            Toast.makeText(ManageProfileActivity.this, "Invalid date format! Please enter in DD/MM/YYYY", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (DOB.length()<=0){
+            Toast.makeText(ManageProfileActivity.this, "DOB is Required!", Toast.LENGTH_LONG).show();
+            return false;
+        } 
+        return true;
+    }
+
+
 }

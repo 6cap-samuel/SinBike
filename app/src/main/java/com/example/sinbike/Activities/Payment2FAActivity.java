@@ -1,8 +1,5 @@
 package com.example.sinbike.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,7 +7,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
+import com.example.sinbike.ViewModels.AccountViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
@@ -28,6 +31,8 @@ public class Payment2FAActivity extends AppCompatActivity {
     EditText etPhone,  etVeriCode;
     FirebaseAuth mAuth;
     String codeSent;
+    AccountViewModel accountViewModel;
+    Account account;
 
 
     @Override
@@ -44,6 +49,7 @@ public class Payment2FAActivity extends AppCompatActivity {
 
         etPhone = findViewById(R.id.phone_no);
         etVeriCode = findViewById(R.id.veri_code);
+        initViewModel();
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +62,7 @@ public class Payment2FAActivity extends AppCompatActivity {
             @Override
             public void onClick(View args0) {
                 verifySignInCode();
-
+                //updateAccountBalance();
             }
         });
 
@@ -70,6 +76,19 @@ public class Payment2FAActivity extends AppCompatActivity {
         });
 
     }
+
+    public void initViewModel() {
+        this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        this.account = accountViewModel.getAccount();
+    }
+
+   /* public void updateAccountBalance() {
+        Bundle extras = getIntent().getExtras();
+        double amount = Double.parseDouble(extras.getString("amount"));
+        account.setAccountBalance(amount);
+        accountViewModel.update(account);
+    }*/
+
 
     private void verifySignInCode() {
         String code = etVeriCode.getText().toString();

@@ -2,7 +2,6 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -12,6 +11,7 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
@@ -22,9 +22,10 @@ import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class RegisterAccountActivity extends AppCompatActivity implements SignUpObserver, View.OnClickListener {
 
@@ -36,6 +37,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     Button btnSubmit, btnClear, btnBack;
     CustomDialog customDialog;
     CheckBox checkBox;
+    FirebaseAuth firebaseAuth;
 
     String name;
     String email;
@@ -124,24 +126,13 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
      * Form validation.
      * @return
      */
-    public boolean emailValidator(String email)
-    {
-        Pattern pattern;
-        Matcher matcher;
-        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
-
     public boolean checkValidation() {
-        //emailValidator();
-
         name = signupName.getText().toString().trim();
         email = signupEmail.getText().toString().trim();
         password = signupPassword.getText().toString().trim();
         phone = signupPhone.getText().toString().trim();
         DOB = signupDOB.getText().toString().trim();
+        String emailPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 
         if (name.length() <= 0){
@@ -149,6 +140,9 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             return false;
         } else if (email.length() <= 0) {
             Toast.makeText(RegisterAccountActivity.this, "Email is Required!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (!email.matches(emailPattern)) {
+            Toast.makeText(RegisterAccountActivity.this, "Invalid email format!", Toast.LENGTH_LONG).show();
             return false;
         } else if (password.length() <= 0){
             Toast.makeText(RegisterAccountActivity.this, "Password is Required!", Toast.LENGTH_LONG).show();
@@ -161,6 +155,9 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             return false;
         } else if (phone.length() < 8){
             Toast.makeText(RegisterAccountActivity.this, "Minimum Phone Length is 8!", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (!DOB.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$")) {
+            Toast.makeText(RegisterAccountActivity.this, "Invalid date format! Please enter in DD/MM/YYYY", Toast.LENGTH_LONG).show();
             return false;
         } else if (DOB.length()<=0){
             Toast.makeText(RegisterAccountActivity.this, "DOB is Required!", Toast.LENGTH_LONG).show();
@@ -175,7 +172,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
 
     @Override
     public void createAccountPass() {
-        Toast.makeText(this, "Account creation success.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Successfully Registered, Verification email sent. Please verify your email!", Toast.LENGTH_SHORT).show();
         finish();
     }
 
@@ -197,6 +194,12 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         } else if (v.getId() == R.id.btnSubmit){
             if (checkValidation()) {
                 registerUser();
+                firebaseAuth = FirebaseAuth.getInstance();
+                firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        sendEmailVerification();
+                    }
+                });
             }
         } else if (v.getId() == R.id.tvTermsandCondition){
             customDialog = new CustomDialog(this);
@@ -224,6 +227,25 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
                 finish();
             }
         });
+    }
+
+   public void sendEmailVerification(){
+        FirebaseUser firebaseUser =firebaseAuth.getCurrentUser();
+        if(firebaseUser!=null){
+            firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(RegisterAccountActivity.this, "Successfully Registered, Verification email sent. Please verify your email!", Toast.LENGTH_LONG).show();
+                        accountViewModel.logout();
+                        finish();
+                        Intent intent = new Intent(RegisterAccountActivity.this , LoginActivity.class);
+                        startActivity(intent);
+                    }else
+                        Toast.makeText(RegisterAccountActivity.this, "Verification email has not been sent!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 }
 

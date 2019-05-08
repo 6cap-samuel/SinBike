@@ -17,6 +17,12 @@ import com.example.sinbike.Observers.LoginObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity implements LoginObserver, View.OnClickListener{
 
@@ -30,11 +36,13 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
     EditText etEmail, etPassword;
     ProgressBar progressBar;
     TextView etForgetPassword;
+    FirebaseAuth firebaseAuth;
 
     /**
      * Declaration of ViewModel
      */
     AccountViewModel accountViewModel;
+    private Task<Void> usertask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,9 +52,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         this.initViewModel();
 
         if (this.accountViewModel.getAccount() != null){
-            //if(!checkAccountStatus(this.accountViewModel.getAccount())) {
                 this.loginSuccess(this.accountViewModel.getAccount());
-            //}
         }
         this.init();
     }
@@ -86,14 +92,23 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnSignup){
+        if (v.getId() == R.id.btnSignup) {
             Intent intent = new Intent(this, RegisterAccountActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.etForgetPassword){
+        } else if (v.getId() == R.id.etForgetPassword) {
             Intent intent = new Intent(this, ForgotPasswordActivity.class);
             startActivity(intent);
-        } else if (v.getId() == R.id.btnLogin){
-                this.login();
+        } else if (v.getId() == R.id.btnLogin) {
+            String email = etEmail.getText().toString().toLowerCase();
+            final String password = etPassword.getText().toString();
+            checkValidation();
+            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+            firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task) -> {
+                    if (task.isSuccessful()) {
+                        checkEmailVerification();
+                    } else
+                        loginFailed();
+            });
         }
     }
 
@@ -101,20 +116,50 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         String email = etEmail.getText().toString().toLowerCase();
         final String password = etPassword.getText().toString();
 
+        checkValidation();
+
+        progressBar.setVisibility(View.VISIBLE);
+        accountViewModel.loginAccount(email, password);
+    }
+
+    public boolean checkValidation() {
+        String email = etEmail.getText().toString().toLowerCase();
+        final String password = etPassword.getText().toString();
+        String emailPattern = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
+
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(getApplicationContext(), "Please Enter Email Address", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(getApplicationContext(), "Please Enter Password", Toast.LENGTH_SHORT).show();
-            return;
+            return false;
         }
-
+        if (!email.matches(emailPattern)) {
+            Toast.makeText(LoginActivity.this, "Invalid email format!", Toast.LENGTH_LONG).show();
+            return false;
+        }
         if (password.length() < 6) {
             etPassword.setError(getString(R.string.error_invalid_password));
-            return;
+            return false;
         }
-            progressBar.setVisibility(View.VISIBLE);
-            accountViewModel.loginAccount(email, password);
+        return true;
+    }
+
+   public void checkEmailVerification(){
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        usertask = Objects.requireNonNull(firebaseAuth.getCurrentUser()).reload();
+        usertask.addOnSuccessListener((OnSuccessListener) (Object o) -> {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user != null) {
+                if (user.isEmailVerified()) {
+                    login();
+                    Toast.makeText(LoginActivity.this, "Welcome to SinBike", Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(LoginActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
+                    this.accountViewModel.logout();
+                }
+            }
+        });
     }
 }

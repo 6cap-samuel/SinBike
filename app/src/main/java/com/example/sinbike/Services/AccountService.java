@@ -22,7 +22,7 @@ public class AccountService {
         this.accountRepository = new AccountRepository(application, userId);
     }
 
-    public QueryLiveData<Account> getAllBicycle(){
+    public QueryLiveData<Account> getAllAccount(){
         return this.accountRepository.getAllAccount();
     }
 

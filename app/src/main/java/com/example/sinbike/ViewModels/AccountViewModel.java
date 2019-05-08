@@ -2,7 +2,6 @@ package com.example.sinbike.ViewModels;
 
 import android.app.Application;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
@@ -52,7 +51,7 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> getAllAccount(){
-        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.getAllBicycle();
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.getAllAccount();
         return liveobs;
     }
 
