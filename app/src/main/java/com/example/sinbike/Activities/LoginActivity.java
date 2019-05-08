@@ -44,9 +44,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         this.initViewModel();
 
         if (this.accountViewModel.getAccount() != null){
-            //if(!checkAccountStatus(this.accountViewModel.getAccount())) {
                 this.loginSuccess(this.accountViewModel.getAccount());
-            //}
         }
         this.init();
     }

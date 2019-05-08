@@ -3,14 +3,13 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
-
-import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.sinbike.R;
 
@@ -38,6 +37,9 @@ public class TopUpFragment extends Fragment {
                 else {
                     Intent i = new Intent(getActivity(),ManageCardActivity.class);
                     startActivity(i);
+                    /*double amount = Double.parseDouble(amt.getText().toString());
+                    Intent intent = new Intent(getActivity(), Payment2FAActivity.class);
+                    intent.putExtra("amount", amount);*/
                 }
             }
         });
