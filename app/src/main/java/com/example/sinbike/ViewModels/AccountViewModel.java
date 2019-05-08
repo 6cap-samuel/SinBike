@@ -2,6 +2,7 @@ package com.example.sinbike.ViewModels;
 
 import android.app.Application;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
@@ -119,7 +120,7 @@ public class AccountViewModel extends AndroidViewModel {
     }
 
     public boolean createAccountValidation(){
-        // TODO: Create your own validation here.
+        // TODO: Create validation here.
         return true;
     }
 

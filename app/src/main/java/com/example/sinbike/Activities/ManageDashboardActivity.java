@@ -87,7 +87,7 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
     }
 
     public void launchTopUpActivity(){
-        Intent intent = new Intent(this , TopUpActivity.class);
+        Intent intent = new Intent(this , WalletPage.class);
         startActivity(intent);
     }
 

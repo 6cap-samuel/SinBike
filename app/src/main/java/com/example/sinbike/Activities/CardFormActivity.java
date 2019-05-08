@@ -74,7 +74,7 @@ public class CardFormActivity extends AppCompatActivity implements OnCardFormSub
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View args0) {
-                Intent intent = new Intent(CardFormActivity.this , PaymentMethodActivity.class);
+                Intent intent = new Intent(CardFormActivity.this , ManageCardActivity.class);
                 startActivity(intent);
                 finish();
             }
