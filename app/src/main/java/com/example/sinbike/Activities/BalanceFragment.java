@@ -20,18 +20,19 @@ import com.example.sinbike.ViewModels.AccountViewModel;
  */
 public class BalanceFragment extends Fragment {
 
+
     AccountViewModel accountViewModel;
     Account account;
-    TextView accountBal;
+    TextView accountBalance;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_balance, container, false);
-        accountBal = view.findViewById(R.id.accountBalance);
+
+        View v = getLayoutInflater().inflate(R.layout.fragment_balance, container, false);
 
 
-        return view;
+        return v;
     }
 
 }

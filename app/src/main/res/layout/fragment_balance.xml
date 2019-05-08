@@ -7,22 +7,29 @@
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="horizontal"
+    android:layout_gravity="center">
+
     <TextView
-        android:id="@+id/tv_acc_bal"
+        android:id="@+id/dollarSign"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Account Balance:"
         android:textColor="@color/black"
-        android:textSize="20sp"/>
+        android:textSize="40sp"
+        android:text="$"
+        android:editable="false"
+        android:inputType="number"/>
+
     <EditText
         android:id="@+id/accountBalance"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:textColor="@color/black"
-        android:textSize="20sp"
-        android:text="TextView"
+        android:textSize="30sp"
+        android:text="AccountBalance"
         android:editable="false"/>
+
 </LinearLayout>
+
 
 </FrameLayout>
