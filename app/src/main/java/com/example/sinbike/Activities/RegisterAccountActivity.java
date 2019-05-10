@@ -229,7 +229,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         });
     }
 
-   public void sendEmailVerification(){
+    public void sendEmailVerification(){
         FirebaseUser firebaseUser =firebaseAuth.getCurrentUser();
         if(firebaseUser!=null){
             firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
