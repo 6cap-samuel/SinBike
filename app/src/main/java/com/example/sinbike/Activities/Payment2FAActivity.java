@@ -62,7 +62,6 @@ public class Payment2FAActivity extends AppCompatActivity {
             @Override
             public void onClick(View args0) {
                 verifySignInCode();
-                //updateAccountBalance();
             }
         });
 
@@ -82,12 +81,6 @@ public class Payment2FAActivity extends AppCompatActivity {
         this.account = accountViewModel.getAccount();
     }
 
-   /* public void updateAccountBalance() {
-        Bundle extras = getIntent().getExtras();
-        double amount = Double.parseDouble(extras.getString("amount"));
-        account.setAccountBalance(amount);
-        accountViewModel.update(account);
-    }*/
 
 
     private void verifySignInCode() {
@@ -102,6 +95,10 @@ public class Payment2FAActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            Bundle extras = getIntent().getExtras();
+                            double amount = extras.getDouble("amount");
+                            account.setAccountBalance(amount);
+                            accountViewModel.update(account);
                             Intent intent = new Intent(Payment2FAActivity.this , SuccessfulTopUpMessage.class);
                             startActivity(intent);
                             finish();

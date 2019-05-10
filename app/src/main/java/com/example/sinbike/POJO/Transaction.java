@@ -5,27 +5,36 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
 public class Transaction extends Model {
-    private String description;
+    private double amount;
     private @ServerTimestamp Timestamp dateOfReporting;
     private String accountId;
-    private int transactionType;
+    private String description;
+    private String transactionType;
 
     public Transaction() {
     }
 
-    public Transaction(String description, Timestamp dateOfReporting, String accountId, int transactionType) {
-        this.description = description;
+    public Transaction(double amount, Timestamp dateOfReporting, String accountId, String transactionType) {
+        this.amount = amount;
         this.dateOfReporting = dateOfReporting;
         this.accountId = accountId;
         this.transactionType = transactionType;
     }
 
-    public int getTransactionType() {
+    public String getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(int transactionType) {
+    public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getAccountId() {
@@ -36,12 +45,12 @@ public class Transaction extends Model {
         this.accountId = accountId;
     }
 
-    public String getDescription() {
-        return description;
+    public double getAmount() {
+        return amount;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public Timestamp getDateOfReporting() {
@@ -55,7 +64,7 @@ public class Transaction extends Model {
     @Override
     public String toString() {
         return "Transaction{" +
-                "description='" + description + '\'' +
+                "amount='" + amount + '\'' +
                 ", dateOfReporting=" + dateOfReporting +
                 ", id='" + id + '\'' +
                 '}';

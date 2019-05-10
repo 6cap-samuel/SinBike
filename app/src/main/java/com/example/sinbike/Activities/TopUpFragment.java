@@ -35,11 +35,10 @@ public class TopUpFragment extends Fragment {
                     amt.requestFocus();
                 }
                 else {
-                    Intent i = new Intent(getActivity(),ManageCardActivity.class);
-                    startActivity(i);
-                    /*double amount = Double.parseDouble(amt.getText().toString());
-                    Intent intent = new Intent(getActivity(), Payment2FAActivity.class);
-                    intent.putExtra("amount", amount);*/
+                    double amount = Double.parseDouble(amt.getText().toString());
+                    Intent intent = new Intent(getActivity(),ManageCardActivity.class);
+                    intent.putExtra("amount", amount);
+                    startActivity(intent);
                 }
             }
         });
