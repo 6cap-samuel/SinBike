@@ -2,6 +2,8 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -60,6 +62,7 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
 
         btnSubmit.setOnClickListener(this);
         btnClear.setOnClickListener(this);
+        etDob.addTextChangedListener(new validateDOB());
     }
 
     public void initHints(){
@@ -137,6 +140,29 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
                 finish();
             }
         });
+    }
+
+    private class validateDOB implements TextWatcher {
+        private boolean lock;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (lock || s.length() > 8) {
+                return;
+            }
+            lock = true;
+            for (int i = 2; i < s.length(); i += 3) {
+                if (s.toString().charAt(i) != '/') {
+                    s.insert(i, "/");
+                }
+            }
+            lock = false;
+        }
     }
 
     public void setListener(){
