@@ -30,7 +30,7 @@ public class TopUpFragment extends Fragment {
 
         topupBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (amt.length() !=2 ) {
+                if (amt.length() < 3 ) {
                     amt.setError("Minimum Top Up Value must be 10SGD");
                     amt.requestFocus();
                 }

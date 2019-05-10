@@ -3,22 +3,19 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.sinbike.Observers.ParkingLotViewModelObserver;
-import com.example.sinbike.Observers.TransactionViewModelObserver;
-import com.example.sinbike.POJO.Bicycle;
-import com.example.sinbike.POJO.ParkingLot;
-import com.example.sinbike.POJO.Transaction;
-import com.example.sinbike.Services.BicycleService;
-import com.example.sinbike.Services.ParkingLotService;
-import com.example.sinbike.Services.TransactionService;
-import com.google.firebase.firestore.GeoPoint;
-
-import java.util.List;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
+import com.example.sinbike.Observers.TransactionViewModelObserver;
+import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Transaction;
+import com.example.sinbike.Repositories.Firestore.Resource;
+import com.example.sinbike.Repositories.common.CompletionLiveData;
+import com.example.sinbike.Services.TransactionService;
+
+import java.util.List;
 
 public class TransactionViewModel extends AndroidViewModel
 {
@@ -28,6 +25,8 @@ public class TransactionViewModel extends AndroidViewModel
     private TransactionService transactionService;
     private TransactionViewModelObserver observer;
     private String accountId;
+    private static Transaction transaction;
+    private Account account;
 
     public TransactionViewModel(Application application){
         super(application);
@@ -58,5 +57,14 @@ public class TransactionViewModel extends AndroidViewModel
             }
         };
         liveobs.observe(this.lifecycleOwner, obs);
+    }
+
+    public CompletionLiveData create(Transaction transaction) {
+        return this.transactionService.create(transaction);
+    }
+
+    public LiveData<Resource<Boolean>> update (Transaction tempTransaction){
+        transaction = tempTransaction;
+        return this.transactionService.update(account.id, transaction);
     }
 }
