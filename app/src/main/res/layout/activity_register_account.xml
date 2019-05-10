@@ -28,7 +28,6 @@
         android:hint="Name"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="@+id/signupEmail"
         app:layout_constraintHorizontal_bias="0.0"
@@ -46,7 +45,6 @@
         android:hint="Email"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="@+id/signupPassword"
         app:layout_constraintStart_toStartOf="@+id/signupPassword"
@@ -64,7 +62,6 @@
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="@+id/signupPhone"
         app:layout_constraintStart_toStartOf="@+id/signupPhone"
@@ -83,7 +80,6 @@
         android:inputType="date"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="@+id/signupDOB"
         app:layout_constraintStart_toStartOf="@+id/signupDOB"
@@ -91,6 +87,9 @@
 
     <EditText
         android:id="@+id/signupDOB"
+        android:inputType="date"
+        android:digits="0123456789/"
+        android:maxLength="9"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -99,10 +98,9 @@
         android:background="@drawable/email"
         android:drawableLeft="@drawable/ic_date_range_black_24dp"
         android:drawablePadding="10dp"
-        android:hint="DD/MM/YYYY"
+        android:hint="DD/MM/YY"
         android:padding="12dp"
         android:textColor="#000000"
-        android:textColorHighlight="#000000"
         android:textColorHint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signupPhone" />
@@ -133,7 +131,6 @@
             android:paddingRight="20dp"
             android:textAlignment="gravity"
             android:textColor="#000000"
-            android:textColorHighlight="#000000"
             android:textColorHint="#000000" />
 
 

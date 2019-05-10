@@ -268,7 +268,7 @@ public class CheckFineActivity extends AppCompatActivity {
             Date currentDate = (Calendar.getInstance().getTime());
             int diffDays = currentDate.getDate() - oldDate;
 
-                if(diffDays > 7){
+            if(diffDays > 7){
                 account.setStatus(Constants.ACCOUNT_SUSPENDED);
                 accountViewModel.update(account);
                 this.accountViewModel.logout();
