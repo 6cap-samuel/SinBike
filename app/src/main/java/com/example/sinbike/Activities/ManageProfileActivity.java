@@ -68,9 +68,9 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
     }
 
     public void initHints(){
-        etName.setHint(this.account.getName());
-        etTelephoneNumber.setHint(this.account.getTelephoneNumber());
-        etDob.setHint(this.account.getDateOfBirth());
+        etName.setText(this.account.getName());
+        etTelephoneNumber.setText(this.account.getTelephoneNumber());
+        etDob.setText(this.account.getDateOfBirth());
         genderOptions = this.account.getGender();
         if(this.account.getGender().equals("Male")) {
             rbMale.setChecked(true);
