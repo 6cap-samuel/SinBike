@@ -57,6 +57,8 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
         rbFemale = findViewById(R.id.rbFemale);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnClear = findViewById(R.id.btnClear);
+        etDob.addTextChangedListener(new validateDOB());
+
 
         this.initHints();
 

@@ -181,7 +181,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             Toast.makeText(RegisterAccountActivity.this, "Phone Number is Required!", Toast.LENGTH_LONG).show();
             return false;
         } else if (phone.length() < 8){
-            Toast.makeText(RegisterAccountActivity.this, "Minimum Phone Length is 8!", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterAccountActivity.this, "Minimum Phone Length is 8!s", Toast.LENGTH_LONG).show();
             return false;
         } else if (!DOB.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$")) {
             Toast.makeText(RegisterAccountActivity.this, "Invalid date format! Please enter in DD/MM/YYYY", Toast.LENGTH_LONG).show();
