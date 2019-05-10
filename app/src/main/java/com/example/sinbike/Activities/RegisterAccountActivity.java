@@ -2,6 +2,8 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -77,6 +79,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         btnBack = findViewById(R.id.btnBack);
         tvTermsandCondition = findViewById(R.id.tvTermsandCondition);
         checkBox = findViewById(R.id.cbTermsAndCondition);
+        signupDOB.addTextChangedListener(new validateDOB());
 
 
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
@@ -122,23 +125,33 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.createAccount(account);
     }
 
-
-    /**
-     * Form validation.
-     * @return
-     */
-    public boolean emailValidator(String email)
-    {
-        Pattern pattern;
-        Matcher matcher;
-        final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
-        pattern = Pattern.compile(EMAIL_PATTERN);
-        matcher = pattern.matcher(email);
-        return matcher.matches();
+    private class validateDOB implements TextWatcher {
+        private boolean lock;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (lock || s.length() > 8) {
+                return;
+            }
+            lock = true;
+            for (int i = 2; i < s.length(); i += 3) {
+                if (s.toString().charAt(i) != '/') {
+                    s.insert(i, "/");
+                }
+            }
+            lock = false;
+        }
     }
 
+
+
+
     public boolean checkValidation() {
-        //emailValidator();
 
         name = signupName.getText().toString().trim();
         email = signupEmail.getText().toString().trim();
