@@ -26,16 +26,6 @@
         <activity android:name=".Activities.PaymentMethodActivity" />
         <activity android:name=".Activities.ManageCardActivity"></activity>
         <activity android:name=".Activities.ManageProfileActivity" />
-        <activity android:name=".Activities.TestActivity">
-
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
