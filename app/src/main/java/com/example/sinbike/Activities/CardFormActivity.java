@@ -1,6 +1,5 @@
 package com.example.sinbike.Activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,7 +8,6 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.braintreepayments.cardform.OnCardFormSubmitListener;
@@ -61,7 +59,10 @@ public class CardFormActivity extends AppCompatActivity implements OnCardFormSub
             @Override
             public void onClick(View view) {
                 if (mCardForm.isValid()) {
+                    Bundle extras = getIntent().getExtras();
+                    double amount = extras.getDouble("amount");
                     Intent intent = new Intent(CardFormActivity.this , Payment2FAActivity.class);
+                    intent.putExtra("amount", amount);
                     startActivity(intent);
                     finish();
 

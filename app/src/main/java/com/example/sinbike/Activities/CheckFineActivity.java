@@ -26,11 +26,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.POJO.Fine;
+import com.example.sinbike.POJO.Transaction;
 import com.example.sinbike.R;
 import com.example.sinbike.RecyclerViews.Adapters.CardViewDataAdapter;
 import com.example.sinbike.Repositories.common.Resource;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.example.sinbike.ViewModels.FineViewModel;
+import com.example.sinbike.ViewModels.TransactionViewModel;
 import com.google.firebase.Timestamp;
 
 import java.util.ArrayList;
@@ -72,6 +74,9 @@ public class CheckFineActivity extends AppCompatActivity {
     Account account;
 
     View customView;
+
+    Transaction transaction;
+    TransactionViewModel transactionViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -144,6 +149,7 @@ public class CheckFineActivity extends AppCompatActivity {
         this.fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.account = accountViewModel.getAccount();
+        this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
     }
 
     public List<Fine> getData() {
@@ -197,6 +203,13 @@ public class CheckFineActivity extends AppCompatActivity {
                                     double difference = accountBalance1 - totalAmount1;
                                     account.setAccountBalance(difference);
                                     accountViewModel.update(account);
+                                    Timestamp timestamp = Timestamp.now();
+                                    transaction = new Transaction();
+                                    transaction.setAmount(totalAmount1);
+                                    transaction.setAccountId(account.id);
+                                    transaction.setTransactionType(Constants.TRANSACTION_TYPE_FINE);
+                                    transaction.settransactionDate(timestamp);
+                                    transactionViewModel.create(transaction);
                                 } else
                                     Toast.makeText(CheckFineActivity.this, "Insufficient account balance! Please top up!", Toast.LENGTH_SHORT).show();
                             }
@@ -209,10 +222,6 @@ public class CheckFineActivity extends AppCompatActivity {
                 accountBalance = customView.findViewById(R.id.textAccountBalance);
                 accountBalance1 = account.getAccountBalance();
                 accountBalance.setText("Account Balance: $" + String.format("%.2f", accountBalance1));
-
-               /* for(int u =0; u<stList.size(); u++) {
-                    totalAmount1 += stList.get(u).getAmount();
-                }*/
 
                 textAmount = customView.findViewById(R.id.textAmount);
 
@@ -268,7 +277,7 @@ public class CheckFineActivity extends AppCompatActivity {
             Date currentDate = (Calendar.getInstance().getTime());
             int diffDays = currentDate.getDate() - oldDate;
 
-                if(diffDays > 7){
+            if(diffDays > 7){
                 account.setStatus(Constants.ACCOUNT_SUSPENDED);
                 accountViewModel.update(account);
                 this.accountViewModel.logout();

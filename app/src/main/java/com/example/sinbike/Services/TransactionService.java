@@ -2,17 +2,13 @@ package com.example.sinbike.Services;
 
 import android.app.Application;
 
-import com.example.sinbike.POJO.Bicycle;
-import com.example.sinbike.POJO.Fault;
+import androidx.lifecycle.LiveData;
+
 import com.example.sinbike.POJO.Transaction;
-import com.example.sinbike.Repositories.BicycleRepository;
-import com.example.sinbike.Repositories.FaultRepository;
 import com.example.sinbike.Repositories.Firestore.Resource;
 import com.example.sinbike.Repositories.TransactionRepository;
 import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Repositories.common.QueryLiveData;
-
-import androidx.lifecycle.LiveData;
 
 public class TransactionService {
     private static final String TAG = "TransactionService";

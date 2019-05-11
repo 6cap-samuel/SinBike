@@ -2,8 +2,6 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -77,7 +75,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         btnBack = findViewById(R.id.btnBack);
         tvTermsandCondition = findViewById(R.id.tvTermsandCondition);
         checkBox = findViewById(R.id.cbTermsAndCondition);
-        signupDOB.addTextChangedListener(new validateDOB());
 
 
 
@@ -85,7 +82,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.setSignUpObserver(this);
         this.accountViewModel.setLifecycleOwner(this);
     }
-
 
 
 
@@ -111,29 +107,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
                 }
             }
         });
-    }
-
-    private class validateDOB implements TextWatcher {
-        private boolean lock;
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-        @Override
-        public void afterTextChanged(Editable s) {
-            if (lock || s.length() > 8) {
-                return;
-            }
-            lock = true;
-            for (int i = 2; i < s.length(); i += 3) {
-                if (s.toString().charAt(i) != '/') {
-                    s.insert(i, "/");
-                }
-            }
-            lock = false;
-        }
     }
 
     private void registerUser(){
@@ -182,7 +155,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             Toast.makeText(RegisterAccountActivity.this, "Phone Number is Required!", Toast.LENGTH_LONG).show();
             return false;
         } else if (phone.length() < 8){
-            Toast.makeText(RegisterAccountActivity.this, "Minimum Phone Length is 8!s", Toast.LENGTH_LONG).show();
+            Toast.makeText(RegisterAccountActivity.this, "Minimum Phone Length is 8!", Toast.LENGTH_LONG).show();
             return false;
         } else if (!DOB.matches("^(1[0-9]|0[1-9]|3[0-1]|2[1-9])/(0[1-9]|1[0-2])/[0-9]{4}$")) {
             Toast.makeText(RegisterAccountActivity.this, "Invalid date format! Please enter in DD/MM/YYYY", Toast.LENGTH_LONG).show();

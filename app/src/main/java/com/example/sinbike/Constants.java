@@ -26,8 +26,9 @@ public class Constants {
     public static final int ACCOUNT_SUSPENDED = 2;
 
     /*-------------------------- Transaction Type --------------------------*/
-    public static final int TRANSACTION_TYPE_TOPUP = 0;
-    public static final int TRANSACTION_TYPE_USE = 1;
+    public static final String TRANSACTION_TYPE_TOPUP = "Top Up";
+    public static final String TRANSACTION_TYPE_RENTAL = "Rental Payment";
+    public static final String TRANSACTION_TYPE_FINE = "Fine Payment";
 
     /*-------------------------- Font Type --------------------------*/
     public static final String HEROLIGHT = "fonts/hero_lightt.otf";

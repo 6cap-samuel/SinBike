@@ -1,14 +1,14 @@
 package com.example.sinbike.Activities;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
 
 import com.example.sinbike.POJO.Card;
 import com.example.sinbike.R;
@@ -64,7 +64,10 @@ public class ManageCardActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void add(){
+        Bundle extras = getIntent().getExtras();
+        double amount = extras.getDouble("amount");
         Intent intent = new Intent(this, CardFormActivity.class);
+        intent.putExtra("amount", amount);
         startActivity(intent);
     }
 
@@ -73,5 +76,10 @@ public class ManageCardActivity extends AppCompatActivity implements View.OnClic
         if (v.getId() == R.id.floatingActionButton){
             this.add();
         }
+    }
+
+    public void updateAccountBalance() {
+
+
     }
 }

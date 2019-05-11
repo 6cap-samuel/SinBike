@@ -5,35 +5,28 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.ServerTimestamp;
 
 public class Transaction extends Model {
-    private String description;
-    private @ServerTimestamp Timestamp dateOfReporting;
+    private double amount;
+    private @ServerTimestamp Timestamp transactionDate;
     private String accountId;
-    private int transactionType;
+    private String description;
+    private String transactionType;
 
     public Transaction() {
     }
 
-    public Transaction(String description, Timestamp dateOfReporting, String accountId, int transactionType) {
-        this.description = description;
-        this.dateOfReporting = dateOfReporting;
+    public Transaction(double amount, Timestamp transactionDate, String accountId, String transactionType) {
+        this.amount = amount;
+        this.transactionDate = transactionDate;
         this.accountId = accountId;
         this.transactionType = transactionType;
     }
 
-    public int getTransactionType() {
+    public String getTransactionType() {
         return transactionType;
     }
 
-    public void setTransactionType(int transactionType) {
+    public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
-    }
-
-    public String getAccountId() {
-        return accountId;
-    }
-
-    public void setAccountId(String accountId) {
-        this.accountId = accountId;
     }
 
     public String getDescription() {
@@ -44,19 +37,35 @@ public class Transaction extends Model {
         this.description = description;
     }
 
-    public Timestamp getDateOfReporting() {
-        return dateOfReporting;
+    public String getAccountId() {
+        return accountId;
     }
 
-    public void setDateOfReporting(Timestamp dateOfReporting) {
-        this.dateOfReporting = dateOfReporting;
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
+
+    public double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public Timestamp gettransactionDate() {
+        return transactionDate;
+    }
+
+    public void settransactionDate(Timestamp transactionDate) {
+        this.transactionDate = transactionDate;
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
-                "description='" + description + '\'' +
-                ", dateOfReporting=" + dateOfReporting +
+                "amount='" + amount + '\'' +
+                ", transactionDate=" + transactionDate +
                 ", id='" + id + '\'' +
                 '}';
     }
