@@ -80,6 +80,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         signupDOB.addTextChangedListener(new validateDOB());
 
 
+
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.accountViewModel.setSignUpObserver(this);
         this.accountViewModel.setLifecycleOwner(this);
