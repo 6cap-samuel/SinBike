@@ -44,14 +44,15 @@ public class ViewTransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
         // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.fragment_view_transaction, container, false);
+
         initViewModel();
         listView = view.findViewById(R.id.transaction_listview);
 
-        transactionList2 = populateList();
+        populateList();
 
-        transactionAdapter = new transactionAdapter(transactionList2);
+        transactionAdapter = new transactionAdapter(transactionList1);
         listView.setAdapter(transactionAdapter);
 
         return view;

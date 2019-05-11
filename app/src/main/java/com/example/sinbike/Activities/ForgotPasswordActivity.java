@@ -7,13 +7,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import com.example.sinbike.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class ForgotPasswordActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -27,10 +28,19 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
         setContentView(R.layout.activity_forget_password);
 
         this.init();
+        Toolbar toolbar = findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Forget Password");
+        toolbar.setNavigationOnClickListener(v -> {
+            Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+        });
     }
 
     public void init(){
-        btnBack = findViewById(R.id.btnBack);
         resetPassword = findViewById(R.id.resetPassword);
         etEmail = findViewById(R.id.etEmail);
 
@@ -42,16 +52,9 @@ public class ForgotPasswordActivity extends AppCompatActivity implements View.On
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnBack){
-            this.back();
-        } else if(v.getId() == R.id.resetPassword){
+        if(v.getId() == R.id.resetPassword){
             this.resetPassword();
         }
-    }
-
-    public void back(){
-        Intent intent = new Intent(ForgotPasswordActivity.this, LoginActivity.class);
-        startActivity(intent);
     }
 
     public void resetPassword(){

@@ -74,7 +74,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         rbFemale = findViewById(R.id.rbFemale);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnClear = findViewById(R.id.btnClear);
-        btnBack = findViewById(R.id.btnBack);
         tvTermsandCondition = findViewById(R.id.tvTermsandCondition);
         checkBox = findViewById(R.id.cbTermsAndCondition);
         signupDOB.addTextChangedListener(new validateDOB());
@@ -206,15 +205,13 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.btnClear){
+        if (v.getId() == R.id.btnClear) {
             signupName.setText("");
             signupEmail.setText("");
             signupPhone.setText("");
             signupPassword.setText("");
             rdGender.clearCheck();
-        } else if (v.getId() == R.id.btnBack){
-            finish();
-        } else if (v.getId() == R.id.btnSubmit){
+        }else if (v.getId() == R.id.btnSubmit){
             if (checkValidation()) {
                 registerUser();
                 firebaseAuth = FirebaseAuth.getInstance();

@@ -11,12 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
 
+import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Transaction;
 import com.example.sinbike.R;
 import com.example.sinbike.ViewModels.AccountViewModel;
+import com.example.sinbike.ViewModels.TransactionViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseException;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
@@ -33,6 +37,7 @@ public class Payment2FAActivity extends AppCompatActivity {
     String codeSent;
     AccountViewModel accountViewModel;
     Account account;
+    TransactionViewModel transactionViewModel;
 
 
     @Override
@@ -68,7 +73,7 @@ public class Payment2FAActivity extends AppCompatActivity {
         backBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View args0) {
-                Intent intent = new Intent(Payment2FAActivity.this , ManageCardActivity.class);
+                Intent intent = new Intent(Payment2FAActivity.this , CardFormActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -79,6 +84,7 @@ public class Payment2FAActivity extends AppCompatActivity {
     public void initViewModel() {
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.account = accountViewModel.getAccount();
+        this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
     }
 
 
@@ -107,6 +113,12 @@ public class Payment2FAActivity extends AppCompatActivity {
                             String name = account.getName();
                             account.setName(name);
                             accountViewModel.update(account);
+                            Transaction transaction = new Transaction();
+                            transaction.setTransactionType(Constants.TRANSACTION_TYPE_TOPUP);
+                            transaction.settransactionDate(Timestamp.now());
+                            transaction.setAmount(amount);
+                            transaction.setAccountId(account.id);
+                            transactionViewModel.create(transaction);
                             Intent intent = new Intent(Payment2FAActivity.this , SuccessfulTopUpMessage.class);
                             startActivity(intent);
                             finish();
