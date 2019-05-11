@@ -37,7 +37,6 @@ public class ViewTransactionFragment extends Fragment {
     List<String> accountId = new ArrayList<>();
     List<Transaction> transactionList1 = new ArrayList<>();
     transactionAdapter transactionAdapter;
-    List<Transaction> transactionList2 = new ArrayList<>();
 
 
     @Nullable
@@ -49,11 +48,13 @@ public class ViewTransactionFragment extends Fragment {
 
         initViewModel();
         listView = view.findViewById(R.id.transaction_listview);
+        //listView.refreshDrawableState();
 
         populateList();
 
         transactionAdapter = new transactionAdapter(transactionList1);
         listView.setAdapter(transactionAdapter);
+
 
         return view;
     }
@@ -61,6 +62,7 @@ public class ViewTransactionFragment extends Fragment {
     public void initViewModel() {
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.account = accountViewModel.getAccount();
+        this.accountViewModel.setLifecycleOwner(this);
         this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
     }
 
@@ -79,8 +81,10 @@ public class ViewTransactionFragment extends Fragment {
                     transactionList1.add(transaction);
                 }
                 transactionAdapter.notifyDataSetChanged();
+                transactionViewModel.getAllTransaction(account.id).removeObserver(this::onChanged);
             }
         });
         return transactionList1;
     }
+
 }

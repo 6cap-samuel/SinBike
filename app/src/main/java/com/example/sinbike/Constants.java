@@ -27,8 +27,8 @@ public class Constants {
 
     /*-------------------------- Transaction Type --------------------------*/
     public static final String TRANSACTION_TYPE_TOPUP = "Top Up";
-    public static final String TRANSACTION_TYPE_RENTAL = "Rental Payment";
-    public static final String TRANSACTION_TYPE_FINE = "Fine Payment";
+    public static final String TRANSACTION_TYPE_RENTAL = "Rental";
+    public static final String TRANSACTION_TYPE_FINE = "Fine";
 
     /*-------------------------- Font Type --------------------------*/
     public static final String HEROLIGHT = "fonts/hero_lightt.otf";

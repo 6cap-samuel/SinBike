@@ -26,12 +26,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.POJO.Fine;
+import com.example.sinbike.POJO.FinePayment;
 import com.example.sinbike.POJO.Transaction;
 import com.example.sinbike.R;
 import com.example.sinbike.RecyclerViews.Adapters.CardViewDataAdapter;
 import com.example.sinbike.Repositories.common.Resource;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.example.sinbike.ViewModels.FineViewModel;
+import com.example.sinbike.ViewModels.PaymentViewModel;
 import com.example.sinbike.ViewModels.TransactionViewModel;
 import com.google.firebase.Timestamp;
 
@@ -75,8 +77,8 @@ public class CheckFineActivity extends AppCompatActivity {
 
     View customView;
 
-    Transaction transaction;
     TransactionViewModel transactionViewModel;
+    PaymentViewModel paymentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +152,7 @@ public class CheckFineActivity extends AppCompatActivity {
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.account = accountViewModel.getAccount();
         this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
+        this.paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
     }
 
     public List<Fine> getData() {
@@ -201,15 +204,26 @@ public class CheckFineActivity extends AppCompatActivity {
                                     singleParkingFine.setStatus(1);
                                     fineViewModel.updateFine(fineId.get(i), singleParkingFine);
                                     double difference = accountBalance1 - totalAmount1;
+
+                                    FinePayment finePayment = new FinePayment();
+                                    finePayment.setTotalAmount(totalAmount1);
+                                    finePayment.setPaymentDate(Timestamp.now());
+                                    finePayment.setFineid(fineId.get(i));
+                                    finePayment.setAccountId(account.id);
+                                    paymentViewModel.createFinePayment(finePayment);
+
                                     account.setAccountBalance(difference);
                                     accountViewModel.update(account);
-                                    Timestamp timestamp = Timestamp.now();
-                                    transaction = new Transaction();
-                                    transaction.setAmount(totalAmount1);
+
+
+                                    Transaction transaction = new Transaction();
+                                    transaction.setAmount(finePayment.getTotalAmount());
                                     transaction.setAccountId(account.id);
                                     transaction.setTransactionType(Constants.TRANSACTION_TYPE_FINE);
-                                    transaction.settransactionDate(timestamp);
+                                    transaction.settransactionDate(finePayment.getPaymentDate());
+                                    transaction.setPaymentId(finePayment.id);
                                     transactionViewModel.create(transaction);
+
                                 } else
                                     Toast.makeText(CheckFineActivity.this, "Insufficient account balance! Please top up!", Toast.LENGTH_SHORT).show();
                             }

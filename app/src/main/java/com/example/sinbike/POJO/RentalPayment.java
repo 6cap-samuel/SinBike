@@ -1,6 +1,6 @@
 package com.example.sinbike.POJO;
 
-public class RentalPayment {
+public class RentalPayment extends Payment {
 
     private String rentalId;
 

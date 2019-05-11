@@ -39,7 +39,6 @@ public class Payment2FAActivity extends AppCompatActivity {
     Account account;
     TransactionViewModel transactionViewModel;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -113,12 +112,14 @@ public class Payment2FAActivity extends AppCompatActivity {
                             String name = account.getName();
                             account.setName(name);
                             accountViewModel.update(account);
+
                             Transaction transaction = new Transaction();
                             transaction.setTransactionType(Constants.TRANSACTION_TYPE_TOPUP);
                             transaction.settransactionDate(Timestamp.now());
                             transaction.setAmount(amount);
                             transaction.setAccountId(account.id);
                             transactionViewModel.create(transaction);
+
                             Intent intent = new Intent(Payment2FAActivity.this , SuccessfulTopUpMessage.class);
                             startActivity(intent);
                             finish();

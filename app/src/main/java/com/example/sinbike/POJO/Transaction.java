@@ -9,6 +9,7 @@ public class Transaction extends Model {
     private @ServerTimestamp Timestamp transactionDate;
     private String accountId;
     private String transactionType;
+    private String paymentId;
 
     public Transaction() {
     }
@@ -18,6 +19,14 @@ public class Transaction extends Model {
         this.transactionDate = transactionDate;
         this.accountId = accountId;
         this.transactionType = transactionType;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 
     public String getTransactionType() {
