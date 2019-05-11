@@ -45,6 +45,11 @@ public class TransactionViewModel extends AndroidViewModel
         this.accountId = accountId;
     }
 
+    public LiveData<com.example.sinbike.Repositories.common.Resource<List<Transaction>>> getAllTransaction(String accountId) {
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Transaction>>> liveobs = this.transactionService.getAllTransactionOfUser(accountId);
+        return liveobs;
+    }
+
     public void getAllTransactionList(){
         final LiveData<com.example.sinbike.Repositories.common.Resource<List<Transaction>>> liveobs = this.transactionService.getAllTransactionOfUser(accountId);
         Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Transaction>>>(){

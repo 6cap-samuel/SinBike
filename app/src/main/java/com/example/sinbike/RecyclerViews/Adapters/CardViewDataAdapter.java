@@ -82,7 +82,6 @@ public class CardViewDataAdapter extends
 
         public TextView textTitle;
         public TextView textFineDate;
-        public TextView textFineTime;
         public TextView textFineLocation;
         public TextView textFineAmount;
 
@@ -95,7 +94,6 @@ public class CardViewDataAdapter extends
 
             textTitle = (TextView) itemLayoutView.findViewById(R.id.textTitle);
             textFineDate = (TextView) itemLayoutView.findViewById(R.id.textFineDate);
-            textFineTime = (TextView) itemLayoutView.findViewById(R.id.textFineTime);
             textFineLocation = (TextView) itemLayoutView.findViewById(R.id.textFineLocation);
             textFineAmount = (TextView) itemLayoutView.findViewById(R.id.textFineAmount);
             chkSelected = (CheckBox) itemLayoutView.findViewById(R.id.chkSelected);

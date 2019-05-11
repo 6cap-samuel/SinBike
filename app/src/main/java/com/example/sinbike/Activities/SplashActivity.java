@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProviders;
+
 import com.example.sinbike.Observers.BicycleViewModelObserver;
 import com.example.sinbike.Observers.ParkingLotViewModelObserver;
 import com.example.sinbike.Observers.TransactionViewModelObserver;
@@ -25,9 +28,6 @@ import com.example.sinbike.ViewModels.ParkingLotViewModel;
 import com.example.sinbike.ViewModels.TransactionViewModel;
 
 import java.util.List;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProviders;
 
 public class SplashActivity extends AppCompatActivity implements BicycleViewModelObserver, ParkingLotViewModelObserver, TransactionViewModelObserver {
 
@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity implements BicycleViewMode
 
         for(int i = 0; i < 20; i++){
             Transaction t = new Transaction();
-            t.setDescription(String.valueOf(i));
+           // t.setDescription(String.valueOf(i));
             t.setAccountId("v7XY8cNZQxlii3geNg52");
 
             transactionService.create(t);

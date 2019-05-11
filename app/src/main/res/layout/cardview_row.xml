@@ -23,12 +23,12 @@
             android:textSize="24sp" />
 
         <TextView
-            android:id="@+id/textFineDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textTitle"
-            android:textColor="@android:color/black"
-            android:textSize="18sp" />
+        android:id="@+id/textFineDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textTitle"
+        android:textColor="@android:color/black"
+        android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textFineLocation"

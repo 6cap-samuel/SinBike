@@ -77,9 +77,4 @@ public class ManageCardActivity extends AppCompatActivity implements View.OnClic
             this.add();
         }
     }
-
-    public void updateAccountBalance() {
-
-
-    }
 }

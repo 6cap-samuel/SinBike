@@ -8,7 +8,6 @@ public class Transaction extends Model {
     private double amount;
     private @ServerTimestamp Timestamp transactionDate;
     private String accountId;
-    private String description;
     private String transactionType;
 
     public Transaction() {
@@ -27,14 +26,6 @@ public class Transaction extends Model {
 
     public void setTransactionType(String transactionType) {
         this.transactionType = transactionType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getAccountId() {

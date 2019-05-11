@@ -36,7 +36,7 @@ public class TopUpFragment extends Fragment {
                 }
                 else {
                     double amount = Double.parseDouble(amt.getText().toString());
-                    Intent intent = new Intent(getActivity(),ManageCardActivity.class);
+                    Intent intent = new Intent(getActivity(),CardFormActivity.class);
                     intent.putExtra("amount", amount);
                     startActivity(intent);
                 }

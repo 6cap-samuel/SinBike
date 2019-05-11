@@ -100,6 +100,12 @@ public class Payment2FAActivity extends AppCompatActivity {
                             double oldAmount = account.getAccountBalance();
                             double newAmount = amount + oldAmount;
                             account.setAccountBalance(newAmount);
+                            String date = account.getDateOfBirth();
+                            account.setDateOfBirth(date);
+                            String gender = account.getGender();
+                            account.setGender(gender);
+                            String name = account.getName();
+                            account.setName(name);
                             accountViewModel.update(account);
                             Intent intent = new Intent(Payment2FAActivity.this , SuccessfulTopUpMessage.class);
                             startActivity(intent);
