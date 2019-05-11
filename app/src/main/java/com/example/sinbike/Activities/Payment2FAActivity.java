@@ -97,7 +97,9 @@ public class Payment2FAActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Bundle extras = getIntent().getExtras();
                             double amount = extras.getDouble("amount");
-                            account.setAccountBalance(amount);
+                            double oldAmount = account.getAccountBalance();
+                            double newAmount = amount + oldAmount;
+                            account.setAccountBalance(newAmount);
                             accountViewModel.update(account);
                             Intent intent = new Intent(Payment2FAActivity.this , SuccessfulTopUpMessage.class);
                             startActivity(intent);

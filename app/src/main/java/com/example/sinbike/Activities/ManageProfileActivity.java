@@ -114,6 +114,10 @@ public class ManageProfileActivity extends AppCompatActivity implements View.OnC
 
         this.account.setGender(genderOptions);
 
+        double accountBalance = this.account.getAccountBalance();
+
+        this.account.setAccountBalance(accountBalance);
+
         this.accountViewModel.update(this.account);
         Intent intent = new Intent(ManageProfileActivity.this , ManageDashboardActivity.class);
         Toast.makeText(this, "Account Detailed Updated!", Toast.LENGTH_SHORT).show();

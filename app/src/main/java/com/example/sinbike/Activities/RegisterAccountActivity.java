@@ -2,6 +2,8 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -75,7 +77,7 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         btnBack = findViewById(R.id.btnBack);
         tvTermsandCondition = findViewById(R.id.tvTermsandCondition);
         checkBox = findViewById(R.id.cbTermsAndCondition);
-
+        signupDOB.addTextChangedListener(new validateDOB());
 
 
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
@@ -123,10 +125,30 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     }
 
 
-    /**
-     * Form validation.
-     * @return
-     */
+    private class validateDOB implements TextWatcher {
+        private boolean lock;
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (lock || s.length() > 8) {
+                return;
+            }
+            lock = true;
+            for (int i = 2; i < s.length(); i += 3) {
+                if (s.toString().charAt(i) != '/') {
+                    s.insert(i, "/");
+                }
+            }
+            lock = false;
+        }
+    }
+
+
     public boolean checkValidation() {
         name = signupName.getText().toString().trim();
         email = signupEmail.getText().toString().trim();
