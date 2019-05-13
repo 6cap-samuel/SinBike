@@ -1,26 +1,22 @@
 package com.example.sinbike.RecyclerViews.Adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.sinbike.Activities.AddPaymentActivity;
-import com.example.sinbike.Activities.ManageCardActivity;
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Card;
 import com.example.sinbike.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * This class is the adapter class of the CardRecyclerView

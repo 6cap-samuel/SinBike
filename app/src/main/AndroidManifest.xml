@@ -23,8 +23,6 @@
         <activity android:name=".Activities.AboutUs"></activity>
         <activity android:name=".Activities.Payment2FAActivity" />
         <activity android:name=".Activities.SuccessfulTopUpMessage" />
-        <activity android:name=".Activities.PaymentMethodActivity" />
-        <activity android:name=".Activities.ManageCardActivity" />
         <activity android:name=".Activities.ManageProfileActivity" />
 
         <meta-data
@@ -49,8 +47,6 @@
         <activity android:name=".Activities.RegisterAccountActivity" />
         <activity android:name=".Activities.ForgotPasswordActivity" />
         <activity android:name=".Activities.RentalActivity" />
-        <activity android:name=".Activities.AddPaymentActivity" />
-        <activity android:name=".Activities.TopUpActivity" />
         <activity android:name=".Activities.ScannedBarcodeActivity" />
         <activity android:name=".Activities.ReportFaultsActivity" />
         <activity android:name=".Activities.CheckFineActivity" />
