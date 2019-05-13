@@ -30,12 +30,12 @@ public class TopUpFragment extends Fragment {
 
         topupBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if (amt.length() < 3 ) {
+                double amount = Double.parseDouble(amt.getText().toString());
+                if (amount < 10.00 ) {
                     amt.setError("Minimum Top Up Value must be 10SGD");
                     amt.requestFocus();
                 }
                 else {
-                    double amount = Double.parseDouble(amt.getText().toString());
                     Intent intent = new Intent(getActivity(),CardFormActivity.class);
                     intent.putExtra("amount", amount);
                     startActivity(intent);
