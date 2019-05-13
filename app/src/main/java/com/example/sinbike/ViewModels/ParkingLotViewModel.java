@@ -3,20 +3,16 @@ package com.example.sinbike.ViewModels;
 import android.app.Application;
 import android.util.Log;
 
-import com.example.sinbike.Observers.BicycleViewModelObserver;
-import com.example.sinbike.Observers.ParkingLotViewModelObserver;
-import com.example.sinbike.POJO.Bicycle;
-import com.example.sinbike.POJO.ParkingLot;
-import com.example.sinbike.Services.BicycleService;
-import com.example.sinbike.Services.ParkingLotService;
-import com.google.firebase.firestore.GeoPoint;
-
-import java.util.List;
-
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
+
+import com.example.sinbike.Observers.ParkingLotViewModelObserver;
+import com.example.sinbike.POJO.ParkingLot;
+import com.example.sinbike.Services.ParkingLotService;
+
+import java.util.List;
 
 public class ParkingLotViewModel extends AndroidViewModel
 {
@@ -37,6 +33,11 @@ public class ParkingLotViewModel extends AndroidViewModel
 
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;
+    }
+
+    public LiveData<com.example.sinbike.Repositories.common.Resource<List<ParkingLot>>> getAllParkinglot(){
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<ParkingLot>>> liveobs = this.parkingLotService.getAllParkingLot();
+        return liveobs;
     }
 
     public void getAllParkingLots(){

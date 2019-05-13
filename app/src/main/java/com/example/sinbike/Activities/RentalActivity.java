@@ -1,6 +1,7 @@
 package com.example.sinbike.Activities;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
@@ -9,9 +10,28 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProviders;
+
+import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Bicycle;
+import com.example.sinbike.POJO.ParkingLot;
 import com.example.sinbike.R;
+import com.example.sinbike.Repositories.common.Resource;
+import com.example.sinbike.ViewModels.AccountViewModel;
+import com.example.sinbike.ViewModels.BicycleViewModel;
+import com.example.sinbike.ViewModels.ParkingLotViewModel;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -26,34 +46,59 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.GeoPoint;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public class RentalActivity extends AppCompatActivity implements
+
+public class RentalActivity extends AppCompatActivity implements OnClickListener,
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener {
 
-    private GoogleMap map;
-    private GoogleApiClient googleApiClient;
-    private LocationRequest locationRequest;
-    private Location lastLocation;
-    private Marker currentUserLocationMarker;
-    private static final int Request_User_Location_Code = 99;
-    private Toolbar toolbar;
-    private DatabaseReference database;
+    ImageButton RentQR;
+    GoogleMap map;
+    GoogleApiClient googleApiClient;
+    LocationRequest locationRequest;
+    Location lastLocation;
+    Marker currentUserLocationMarker;
+    static final int Request_User_Location_Code = 99;
 
+    BicycleViewModel bicycleViewModel;
+    List <Bicycle> bicycleList = new ArrayList<>();
+    List <Bicycle> tempBicycleList = new ArrayList<>();
+    AccountViewModel accountViewModel;
+    Account account;
+    List<Double> latitude = new ArrayList<>();
+    List<Double> longtitude = new ArrayList<>();
+    Marker bicycleMarker;
+    Map<Marker, List<Bicycle>> markerMap;
+    SupportMapFragment mapFragment;
+    List<GeoPoint> geoPoint = new ArrayList<>();
+    ParkingLotViewModel parkingLotViewModel;
+    List<ParkingLot> parkingLots = new ArrayList<>();
+    List<GeoPoint> parkingCoordinates = new ArrayList<>();
+    List<Double> parkingLotLatitude = new ArrayList<>();
+    List<Double> parkingLotLongtitude = new ArrayList<>();
+    Marker parkingLotMarker;
+    Map<Marker, List<ParkingLot>> parkingLotMarkerMap;
+
+
+    @SuppressLint("SetTextI18n")
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rental_main);
+
+        initViews();
+        initViewModel();
+        FirebaseApp.initializeApp(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,21 +115,57 @@ public class RentalActivity extends AppCompatActivity implements
             }
         });
 
-
-
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             checkUserLocationPermission();
         }
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+       mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        markerMap = new HashMap<Marker, List<Bicycle>>();
 
+        bicycleViewModel.getAllBicycles().observe(this, (Resource<List<Bicycle>> listResource) -> {
+            bicycleList = listResource.data();
+            for(int y=0; y < bicycleList.size();y++){
+                tempBicycleList.add(bicycleList.get(y));
+                geoPoint.add(bicycleList.get(y).getCoordinate());
+
+                latitude.add(geoPoint.get(y).getLatitude());
+                longtitude.add(geoPoint.get(y).getLongitude());
+                break;
+            }
+            addBicycleMarker(bicycleList);
+        });
+
+        parkingLotMarkerMap = new HashMap<Marker, List<ParkingLot>>();
+
+        parkingLotViewModel.getAllParkinglot().observe(this, new Observer<Resource<List<ParkingLot>>>() {
+            @Override
+            public void onChanged(Resource<List<ParkingLot>> listResource) {
+                parkingLots = listResource.data();
+                for(int s = 0; s<parkingLots.size(); s++){
+                    parkingCoordinates.add(parkingLots.get(s).getAddress());
+                    parkingLotLatitude.add(parkingCoordinates.get(s).getLatitude());
+                    parkingLotLongtitude.add(parkingCoordinates.get(s).getLongitude());
+                    break;
+                }
+                addParkingLotMarker(parkingLots);
+            }
+        });
+
+        RentQR.setOnClickListener(new OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RentalActivity.this, RentalBarcodeActivity.class));
+            }
+        });
     }
 
-
-
+    private void initViews() {
+        RentQR = findViewById(R.id.RentQR);
+        RentQR.setOnClickListener(this);
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -97,10 +178,10 @@ public class RentalActivity extends AppCompatActivity implements
             map.getUiSettings().setMapToolbarEnabled(false);
 
             if (!success) {
-                Log.e("LoginActivity", "Style parsing failed.");
+                Log.e("MainActivity", "Style parsing failed.");
             }
         } catch (Resources.NotFoundException e) {
-            Log.e("LoginActivity", "Can't find style. Error: ", e);
+            Log.e("MainActivity", "Can't find style. Error: ", e);
         }
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
@@ -109,9 +190,16 @@ public class RentalActivity extends AppCompatActivity implements
 
             map.setMyLocationEnabled(true);
         }
-
     }
 
+    public void initViewModel(){
+        this.bicycleViewModel = ViewModelProviders.of(this).get(BicycleViewModel.class);
+        this.bicycleViewModel.setLifecycleOwner(this);
+        this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
+        this.account = accountViewModel.getAccount();
+        this.parkingLotViewModel = ViewModelProviders.of(this).get(ParkingLotViewModel.class);
+        this.parkingLotViewModel.setLifecycleOwner(this);
+    }
 
     public boolean checkUserLocationPermission()
     {
@@ -194,14 +282,9 @@ public class RentalActivity extends AppCompatActivity implements
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
         // map.animateCamera(CameraUpdateFactory.zoomBy(14));
 
-        LatLng HDXBike = new LatLng(1.3220, 103.9260);
-        map.addMarker(new MarkerOptions().position(HDXBike).title("HD XBIKE")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_icon)));
+        FirebaseApp.initializeApp(this);
 
 
-        LatLng HDTBike = new LatLng(1.3250, 103.9250);
-        map.addMarker(new MarkerOptions().position(HDTBike).title("HD XTBIKE")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_icon)));
 
         if(googleApiClient != null)
         {
@@ -238,6 +321,46 @@ public class RentalActivity extends AppCompatActivity implements
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
+
+   public void addBicycleMarker(List<Bicycle> tempBicycleList) {
+        for(int e = 0; e<latitude.size(); e++) {
+            for(int a = 0; a<longtitude.size(); a++) {
+
+                bicycleMarker = this.map.addMarker(new MarkerOptions()
+                        .position(new LatLng(tempBicycleList.get(e).getCoordinate().getLatitude(), tempBicycleList.get(a).getCoordinate().getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.bicycle_icon)));
+                break;
+
+            }
+        }
+        markerMap.put(bicycleMarker, tempBicycleList);
+    }
+
+    public void addParkingLotMarker(List<ParkingLot> tempParkingLotList) {
+        for(int e = 0; e<parkingLotLatitude.size(); e++) {
+            for(int a = 0; a<parkingLotLongtitude.size(); a++) {
+
+                parkingLotMarker = this.map.addMarker(new MarkerOptions()
+                        .position(new LatLng(tempParkingLotList.get(e).getAddress().getLatitude(), tempParkingLotList.get(a).getAddress().getLongitude()))
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_icon)));
+                break;
+
+            }
+        }
+        parkingLotMarkerMap.put(parkingLotMarker, tempParkingLotList);
+    }
+
+    public boolean onMarkerClick (Marker marker) {
+        List<Bicycle> bicycle = markerMap.get(marker);
+        Intent intent = new Intent(RentalActivity.this , PopActivity.class);
+        startActivity(intent);
+        finish();
+        return false;
+    }
 }
 
 

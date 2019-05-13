@@ -18,7 +18,7 @@ public class PaymentViewModel extends AndroidViewModel {
 
     private static final String TAG = "PaymentViewModel";
     private FinePaymentService finePaymentService;
-    private RentalPaymentService rentalPaymentService;
+    RentalPaymentService rentalPaymentService;
     private String accountId;
 
     public PaymentViewModel(Application application){

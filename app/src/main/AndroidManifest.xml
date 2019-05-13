@@ -53,6 +53,13 @@
         <activity
             android:name=".Activities.CardFormActivity"
             android:theme="@style/Theme.AppCompat.Light" />
+        <activity android:name=".Activities.RentalBarcodeActivity" />
+        <activity android:name=".Activities.PopActivity"
+            android:theme="@style/Theme.PopMe"
+            />
+        <activity android:name=".Activities.RentalPaymentBarcodeActivity" />
+        <activity android:name=".Activities.RentalPaymentActivity" />
+        <activity android:name=".Activities.RentalPaymentSuccessful" />
 
         <meta-data
             android:name="preloaded_fonts"

@@ -8,5 +8,13 @@
         <item name="android:textColor">@color/black</item>   // default color
     </style>
 
+    <style parent="Theme.AppCompat.Light.NoActionBar" name="Theme.PopMe">
+
+        <item name="android:windowIsTranslucent">true</item>
+
+        <item name="android:windowCloseOnTouchOutside">false</item>
+
+    </style>
+    <style name="Theme"/>
 
 </resources>

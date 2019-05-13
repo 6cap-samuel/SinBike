@@ -5,7 +5,6 @@ import android.app.Application;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.sinbike.POJO.FinePayment;
 import com.example.sinbike.POJO.Payment;
 import com.example.sinbike.POJO.RentalPayment;
 import com.example.sinbike.Repositories.Firestore.FirestoreRepository;
@@ -15,7 +14,6 @@ import com.example.sinbike.Repositories.common.QueryLiveData;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.Query;
 
-import static com.example.sinbike.Constants.COLLECTION_FINE_PAYMENT;
 import static com.example.sinbike.Constants.COLLECTION_RENTAL_PAYMENT;
 
 public class RentalPaymentRepository extends FirestoreRepository<RentalPayment> {
@@ -23,12 +21,12 @@ public class RentalPaymentRepository extends FirestoreRepository<RentalPayment> 
     private static final String TAG = "RentalPaymentRepository";
 
     private static final Class<RentalPayment> CLASS_TYPE = RentalPayment.class;
-    private MutableLiveData<FinePayment> RentalPayment;
+    private MutableLiveData<RentalPayment> RentalPayment;
     private String userId;
 
     public RentalPaymentRepository(Application application) {
         super(application, CLASS_TYPE);
-        CollectionReference collectionReference = firestore.collection(COLLECTION_FINE_PAYMENT);
+        CollectionReference collectionReference = firestore.collection(COLLECTION_RENTAL_PAYMENT);
         super.setCollectionReference(collectionReference);
         this.RentalPayment = new MutableLiveData<>();
     }
