@@ -20,7 +20,7 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
 
     private static String TAG = "ManageDashboardActivity";
 
-    public CardView rentalbikeid, walletid, reportafaultid, transactionid, manageprofileid, payfinesid;
+    public CardView rentalbikeid, walletid, reportafaultid, aboutus, manageprofileid, payfinesid;
 
     Button logout;
     TextView idUserName;
@@ -42,13 +42,13 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
         rentalbikeid = findViewById(R.id.rentalbike_id);
         walletid = findViewById(R.id.wallet_id);
         reportafaultid = findViewById(R.id.reportafault_id);
-        transactionid = findViewById(R.id.transaction_id);
+        aboutus = findViewById(R.id.aboutus);
         manageprofileid = findViewById(R.id.manageprofile_id);
         payfinesid = findViewById(R.id.checkfine_id);
         logout = findViewById(R.id.btnLogout);
         idUserName = findViewById(R.id.idUserName);
 
-        transactionid.setOnClickListener(this);
+        aboutus.setOnClickListener(this);
         manageprofileid.setOnClickListener(this);
         rentalbikeid.setOnClickListener(this);
         walletid.setOnClickListener(this);
@@ -74,6 +74,8 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
             this.launchReportFault();
         } else if (v.getId() == R.id.checkfine_id){
             this.launchPayFine();
+        } else if (v.getId() == R.id.aboutus){
+            this.aboutus();
         } else if (v.getId() == R.id.btnLogout){
             this.logout();
         } else if (v.getId() == R.id.manageprofile_id){
@@ -101,16 +103,25 @@ public class ManageDashboardActivity extends AppCompatActivity implements View.O
         startActivity(intent);
     }
 
+    public void aboutus(){
+        Intent intent = new Intent (this, AboutUs.class);
+        startActivity(intent);
+    }
+
     public void logout(){
         this.accountViewModel.logout();
         Intent intent = new Intent (this, LoginActivity.class);
         startActivity(intent);
     }
 
+
+
     public void launchManageProfile(){
         Intent intent = new Intent (this, ManageProfileActivity.class);
         startActivity(intent);
     }
+
+
 
     public boolean checkAccountStatus(Account account){
         if(account.getStatus()== Constants.ACCOUNT_SUSPENDED){

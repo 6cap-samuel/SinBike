@@ -174,7 +174,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/transaction_id"
+                android:id="@+id/checkfine_id"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -194,13 +194,13 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:src="@drawable/trips" />
+                        android:src="@drawable/fines" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="My Trips"
+                        android:text="Check Fines"
                         android:textColor="@color/black"
                         android:textSize="18dp" />
                 </LinearLayout>
@@ -240,7 +240,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/checkfine_id"
+                android:id="@+id/aboutus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_rowWeight="1"
@@ -259,14 +259,14 @@
 
                     <ImageView
                         android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:src="@drawable/fines" />
+                        android:layout_height="34dp"
+                        android:src="@drawable/sinbike" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:text="Check Fines"
+                        android:text="About Us"
                         android:textColor="@color/black"
                         android:textSize="18dp" />
                 </LinearLayout>
