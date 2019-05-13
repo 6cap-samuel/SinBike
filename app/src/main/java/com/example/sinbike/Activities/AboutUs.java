@@ -19,7 +19,7 @@ public class AboutUs extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setTitle("Forget Password");
+        getSupportActionBar().setTitle("About Us");
         toolbar.setNavigationOnClickListener(v -> {
             Intent intent = new Intent(AboutUs.this, ManageDashboardActivity.class);
             startActivity(intent);
