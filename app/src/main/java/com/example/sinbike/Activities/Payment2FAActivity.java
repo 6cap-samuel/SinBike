@@ -2,6 +2,9 @@ package com.example.sinbike.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,6 +55,9 @@ public class Payment2FAActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         etPhone = findViewById(R.id.phone_no);
+        etPhone.setText("+65");
+        Selection.setSelection(etPhone.getText(), etPhone.getText().length());
+
         etVeriCode = findViewById(R.id.veri_code);
         initViewModel();
 
@@ -78,6 +84,22 @@ public class Payment2FAActivity extends AppCompatActivity {
             }
         });
 
+        etPhone.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!s.toString().startsWith("+65")){
+                    etPhone.setText("+65");
+                    Selection.setSelection(etPhone.getText(), etPhone.getText().length());
+                }
+            }
+        });
+
     }
 
     public void initViewModel() {
@@ -85,8 +107,6 @@ public class Payment2FAActivity extends AppCompatActivity {
         this.account = accountViewModel.getAccount();
         this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
     }
-
-
 
     private void verifySignInCode() {
         String code = etVeriCode.getText().toString();
@@ -153,29 +173,21 @@ public class Payment2FAActivity extends AppCompatActivity {
                 TimeUnit.MINUTES,
                 this,
                 mCallbacks);
-
     }
 
     PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-
         @Override
         public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-
         }
-
         @Override
         public void onVerificationFailed(FirebaseException e) {
-
         }
-
         @Override
         public void onCodeSent(String s, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
             super.onCodeSent(s, forceResendingToken);
-
             codeSent = s;
         }
     };
-
 
 
 }
