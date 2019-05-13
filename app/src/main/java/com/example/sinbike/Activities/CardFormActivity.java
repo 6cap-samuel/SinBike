@@ -26,7 +26,7 @@ public class CardFormActivity extends AppCompatActivity implements OnCardFormSub
     private SupportedCardTypesView mSupportedCardTypesView;
 
     protected CardForm mCardForm;
-    protected Button addBtn, cancelBtn;
+    protected Button topupBtn, cancelBtn;
 
 
     @Override
@@ -37,7 +37,7 @@ public class CardFormActivity extends AppCompatActivity implements OnCardFormSub
         mSupportedCardTypesView = findViewById(R.id.supported_card_types);
         mSupportedCardTypesView.setSupportedCardTypes(SUPPORTED_CARD_TYPES);
 
-        addBtn = findViewById(R.id.saveBtn);
+        topupBtn = findViewById(R.id.topupBtn);
         cancelBtn = findViewById(R.id.cancelBtn);
 
 
@@ -55,7 +55,7 @@ public class CardFormActivity extends AppCompatActivity implements OnCardFormSub
         // Failure to set FLAG_SECURE exposes your app to screenshots allowing other apps to steal card information.
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
-        addBtn.setOnClickListener(new View.OnClickListener() {
+        topupBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mCardForm.isValid()) {

@@ -35,6 +35,8 @@ public class TopUpFragment extends Fragment {
                     amt.setError("Minimum Top Up Value must be 10SGD");
                     amt.requestFocus();
                 }
+
+
                 else {
                     Intent intent = new Intent(getActivity(),CardFormActivity.class);
                     intent.putExtra("amount", amount);
@@ -42,6 +44,7 @@ public class TopUpFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 }
