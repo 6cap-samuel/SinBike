@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Payment2FAActivity extends AppCompatActivity {
 
-    Button confirmBtn, submitBtn, backBtn;
+    Button confirmBtn, submitBtn;
     EditText etPhone,  etVeriCode;
     FirebaseAuth mAuth;
     String codeSent;
@@ -49,8 +49,6 @@ public class Payment2FAActivity extends AppCompatActivity {
 
         confirmBtn = findViewById(R.id.confirmBtn);
         submitBtn = findViewById(R.id.submitBtn);
-        backBtn = findViewById(R.id.backBtn);
-
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -72,15 +70,6 @@ public class Payment2FAActivity extends AppCompatActivity {
             @Override
             public void onClick(View args0) {
                 verifySignInCode();
-            }
-        });
-
-        backBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View args0) {
-                Intent intent = new Intent(Payment2FAActivity.this , CardFormActivity.class);
-                startActivity(intent);
-                finish();
             }
         });
 

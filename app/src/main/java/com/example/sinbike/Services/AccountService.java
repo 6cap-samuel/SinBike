@@ -26,8 +26,8 @@ public class AccountService {
         return this.accountRepository.getAllAccount();
     }
 
-    public QueryLiveData<Account> login(String email, String password){
-        return this.accountRepository.login(email, password);
+    public QueryLiveData<Account> login(String email){
+        return this.accountRepository.login(email);
     }
 
     public CompletionLiveData create(Account account){

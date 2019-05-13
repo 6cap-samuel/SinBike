@@ -16,6 +16,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sinbike.Activities.Dialogs.CustomDialog;
@@ -23,11 +24,18 @@ import com.example.sinbike.Constants;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.R;
+import com.example.sinbike.Repositories.common.Resource;
 import com.example.sinbike.ViewModels.AccountViewModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisterAccountActivity extends AppCompatActivity implements SignUpObserver, View.OnClickListener {
 
@@ -36,10 +44,12 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     RadioGroup rdGender;
     RadioButton rbMale, rbFemale;
     RadioButton radioButtonOptions;
-    Button btnSubmit, btnClear, btnBack;
+    Button btnSubmit, btnClear;
     CustomDialog customDialog;
     CheckBox checkBox;
     FirebaseAuth firebaseAuth;
+    List<String> emailList = new ArrayList<>();
+    List<Account> accountList = new ArrayList<>();
 
     String name;
     String email;
@@ -60,6 +70,17 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.init();
         this.setListener();
         this.initToolbar();
+        emailList.clear();
+        accountViewModel.getAllAccount().removeObservers(this);
+        accountViewModel.getAllAccount().observe(this, new Observer<Resource<List<Account>>>() {
+            @Override
+            public void onChanged(Resource<List<Account>> listResource) {
+                accountList = listResource.data();
+                for(int r = 0; r < accountList.size(); r++) {
+                    emailList.add(accountList.get(r).getEmail());
+                }
+            }
+        });
     }
 
     public void init(){
@@ -83,8 +104,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         this.accountViewModel.setSignUpObserver(this);
         this.accountViewModel.setLifecycleOwner(this);
     }
-
-
 
     public void setListener(){
 
@@ -114,7 +133,6 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         Account account = new Account();
         account.setName(name);
         account.setEmail(email);
-        account.setPassword(password);
         account.setTelephoneNumber(phone);
         account.setDateOfBirth(DOB);
         account.setGender(genderOptions);
@@ -187,7 +205,13 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
         } else if (!checkBox.isChecked()){
             Toast.makeText(RegisterAccountActivity.this, "Please accept Terms & Conditions!", Toast.LENGTH_LONG).show();
             return false;
+        } else for(int e = 0; e < emailList.size(); e++){
+            if (email.equals(emailList.get(e))){
+                Toast.makeText(RegisterAccountActivity.this, "Email has been used!", Toast.LENGTH_LONG).show();
+                return false;
+            }
         }
+
         return true;
     }
 
@@ -213,12 +237,22 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
             rdGender.clearCheck();
         }else if (v.getId() == R.id.btnSubmit){
             if (checkValidation()) {
-                registerUser();
                 firebaseAuth = FirebaseAuth.getInstance();
                 firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((task) -> {
                     if (task.isSuccessful()) {
                         sendEmailVerification();
-                    }
+                    } else
+                        try {
+                            throw task.getException();
+                        } catch(FirebaseAuthWeakPasswordException e) {
+                            Toast.makeText(RegisterAccountActivity.this, "Password is weak!", Toast.LENGTH_LONG).show();
+                        } catch(FirebaseAuthInvalidCredentialsException e) {
+                            Toast.makeText(RegisterAccountActivity.this, "This email address is invalid!", Toast.LENGTH_LONG).show();
+                        } catch(FirebaseAuthUserCollisionException e) {
+                            Toast.makeText(RegisterAccountActivity.this, "Account has been created!", Toast.LENGTH_LONG).show();
+                        } catch(Exception e) {
+                            Toast.makeText(RegisterAccountActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
                 });
             }
         } else if (v.getId() == R.id.tvTermsandCondition){
@@ -250,17 +284,18 @@ public class RegisterAccountActivity extends AppCompatActivity implements SignUp
     }
 
     public void sendEmailVerification(){
-        FirebaseUser firebaseUser =firebaseAuth.getCurrentUser();
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
         if(firebaseUser!=null){
             firebaseUser.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
+                        registerUser();
                         Toast.makeText(RegisterAccountActivity.this, "Successfully Registered, Verification email sent. Please verify your email!", Toast.LENGTH_LONG).show();
                         accountViewModel.logout();
-                        finish();
                         Intent intent = new Intent(RegisterAccountActivity.this , LoginActivity.class);
                         startActivity(intent);
+                        finish();
                     }else
                         Toast.makeText(RegisterAccountActivity.this, "Verification email has not been sent!", Toast.LENGTH_SHORT).show();
                 }

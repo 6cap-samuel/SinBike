@@ -67,9 +67,11 @@ public class ViewTransactionFragment extends Fragment {
     }
 
     public List<Transaction> populateList() {
-        transactionViewModel.getAllTransaction(account.id).observe(this, new Observer<com.example.sinbike.Repositories.common.Resource<List<Transaction>>>() {
+        transactionViewModel.getAllTransaction(account.id).removeObservers(this);
+        transactionViewModel.getAllTransaction(account.id).observe(getViewLifecycleOwner(), new Observer<com.example.sinbike.Repositories.common.Resource<List<Transaction>>>() {
             @Override
             public void onChanged(Resource<List<Transaction>> listResource) {
+
                 transactionList = listResource.data();
                 for (int y = 0; y < transactionList.size(); y++) {
                     type.add(transactionList.get(y).getTransactionType());

@@ -12,6 +12,7 @@ import com.example.sinbike.Observers.LoginObserver;
 import com.example.sinbike.Observers.SignUpObserver;
 import com.example.sinbike.POJO.Account;
 import com.example.sinbike.Repositories.Firestore.Resource;
+import com.example.sinbike.Repositories.common.CompletionLiveData;
 import com.example.sinbike.Services.AccountService;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -59,8 +60,8 @@ public class AccountViewModel extends AndroidViewModel {
         return this.account;
     }
 
-    public void loginAccount(String email, String password){
-        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.login(email, password);
+    public void loginAccount(String email){
+        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = this.accountService.login(email);
         Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>(){
             @Override
             public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Account>> listResource) {
@@ -82,40 +83,9 @@ public class AccountViewModel extends AndroidViewModel {
         liveobs.observe(this.lifecycleOwner, obs);
     }
 
-    public void createAccount(Account account){
-        if (createAccountValidation()){
-            final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> emailExist = this.accountService.checkEmail(account.getEmail());
+    public CompletionLiveData createAccount(Account account){
 
-            Observer checkObs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>() {
-                @Override
-                public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Account>> listResource) {
-                    if (listResource.data().size() == 0){
-                        final LiveData<com.example.sinbike.Repositories.common.Resource<List<Account>>> liveobs = accountService.login(account.getEmail(), account.getPassword());
-                        Observer obs = new Observer<com.example.sinbike.Repositories.common.Resource<List<Account>>>(){
-                            @Override
-                            public void onChanged(com.example.sinbike.Repositories.common.Resource<List<Account>> listResource) {
-
-                                List<Account> accounts = listResource.data();
-                                Log.d(TAG, accounts.toString());
-
-                                if (listResource.data().size() == 0){
-                                    accountService.create(account);
-                                    signUpObserver.createAccountPass();
-                                } else {
-                                    signUpObserver.createAccountFail();
-                                }
-                                liveobs.removeObserver(this);
-                            }
-                        };
-                        liveobs.observe(lifecycleOwner, obs);
-                    } else {
-                        signUpObserver.createAccountFail();
-                    }
-                    emailExist.removeObserver(this);
-                }
-            };
-            emailExist.observe(this.lifecycleOwner, checkObs);
-        }
+        return this.accountService.create(account);
     }
 
     public boolean createAccountValidation(){

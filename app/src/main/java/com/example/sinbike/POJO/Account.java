@@ -5,7 +5,6 @@ import com.example.sinbike.Repositories.common.Model;
 public class Account extends Model {
 
     private String name;
-    private String password;
     private String email;
     private String telephoneNumber;
     private String gender;
@@ -16,7 +15,7 @@ public class Account extends Model {
     public Account() {
     }
 
-    public Account(String name, String email, String telephoneNumber, String gender, String dateOfBirth, int status, double accountBalance, String password) {
+    public Account(String name, String email, String telephoneNumber, String gender, String dateOfBirth, int status, double accountBalance) {
         this.name = name;
         this.email = email;
         this.telephoneNumber = telephoneNumber;
@@ -24,15 +23,6 @@ public class Account extends Model {
         this.dateOfBirth = dateOfBirth;
         this.status = status;
         this.accountBalance = accountBalance;
-        this.password = password;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getName() {

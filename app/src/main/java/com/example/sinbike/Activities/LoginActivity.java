@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.Objects;
 
-public class LoginActivity extends AppCompatActivity implements LoginObserver, View.OnClickListener{
+public class LoginActivity extends AppCompatActivity implements LoginObserver, View.OnClickListener {
 
     // TAG for debug purpose.
     private static final String TAG = "LoginActivity";
@@ -36,7 +36,6 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
     EditText etEmail, etPassword;
     ProgressBar progressBar;
     TextView etForgetPassword;
-    FirebaseAuth firebaseAuth;
 
     /**
      * Declaration of ViewModel
@@ -51,8 +50,8 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
 
         this.initViewModel();
 
-        if (this.accountViewModel.getAccount() != null){
-                this.loginSuccess(this.accountViewModel.getAccount());
+        if (this.accountViewModel.getAccount() != null) {
+            this.loginSuccess(this.accountViewModel.getAccount());
         }
         this.init();
     }
@@ -71,7 +70,7 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
 
     }
 
-    public void initViewModel(){
+    public void initViewModel() {
         this.accountViewModel = ViewModelProviders.of(this).get(AccountViewModel.class);
         this.accountViewModel.setLifecycleOwner(this);
         this.accountViewModel.setLoginObserver(this);
@@ -101,25 +100,23 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         } else if (v.getId() == R.id.btnLogin) {
             String email = etEmail.getText().toString().toLowerCase();
             final String password = etPassword.getText().toString();
-            checkValidation();
             FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
             firebaseAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((task) -> {
-                    if (task.isSuccessful()) {
-                        checkEmailVerification();
-                    } else
-                        loginFailed();
+                if (task.isSuccessful()) {
+                    checkEmailVerification();
+                } else
+                    loginFailed();
             });
         }
     }
 
-    public void login(){
+    public void login() {
         String email = etEmail.getText().toString().toLowerCase();
-        final String password = etPassword.getText().toString();
 
         checkValidation();
 
         progressBar.setVisibility(View.VISIBLE);
-        accountViewModel.loginAccount(email, password);
+        accountViewModel.loginAccount(email);
     }
 
     public boolean checkValidation() {
@@ -146,15 +143,15 @@ public class LoginActivity extends AppCompatActivity implements LoginObserver, V
         return true;
     }
 
-   public void checkEmailVerification(){
+    public void checkEmailVerification() {
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         usertask = Objects.requireNonNull(firebaseAuth.getCurrentUser()).reload();
         usertask.addOnSuccessListener((OnSuccessListener) (Object o) -> {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user != null) {
                 if (user.isEmailVerified()) {
-                    login();
                     Toast.makeText(LoginActivity.this, "Welcome to SinBike", Toast.LENGTH_LONG).show();
+                    this.login();
                 } else {
                     Toast.makeText(LoginActivity.this, "Please verify your email!", Toast.LENGTH_LONG).show();
                     this.accountViewModel.logout();

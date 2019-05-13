@@ -7,17 +7,9 @@
     tools:context=".Activities.Payment2FAActivity"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/backBtn"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:background="@drawable/backbutton"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"/>
-
     <Space
         android:layout_width="match_parent"
-        android:layout_height="140dp" />
+        android:layout_height="174dp" />
 
     <TextView
         android:id="@+id/tv_phone_no"
