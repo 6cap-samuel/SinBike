@@ -112,8 +112,8 @@ public class RentalBarcodeActivity extends AppCompatActivity {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
 
-                    ToneGenerator toneNotification = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100); /* Setting beep sound */
-                    toneNotification.startTone(ToneGenerator.TONE_PROP_BEEP, 150);
+                  //  ToneGenerator toneNotification = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 100); /* Setting beep sound */
+                    //toneNotification.startTone(ToneGenerator.TONE_PROP_BEEP, 150);
 
                     intentData = barcodes.valueAt(0).displayValue; // Retrieving text from QR Code
                     for (int i = 0; i < lst.size(); i++) {

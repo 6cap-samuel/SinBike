@@ -36,4 +36,14 @@ public class Reservation extends Model {
     public void setReservationStatus(boolean reservationStatus) {
         this.reservationStatus = reservationStatus;
     }
+
+    @Override
+    public String toString() {
+        return "Reservation{" +
+                "bicycleID=" + bicycleId +
+                ", reservationDate='" + reservationDate + '\'' +
+                ", reservationStatus='" + reservationStatus + '\'' +
+                ", bicycleID='" + bicycleId + '\'' +
+                '}';
+    }
 }

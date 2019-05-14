@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProviders;
@@ -65,15 +64,13 @@ public class RentalPaymentActivity
         btnpaynow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if (account.getAccountBalance() > 0) {
-                    Intent n = new Intent(getApplicationContext(), RentalPaymentBarcodeActivity.class);
-                    n.putExtra("totalamount2", String.valueOf(totalamount));
-                    startActivity(n);
-                } else {
-                    Intent f = new Intent(getApplicationContext(), WalletPage.class);
-                    startActivity(f);
-                    Toast.makeText(RentalPaymentActivity.this, "Insufficient account balance! Please top up!", Toast.LENGTH_SHORT).show();
-                }
+
+                Bundle extras = getIntent().getExtras();
+                String bicycleID = extras.getString("bicycleID");
+                Intent n = new Intent(getApplicationContext(), RentalPaymentBarcodeActivity.class);
+                n.putExtra("totalamount2", String.valueOf(totalamount));
+                n.putExtra("bicycleID", bicycleID);
+                startActivity(n);
             }
         });
     }

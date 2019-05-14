@@ -31,8 +31,8 @@ public class BicycleViewModel extends AndroidViewModel
     }
 
     public void setObserver(BicycleViewModelObserver observer) {
-        this.observer = observer;
-    }
+    this.observer = observer;
+}
 
     public void setLifecycleOwner(LifecycleOwner lifecycleOwner) {
         this.lifecycleOwner = lifecycleOwner;

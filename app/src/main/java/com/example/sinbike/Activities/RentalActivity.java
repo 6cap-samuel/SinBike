@@ -59,6 +59,7 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnInfoWindowClickListener,
         LocationListener {
 
     ImageButton RentQR;
@@ -89,6 +90,7 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
     Map<Marker, List<ParkingLot>> parkingLotMarkerMap;
 
 
+
     @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -115,12 +117,12 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
                 finish();
             }
         });
-        geoPoint.clear();
-        parkingLotLatitude.clear();
-        parkingLotLongtitude.clear();
-        parkingCoordinates.clear();
-        tempBicycleList.clear();
-        bicycleList.clear();
+        //geoPoint.clear();
+       // parkingLotLatitude.clear();
+        //parkingLotLongtitude.clear();
+        //parkingCoordinates.clear();
+        //tempBicycleList.clear();
+        //bicycleList.clear();
 
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
@@ -134,15 +136,16 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
         markerMap = new HashMap<Marker, List<Bicycle>>();
 
+
         bicycleViewModel.getAllBicycles().removeObservers(this);
         bicycleViewModel.getAllBicycles().observe(this, (Resource<List<Bicycle>> listResource) -> {
             bicycleList = listResource.data();
             for(int y=0; y < bicycleList.size();y++){
                 tempBicycleList.add(bicycleList.get(y));
-                geoPoint.add(bicycleList.get(y).getCoordinate());
+               // geoPoint.add(bicycleList.get(y).getCoordinate());
 
-                latitude.add(geoPoint.get(y).getLatitude());
-                longtitude.add(geoPoint.get(y).getLongitude());
+                //latitude.add(geoPoint.get(y).getLatitude());
+                //longtitude.add(geoPoint.get(y).getLongitude());
             }
             addBicycleMarker(bicycleList);
         });
@@ -178,8 +181,8 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
         map = googleMap;
+
         try {
             boolean success = googleMap.setMapStyle(
                     MapStyleOptions.loadRawResourceStyle(
@@ -199,6 +202,10 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
             map.setMyLocationEnabled(true);
         }
+        ReservationClickerAdapter markerInfoWindowAdapter = new ReservationClickerAdapter(getApplicationContext());
+        googleMap.setInfoWindowAdapter(markerInfoWindowAdapter);
+
+        googleMap.setOnInfoWindowClickListener(this::onInfoWindowClick);
     }
 
     public void initViewModel(){
@@ -289,6 +296,8 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
         // map.animateCamera(CameraUpdateFactory.zoomBy(14));
 
+
+
         FirebaseApp.initializeApp(this);
 
         if(googleApiClient != null)
@@ -358,7 +367,14 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
         finish();
         return false;
     }
+
+    @Override
+    public void onInfoWindowClick(Marker marker) {
+       Intent n = new Intent(RentalActivity.this, ReservationPopActivity.class);
+       startActivity(n);
+    }
 }
+
 
 
 

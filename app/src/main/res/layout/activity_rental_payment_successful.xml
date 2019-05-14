@@ -48,7 +48,7 @@
         android:layout_marginBottom="545dp"
         android:text="Payment Successful"
         android:textColor="#FFF"
-        android:textSize="40sp"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

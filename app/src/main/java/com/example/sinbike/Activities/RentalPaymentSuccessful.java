@@ -25,14 +25,8 @@ public class RentalPaymentSuccessful extends Activity implements View.OnClickLis
         FirebaseApp.initializeApp(this);
         setContentView(R.layout.activity_rental_payment_successful);
 
-
-
         icanchor = findViewById(R.id.icanchor);
         returntohome = findViewById(R.id.returntohome);
-
-
-
-
 
         roundingalone = AnimationUtils.loadAnimation(this, R.anim.roundingalone);
         icanchor.startAnimation(roundingalone);

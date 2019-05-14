@@ -46,4 +46,8 @@ public class Constants {
     public static final int FINE_NOTPAID = 0;
     public static final int FINE_PAID = 1;
 
+    /*-------------------------- Reservation Status --------------------------*/
+    public static final boolean RESERVATION_RESERVE = true;
+    public static final boolean RESERVATION_OPEN = false;
+
 }

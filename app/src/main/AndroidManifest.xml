@@ -50,6 +50,8 @@
         <activity android:name=".Activities.ScannedBarcodeActivity" />
         <activity android:name=".Activities.ReportFaultsActivity" />
         <activity android:name=".Activities.CheckFineActivity" />
+        <activity android:name=".Activities.ReservationPopActivity"
+            android:theme="@style/Theme.PopMe"/>
         <activity
             android:name=".Activities.CardFormActivity"
             android:theme="@style/Theme.AppCompat.Light" />

@@ -17,12 +17,14 @@ import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sinbike.Constants;
 import com.example.sinbike.POJO.Account;
+import com.example.sinbike.POJO.Fine;
 import com.example.sinbike.POJO.ParkingLot;
 import com.example.sinbike.POJO.Rental;
 import com.example.sinbike.POJO.Transaction;
 import com.example.sinbike.R;
 import com.example.sinbike.Repositories.common.Resource;
 import com.example.sinbike.ViewModels.AccountViewModel;
+import com.example.sinbike.ViewModels.FineViewModel;
 import com.example.sinbike.ViewModels.ParkingLotViewModel;
 import com.example.sinbike.ViewModels.PaymentViewModel;
 import com.example.sinbike.ViewModels.RentalViewModel;
@@ -53,6 +55,7 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
     AccountViewModel accountViewModel;
     Account account;
     RentalViewModel rentalViewModel;
+    FineViewModel fineViewModel;
 
     double accountBalance, difference, totalamount;
     String totalamount1;
@@ -170,6 +173,7 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
 
                             Intent data = new Intent(getApplicationContext(), RentalPaymentSuccessful.class); //create payment layout
                             data.putExtra("barcode3", intentData);
+                            data.putExtra("bicycleID", bicycleID);
                             startActivity(data);
                             finish();
                             break;
@@ -186,6 +190,20 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Bundle extras = getIntent().getExtras();
+        String bicycleID = extras.getString("bicycleID");
+        double fineAmount = 5;
+        Fine fine = new Fine();
+        fine.setAccountId(account.id);
+        fine.setAmount(fineAmount);
+        fine.setFineDate(Timestamp.now());
+        fine.setLocation("Pasir Ris");
+        fine.setStatus(Constants.FINE_NOTPAID);
+        fineViewModel.createFine(fine);
     }
 
     @Override
@@ -209,5 +227,6 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
         this.paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
         this.rentalViewModel = ViewModelProviders.of(this).get(RentalViewModel.class);
         this.rentalViewModel.setLifecycleOwner(this);
+        this.fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
     }
 }
