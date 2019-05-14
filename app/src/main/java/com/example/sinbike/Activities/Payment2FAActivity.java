@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.sinbike.Constants;
@@ -89,6 +90,23 @@ public class Payment2FAActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void initToolbar(){
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("OTP Verification");
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Payment2FAActivity.this , CardFormActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     public void initViewModel() {

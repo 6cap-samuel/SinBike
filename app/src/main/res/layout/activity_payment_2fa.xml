@@ -3,13 +3,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/backgroundwallet"
     tools:context=".Activities.Payment2FAActivity"
     android:orientation="vertical">
 
+    <include
+        android:id='@+id/toolbar'
+        layout='@layout/toolbar'
+        android:layout_width="363dp"
+        android:layout_height="70dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.939"
+        app:layout_constraintStart_toStartOf="@+id/signupName"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <Space
         android:layout_width="match_parent"
-        android:layout_height="174dp" />
+        android:layout_height="104dp" />
 
     <TextView
         android:id="@+id/tv_phone_no"
