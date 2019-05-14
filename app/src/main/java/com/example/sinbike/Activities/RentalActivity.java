@@ -104,6 +104,7 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Rent Bicycle");
 
         toolbar.setNavigationOnClickListener(new View.OnClickListener(){
 
@@ -142,7 +143,6 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
                 latitude.add(geoPoint.get(y).getLatitude());
                 longtitude.add(geoPoint.get(y).getLongitude());
-               // break;
             }
             addBicycleMarker(bicycleList);
         });
@@ -158,7 +158,6 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
                     parkingCoordinates.add(parkingLots.get(s).getAddress());
                     parkingLotLatitude.add(parkingCoordinates.get(s).getLatitude());
                     parkingLotLongtitude.add(parkingCoordinates.get(s).getLongitude());
-                   // break;
                 }
                 addParkingLotMarker(parkingLots);
             }
