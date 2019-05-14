@@ -7,9 +7,18 @@
     tools:context=".Activities.Payment2FAActivity"
     android:orientation="vertical">
 
+    <TextView
+        android:id="@+id/tv_OTP"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="OTP Verification"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="25sp"/>
     <Space
         android:layout_width="match_parent"
-        android:layout_height="174dp" />
+        android:layout_height="150dp" />
 
     <TextView
         android:id="@+id/tv_phone_no"
