@@ -114,17 +114,26 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
                 finish();
             }
         });
+        geoPoint.clear();
+        parkingLotLatitude.clear();
+        parkingLotLongtitude.clear();
+        parkingCoordinates.clear();
+        tempBicycleList.clear();
+        bicycleList.clear();
+
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
         {
             checkUserLocationPermission();
         }
+
        mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
         markerMap = new HashMap<Marker, List<Bicycle>>();
 
+        bicycleViewModel.getAllBicycles().removeObservers(this);
         bicycleViewModel.getAllBicycles().observe(this, (Resource<List<Bicycle>> listResource) -> {
             bicycleList = listResource.data();
             for(int y=0; y < bicycleList.size();y++){
@@ -133,13 +142,14 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
                 latitude.add(geoPoint.get(y).getLatitude());
                 longtitude.add(geoPoint.get(y).getLongitude());
-                break;
+               // break;
             }
             addBicycleMarker(bicycleList);
         });
 
         parkingLotMarkerMap = new HashMap<Marker, List<ParkingLot>>();
 
+        parkingLotViewModel.getAllParkinglot().removeObservers(this);
         parkingLotViewModel.getAllParkinglot().observe(this, new Observer<Resource<List<ParkingLot>>>() {
             @Override
             public void onChanged(Resource<List<ParkingLot>> listResource) {
@@ -148,7 +158,7 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
                     parkingCoordinates.add(parkingLots.get(s).getAddress());
                     parkingLotLatitude.add(parkingCoordinates.get(s).getLatitude());
                     parkingLotLongtitude.add(parkingCoordinates.get(s).getLongitude());
-                    break;
+                   // break;
                 }
                 addParkingLotMarker(parkingLots);
             }
@@ -276,15 +286,11 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
 
         currentUserLocationMarker = map.addMarker(markerOptions);
 
-
-
         //  map.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18f));
         // map.animateCamera(CameraUpdateFactory.zoomBy(14));
 
         FirebaseApp.initializeApp(this);
-
-
 
         if(googleApiClient != null)
         {
@@ -327,29 +333,21 @@ public class RentalActivity extends AppCompatActivity implements OnClickListener
     }
 
    public void addBicycleMarker(List<Bicycle> tempBicycleList) {
-        for(int e = 0; e<latitude.size(); e++) {
-            for(int a = 0; a<longtitude.size(); a++) {
+        for(int e = 0; e<tempBicycleList.size(); e++) {
 
                 bicycleMarker = this.map.addMarker(new MarkerOptions()
-                        .position(new LatLng(tempBicycleList.get(e).getCoordinate().getLatitude(), tempBicycleList.get(a).getCoordinate().getLongitude()))
+                        .position(new LatLng(tempBicycleList.get(e).getCoordinate().getLatitude(), tempBicycleList.get(e).getCoordinate().getLongitude()))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.bicycle_icon)));
-                break;
-
-            }
         }
         markerMap.put(bicycleMarker, tempBicycleList);
     }
 
     public void addParkingLotMarker(List<ParkingLot> tempParkingLotList) {
-        for(int e = 0; e<parkingLotLatitude.size(); e++) {
-            for(int a = 0; a<parkingLotLongtitude.size(); a++) {
+        for(int a = 0; a<tempParkingLotList.size(); a++) {
 
                 parkingLotMarker = this.map.addMarker(new MarkerOptions()
-                        .position(new LatLng(tempParkingLotList.get(e).getAddress().getLatitude(), tempParkingLotList.get(a).getAddress().getLongitude()))
+                        .position(new LatLng(tempParkingLotList.get(a).getAddress().getLatitude(), tempParkingLotList.get(a).getAddress().getLongitude()))
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.parking_icon)));
-                break;
-
-            }
         }
         parkingLotMarkerMap.put(parkingLotMarker, tempParkingLotList);
     }

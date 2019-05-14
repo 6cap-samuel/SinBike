@@ -161,8 +161,7 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
                             rental.setBicycleId(bicycleID);
                             rentalViewModel.createRental(rental);
 
-
-                            /*RentalPayment rentalPayment = new RentalPayment();
+                          /*  RentalPayment rentalPayment = new RentalPayment();
                             rentalPayment.setAccountId(account.id);
                             rentalPayment.setPaymentDate(Timestamp.now());
                             rentalPayment.setTotalAmount(totalamount);
@@ -209,5 +208,6 @@ public class RentalPaymentBarcodeActivity extends AppCompatActivity {
         this.transactionViewModel = ViewModelProviders.of(this).get(TransactionViewModel.class);
         this.paymentViewModel = ViewModelProviders.of(this).get(PaymentViewModel.class);
         this.rentalViewModel = ViewModelProviders.of(this).get(RentalViewModel.class);
+        this.rentalViewModel.setLifecycleOwner(this);
     }
 }

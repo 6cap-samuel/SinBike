@@ -36,8 +36,8 @@ public class ViewTransactionFragment extends Fragment {
     List<Double> amount = new ArrayList<>();
     List<String> accountId = new ArrayList<>();
     List<Transaction> transactionList1 = new ArrayList<>();
+    List<Transaction> transactionList2 = new ArrayList<>();
     transactionAdapter transactionAdapter;
-
 
     @Nullable
     @Override
@@ -48,13 +48,11 @@ public class ViewTransactionFragment extends Fragment {
 
         initViewModel();
         listView = view.findViewById(R.id.transaction_listview);
-        //listView.refreshDrawableState();
 
         populateList();
 
-        transactionAdapter = new transactionAdapter(transactionList1);
+        transactionAdapter = new transactionAdapter(transactionList2);
         listView.setAdapter(transactionAdapter);
-
 
         return view;
     }
@@ -68,25 +66,31 @@ public class ViewTransactionFragment extends Fragment {
 
     public List<Transaction> populateList() {
         transactionViewModel.getAllTransaction(account.id).removeObservers(this);
-        transactionViewModel.getAllTransaction(account.id).observe(getViewLifecycleOwner(), new Observer<com.example.sinbike.Repositories.common.Resource<List<Transaction>>>() {
+        transactionViewModel.getAllTransaction(account.id).observe(this, new Observer<com.example.sinbike.Repositories.common.Resource<List<Transaction>>>() {
             @Override
             public void onChanged(Resource<List<Transaction>> listResource) {
-
                 transactionList = listResource.data();
                 for (int y = 0; y < transactionList.size(); y++) {
-                    type.add(transactionList.get(y).getTransactionType());
-                    date.add(transactionList.get(y).gettransactionDate());
-                    amount.add(transactionList.get(y).getAmount());
-                    accountId.add(transactionList.get(y).getAccountId());
-
-                    Transaction transaction = new Transaction(amount.get(y), date.get(y), accountId.get(y), type.get(y));
-                    transactionList1.add(transaction);
+                    transactionList1.add(transactionList.get(y));
                 }
-                transactionAdapter.notifyDataSetChanged();
-                transactionViewModel.getAllTransaction(account.id).removeObserver(this::onChanged);
+                getData();
+
             }
         });
         return transactionList1;
     }
 
+    public void getData(){
+        for(int r =0; r < transactionList1.size(); r++){
+            type.add(transactionList1.get(r).getTransactionType());
+            date.add(transactionList1.get(r).gettransactionDate());
+            amount.add(transactionList1.get(r).getAmount());
+            accountId.add(transactionList1.get(r).getAccountId());
+
+            Transaction transaction = new Transaction(amount.get(r), date.get(r), accountId.get(r), type.get(r));
+            transactionList2.add(transaction);
+            transactionAdapter.notifyDataSetChanged();
+        }
+        listView.refreshDrawableState();
+    }
 }

@@ -52,4 +52,14 @@ public class Rental extends Model {
     public void setAccountId(String accountId) {
         this.accountId = accountId;
     }
+
+    @Override
+    public String toString() {
+        return "Rental{" +
+                "bicycleID=" + bicycleId +
+                ", rentalDate='" + rentalDate + '\'' +
+                ", amount='" + amount + '\'' +
+                ", accountID='" + accountId + '\'' +
+                '}';
+    }
 }

@@ -112,7 +112,6 @@ public class CheckFineActivity extends AppCompatActivity {
         // use a linear layout manager
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-
         // create an Object for Adapter
         mAdapter = new CardViewDataAdapter(parkingFineList);
 
@@ -124,28 +123,27 @@ public class CheckFineActivity extends AppCompatActivity {
 
         stList = ((CardViewDataAdapter) mAdapter).getParkingList();
 
-        cardView = (CardView) findViewById(R.id.FinePaymentLayout);
+            cardView = (CardView) findViewById(R.id.FinePaymentLayout);
 
-        btnSelection.setOnClickListener(new OnClickListener() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onClick(View v) {
-                checkParkingFineList();
-                for (int i = 0; i < stList.size(); i++) {
-                    singleParkingFine = stList.get(i);
-                    if (singleParkingFine.isSelected()) {
-                        data.add(singleParkingFine);
-                        totalAmount.add(stList.get(i).getAmount());
+            btnSelection.setOnClickListener(new OnClickListener() {
+                @SuppressLint("SetTextI18n")
+                @Override
+                public void onClick(View v) {
+                    for (int i = 0; i < stList.size(); i++) {
+                        singleParkingFine = stList.get(i);
+                        if (singleParkingFine.isSelected()) {
+                            data.add(singleParkingFine);
+                            totalAmount.add(stList.get(i).getAmount());
+                        }
                     }
-                }
-                for (int u = 0; u < totalAmount.size(); u++) {
-                    totalAmount1 += totalAmount.get(u);
+                    for (int u = 0; u < totalAmount.size(); u++) {
+                        totalAmount1 += totalAmount.get(u);
 
+                    }
+                    displayFinePaymentPopup();
                 }
-                displayFinePaymentPopup();
-            }
-        });
-    }
+            });
+        }
 
     public void initViewModel() {
         this.fineViewModel = ViewModelProviders.of(this).get(FineViewModel.class);
@@ -173,6 +171,7 @@ public class CheckFineActivity extends AppCompatActivity {
                 }
                 mAdapter.notifyDataSetChanged();
                 checkFineList();
+                checkParkingFineList();
             }
         });
         return parkingFineList;
@@ -266,9 +265,12 @@ public class CheckFineActivity extends AppCompatActivity {
     }
 
     public boolean checkParkingFineList() {
-        for (int q = 0; q < stList.size(); q++) {
-            if (stList.size() < 0) {
+        for (int q = 0; q < parkingFineList.size(); q++) {
+            if (parkingFineList.size() <= 0) {
                 Toast.makeText(CheckFineActivity.this, "You have no parking fine!", Toast.LENGTH_SHORT).show();
+                Intent f = new Intent(CheckFineActivity.this, ManageDashboardActivity.class);
+                startActivity(f);
+                finish();
                 return true;
             }
         }
