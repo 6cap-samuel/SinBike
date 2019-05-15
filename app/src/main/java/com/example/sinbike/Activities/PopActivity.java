@@ -83,6 +83,7 @@ public class PopActivity extends Activity {
         btnget.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                timer.stop();
                 Bundle s = getIntent().getExtras();
                 String bicycleId = s.getString("barcode9");
                 Intent n = new Intent(PopActivity.this, RentalPaymentActivity.class);
