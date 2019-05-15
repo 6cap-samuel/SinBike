@@ -23,7 +23,7 @@ public class PopActivity extends Activity {
     TextView textView;
     Animation roundingalone;
     Chronometer timer;
-    int count=0;
+    int count=1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class PopActivity extends Activity {
                 while(!isInterrupted()){
 
                     try {
-                        Thread.sleep(1200); //2mins
+                        Thread.sleep(120000); //2mins
 
                         runOnUiThread(new Runnable() {
 

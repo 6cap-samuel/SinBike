@@ -87,6 +87,7 @@ public class ReservationPopActivity extends AppCompatActivity {
         btnunlock.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
+                finish();
                 startActivity(new Intent(ReservationPopActivity.this, RentalBarcodeActivity.class));
             }
         });
